@@ -1,0 +1,35 @@
+.Discover {
+  :global {
+    .sub-menu {
+      height: 35px;
+      background-color: #c20c0c;
+
+      .container {
+        width: 1100px;
+        margin: 0 auto;
+        height: 100%;
+        padding-left: 182px;
+        display: flex;
+        align-items: center;
+
+        .sub-menu-item {
+          padding: 0 13px;
+          height: 20px;
+          line-height: 20px;
+          border-radius: 10px;
+          margin: 0 17px;
+          font-size: 12px;
+          color: #fff;
+          cursor: pointer;
+          transition: all 0.3s;
+          user-select: none;
+
+          &:hover,
+          &.active {
+            background-color: #9b0909;
+          }
+        }
+      }
+    }
+  }
+}

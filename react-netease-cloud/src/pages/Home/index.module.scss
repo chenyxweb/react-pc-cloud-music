@@ -1,0 +1,145 @@
+.Home {
+  height: 2000px;
+
+  :global {
+    // topBar
+    .top-bar {
+      .top-bar-top {
+        height: 70px;
+        background-color: #242424;
+        border-bottom: 1px solid #000;
+
+        .container {
+          width: 1100px;
+          margin: 0 auto;
+          display: flex;
+          height: 100%;
+
+          .logo {
+            width: 176px;
+            height: 100%;
+            cursor: pointer;
+            background: url('../../assets/img/sprite_01.png') 0 0 no-repeat;
+          }
+
+          .menu {
+            display: flex;
+            flex: 1;
+
+            li {
+              color: #ccc;
+              font-size: 14px;
+              padding: 0 19px;
+              line-height: 69px;
+              text-align: center;
+              cursor: pointer;
+              transition: all 0.3s;
+              user-select: none;
+
+              &:hover {
+                color: #fff;
+                background-color: #000;
+              }
+
+              &.active {
+                color: #fff;
+                position: relative;
+                background-color: #000;
+
+                &::after {
+                  // 三角形
+                  content: '';
+                  display: block;
+                  position: absolute;
+                  bottom: -2px;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  width: 0;
+                  height: 0;
+                  border-top: 7px solid transparent;
+                  border-left: 6px solid transparent;
+                  border-right: 6px solid transparent;
+                  border-bottom: 7px solid #c20c0c;
+                }
+              }
+            }
+          }
+
+          .search {
+            width: 300px;
+            height: 100%;
+            display: flex;
+
+            .input-wrapper {
+              width: 160px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              .input-outer {
+                // width: 100%;
+                height: 32px;
+                background-color: #fff;
+                border-radius: 16px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0 8px;
+
+                .icon {
+                  font-size: 14px;
+                  padding-right: 4px;
+                }
+
+                .input {
+                  width: 115px;
+                  border: none;
+                  outline: none;
+                }
+              }
+            }
+
+            .center {
+              width: 90px;
+              color: #ccc;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              .content-wrapper {
+                width: 90px;
+                height: 32px;
+                border-radius: 16px;
+                text-align: center;
+                line-height: 30px;
+                cursor: pointer;
+                border: 1px solid transparent;
+                transition: all 0.3s;
+
+                &:hover {
+                  border: 1px solid #ccc;
+                }
+              }
+            }
+
+            .login {
+              width: 50px;
+              color: #787878;
+              line-height: 69px;
+              text-align: center;
+
+              span {
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+
+      .top-bar-bot {
+        height: 5px;
+        background-color: #c20c0c;
+      }
+    }
+  }
+}

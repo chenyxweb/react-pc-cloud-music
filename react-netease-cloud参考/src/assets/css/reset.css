@@ -1,0 +1,185 @@
+@import '~normalize.css';
+@import '~antd/dist/antd.css';
+
+/* 样式的重置 */
+body,
+html,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+header,
+menu,
+section,
+p,
+input,
+td,
+th,
+ins {
+  padding: 0;
+  margin: 0;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: #666;
+}
+
+a:hover {
+  color: #666;
+  text-decoration: underline;
+}
+
+i,
+em {
+  font-style: normal;
+}
+
+input,
+textarea,
+button,
+select,
+a {
+  outline: none;
+  border: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+img {
+  border: none;
+  vertical-align: middle;
+}
+
+/* 全局样式 */
+body,
+textarea,
+select,
+input,
+button {
+  font-size: 12px;
+  color: #333;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f5f5f5;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.w1100 {
+  width: 1100px;
+  margin: 0 auto;
+}
+
+.w980 {
+  width: 980px;
+  margin: 0 auto;
+}
+
+.text-indent {
+  text-indent: -9999px;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.sprite_01 {
+  background: url(../img/sprite_01.png) no-repeat 0 9999px;
+}
+
+.sprite_02 {
+  background: url(../img/sprite_02.png) no-repeat 0 9999px;
+}
+
+.sprite_cover {
+  background: url(../img/sprite_cover.png) no-repeat 0 9999px;
+}
+
+.sprite_icon {
+  background: url(../img/sprite_icon.png) no-repeat 0 9999px;
+}
+
+.sprite_icon2 {
+  background: url(../img/sprite_icon2.png) no-repeat 0 9999px;
+}
+
+.sprite_button {
+  background: url(../img/sprite_button.png) no-repeat 0 9999px;
+}
+
+.sprite_button2 {
+  background: url(../img/sprite_button2.png) no-repeat 0 9999px;
+}
+
+.sprite_table {
+  background: url(../img/sprite_table.png) no-repeat 0 9999px;
+}
+
+.my_music {
+  background: url(../img/mymusic.png) no-repeat 0 9999px;
+}
+
+.not-login {
+  background: url(../img/notlogin.jpg) no-repeat 0 9999px;
+}
+
+.image_cover {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  text-indent: -9999px;
+  background: url(../img/sprite_cover.png) no-repeat -145px -57px;
+}
+
+/* .cover_all {
+  background: url(../img/sprite_cover.png) no-repeat  0 9999px;
+  
+} */
+
+.sprite_player {
+  background: url(../img/playbar_sprite.png) no-repeat 0 9999px;
+}
+
+.lyric-css .ant-message-notice-content {
+  position: fixed;
+  left: 50%;
+  bottom: 50px;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #f5f5f5;
+}
+
+.wrap-bg2 {
+  background: url(../img/wrap3.png) repeat-y center 0;
+}
+
+.no-link {
+  pointer-events: none;
+}
+
+.m-tab {
+  background: url(../img/tab.png) no-repeat 0 9999px;
+}
