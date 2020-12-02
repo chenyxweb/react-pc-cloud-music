@@ -1,23 +1,23 @@
 // 发现音乐 - 推荐
-import React, { FC, useEffect } from 'react'
+import React, { FC, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import * as http from 'service/http'
 import styles from './index.module.scss'
+import MyCarousel from './MyCarousel'
 
 interface IProps extends RouteComponentProps {}
 
 const Recommend: FC<IProps> = () => {
-  // 获取轮播图列表
-  useEffect(() => {
-    http.banner().then(res => {
-      console.log(res)
-    })
-    http.search('陈奕迅').then(res => {
-      console.log(res)
-    })
-  }, [])
+  const [count, setCount] = useState(0)
 
-  return <div className={styles.Recommend}>Recommend</div>
+  return (
+    <div className={styles.Recommend}>
+      {/* 轮播图 */}
+      <MyCarousel />
+
+      <div>{count}</div>
+      <button onClick={() => setCount(prev => prev + 1)}>+1</button>
+    </div>
+  )
 }
 
 export default Recommend

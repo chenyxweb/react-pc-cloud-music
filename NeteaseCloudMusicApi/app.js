@@ -89,6 +89,9 @@ fs.readdirSync(path.join(__dirname, 'module'))
         req.files,
       )
 
+      // proxy 公司电脑需要使用代理
+      query.proxy = 'http://172.16.0.20:3128'
+
       question(query, request)
         .then((answer) => {
           console.log('[OK]', decodeURIComponent(req.originalUrl))
@@ -107,7 +110,7 @@ fs.readdirSync(path.join(__dirname, 'module'))
     })
   })
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 2333
 const host = process.env.HOST || ''
 
 app.server = app.listen(port, host, () => {

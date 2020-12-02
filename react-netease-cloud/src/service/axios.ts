@@ -4,7 +4,7 @@ import { message } from 'antd'
 
 // 接口基地址
 // export const BASE_URL = 'http://123.57.176.198:3000/'
-export const BASE_URL = '/'
+export const BASE_URL = 'http://localhost:2333/'
 
 // 创建实例
 export const axios = Axios.create({
@@ -27,18 +27,11 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   function (response) {
     // 对响应数据做点什么
-    const data = response.data || {}
-    if (data.code === 200) {
-      // 请求成功,返回数据
-      return response.data.result
-    } else if (data.code === 402) {
-      // 其他状态码的处理
-      // 弹框提示
-      // 如果登录失效, 引入router实例 跳转到登录页 router.push('/login')
-    } else {
-      // 弹框提示 系统请求异常
-      message.error('系统请求异常')
+    if (response.data.code !== 200) {
+      message.error(response.data.code)
     }
+
+    return response
   },
   function (err) {
     // 处理响应错误

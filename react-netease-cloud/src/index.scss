@@ -18,7 +18,9 @@ body,
 
   /*修改滚动条样式*/
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 10px; // 横向滚动条宽度
+    height: 10px; // 纵向滚动条高度
+    background-clip: padding-box;
   }
   &::-webkit-scrollbar-track {
     background: rgb(239, 239, 239);
@@ -43,4 +45,9 @@ ul {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.w980{
+  width: 980px;
+  margin: 0 auto;
 }

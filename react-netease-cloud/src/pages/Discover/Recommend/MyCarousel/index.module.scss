@@ -1,0 +1,50 @@
+// 轮播
+.carousel {
+  background-size: 6000px;
+  background-position: center center;
+  transition: all 0.5s;
+
+  :global {
+    .wrapper {
+      display: flex;
+      position: relative;
+
+      .arrow-l,
+      .arrow-r {
+        position: absolute;
+        width: 38px;
+        height: 64px;
+        cursor: pointer;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      .arrow-l {
+        left: -80px;
+      }
+
+      .arrow-r {
+        right: -80px;
+      }
+
+      .carousels {
+        width: 730px;
+        height: 270px;
+      }
+
+      .img {
+        width: 250px;
+        height: 270px;
+        background: url('~assets/img/download.png') no-repeat top left;
+      }
+    }
+  }
+}
