@@ -1,0 +1,49 @@
+.NewDisk {
+  // 标题
+  .title {
+    height: 35px;
+    padding: 0 10px 0 34px;
+    border-bottom: 2px solid #c10d0c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: url('~assets/img/sprite_02.png') -225px -156px no-repeat;
+    margin-bottom: 20px;
+
+    .left {
+      display: flex;
+      align-items: center;
+
+      :global {
+        .key {
+          font-size: 20px;
+          padding-right: 15px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .right {
+      padding-right: 12px;
+      cursor: pointer;
+      background: url('~assets/img/sprite_02.png') 25px -238px no-repeat;
+    }
+  }
+
+  // disk
+  .disk {
+    :global {
+      .wrapper {
+        margin: 20px 0 37px;
+        border: 1px solid #d3d3d3;
+        background-color: #f5f5f5;
+
+        .swiper {
+          padding: 0 20px;
+          height: 188px;
+          padding-top: 28px;
+        }
+      }
+    }
+  }
+}

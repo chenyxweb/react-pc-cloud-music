@@ -12,6 +12,7 @@ import Recommend from './Recommend'
 import Toplist from './Toplist'
 
 import styles from './index.module.scss'
+import PlaylistPlay from './PlaylistPlay'
 
 interface IProps extends RouteComponentProps {}
 
@@ -50,6 +51,7 @@ const Discover: FC<IProps> = props => {
       <Route path='/discover/djradio' component={Djradio}></Route>
       <Route path='/discover/artist' component={Artist}></Route>
       <Route path='/discover/album' component={Album}></Route>
+      <Route path='/discover/playlist-play' component={PlaylistPlay}></Route>
     </div>
   )
 }

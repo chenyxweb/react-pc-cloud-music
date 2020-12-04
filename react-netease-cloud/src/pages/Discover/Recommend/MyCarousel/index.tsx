@@ -2,8 +2,8 @@
 import React, { FC, memo, useEffect, useRef, useState } from 'react'
 import { Carousel } from 'antd'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
-import * as http from 'service/http'
 import styles from './index.module.scss'
+import http from 'service/http'
 
 interface IProps {}
 

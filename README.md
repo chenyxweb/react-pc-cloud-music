@@ -28,6 +28,11 @@ background: url() center center/6000px   // 背景位置/背景大小
 
 // 和  React.pureComponent 类似
 
+// 区别
+类组件 - pureComponent - state 和 props
+函数组件 - memo - props
+
 // 当props和state较为简单时才使用, 比较好, 因为仅仅做浅层对比
 ```
 
+- 跳转页面回到顶端

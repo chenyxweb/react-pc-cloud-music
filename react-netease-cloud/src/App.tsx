@@ -15,7 +15,7 @@ const App = () => {
       </Suspense>
 
       {/* 回到顶部 */}
-      <BackTop target={() => document.querySelector('.app') as HTMLElement}>
+      <BackTop visibilityHeight={200} target={() => document.querySelector('.app') as HTMLElement}>
         <div className='back-to-top'>UP</div>
       </BackTop>
     </div>

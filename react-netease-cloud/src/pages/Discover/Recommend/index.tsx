@@ -2,8 +2,10 @@
 import React, { FC, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import HotRecommend from './HotRecommend'
-import styles from './index.module.scss'
 import MyCarousel from './MyCarousel'
+import NewDisk from './NewDisk'
+
+import styles from './index.module.scss'
 
 interface IProps extends RouteComponentProps {}
 
@@ -21,6 +23,7 @@ const Recommend: FC<IProps> = () => {
             <HotRecommend />
 
             {/* 新碟上架 */}
+            <NewDisk />
 
             {/* 榜单 */}
           </div>
