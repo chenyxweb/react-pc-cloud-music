@@ -17,7 +17,7 @@ const MyCarousel: FC<IProps> = () => {
     http
       .banner()
       .then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.data.code === 200) {
           setBannerList(res.data.banners || [])
         }

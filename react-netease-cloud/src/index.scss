@@ -39,6 +39,7 @@ body {
   font-size: 12px;
   color: #333;
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #f5f5f5;
 }
 
 ul {
@@ -47,7 +48,24 @@ ul {
   padding: 0;
 }
 
-.w980{
+.w980 {
   width: 980px;
   margin: 0 auto;
+}
+
+// 回到顶部样式
+.back-to-top {
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  border-radius: 20px;
+  background-color: rgba(194, 12, 12, 0.5);
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: rgba(194, 12, 12, 1);
+  }
 }

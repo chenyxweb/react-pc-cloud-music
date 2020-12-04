@@ -1,0 +1,104 @@
+.HotRecommend {
+  // 标题
+  .title {
+    height: 35px;
+    padding: 0 10px 0 34px;
+    border-bottom: 2px solid #c10d0c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: url('~assets/img/sprite_02.png') -225px -156px no-repeat;
+    margin-bottom: 20px;
+
+    .left {
+      display: flex;
+      align-items: center;
+
+      :global {
+        .key {
+          font-size: 20px;
+          padding-right: 15px;
+        }
+
+        .list {
+          color: #666666;
+
+          .line {
+            padding: 0 10px;
+          }
+
+          span:not(.line) {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .right {
+      padding-right: 12px;
+      cursor: pointer;
+      background: url('~assets/img/sprite_02.png') 25px -238px no-repeat;
+    }
+  }
+
+  // 热门推荐列表
+  .recommendList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .recommendListItem {
+      width: 140px;
+      height: 204px;
+      margin-bottom: 30px;
+
+      :global {
+        .img-wrapper {
+          position: relative;
+
+          img {
+            width: 140px;
+            height: 140px;
+            cursor: pointer;
+          }
+
+          .play-bar {
+            height: 27px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            color: #ccc;
+            background-color: rgba($color: #000000, $alpha: 0.4);
+            padding: 0 8px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .play-num {
+            }
+
+            .play {
+              cursor: pointer;
+              transition: all 0.3s linear;
+              transform-origin: center center;
+
+              &:hover {
+                color: #fff;
+                transform: scale(1.2);
+              }
+            }
+          }
+        }
+
+        .name {
+          margin: 8px 0 3px;
+          font-size: 14px;
+          word-break: break-all;
+          word-wrap: break-word;
+        }
+      }
+    }
+  }
+}
