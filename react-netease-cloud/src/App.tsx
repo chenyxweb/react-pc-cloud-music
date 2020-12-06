@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react'
 import { HashRouter as Router, Route } from 'react-router-dom'
 import LoadingPage from 'components/LoadingPage'
 import { BackTop } from 'antd'
+import BeforeEach from 'components/LoadingPage/BeforeEach'
 
 const Home = lazy(() => import('./pages/Home'))
 
@@ -10,7 +11,9 @@ const App = () => {
     <div className='app'>
       <Suspense fallback={<LoadingPage text='努力加载中...' />}>
         <Router>
-          <Route path='/' component={Home}></Route>
+          <BeforeEach>
+            <Route path='/' component={Home}></Route>
+          </BeforeEach>
         </Router>
       </Suspense>
 

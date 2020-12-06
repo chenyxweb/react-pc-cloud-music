@@ -74,6 +74,7 @@ const Home: FC<IProps> = props => {
       {renderTopBar()}
 
       {/* 路由 */}
+
       <Route path='/' component={Discover} exact></Route>
       <Route path='/discover' component={Discover}></Route>
       <Route path='/my' component={My}></Route>
