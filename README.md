@@ -36,3 +36,46 @@ background: url() center center/6000px   // 背景位置/背景大小
 ```
 
 - 跳转页面回到顶端
+
+```tsx
+// 定义组件
+
+// 切换页面后回到顶部
+// 前置路由守卫
+
+import React from 'react'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+
+interface IProps extends RouteComponentProps {}
+
+class BeforeEach extends React.Component<IProps, {}> {
+  componentDidUpdate(preProps: IProps) {
+    if (this.props.location.pathname !== preProps.location.pathname) {
+      // 滚动到顶部
+      document.querySelector('#root > .app')?.scrollTo(0, 0)
+    }
+  }
+
+  // state: IState = {}
+
+  render() {
+    return this.props.children
+  }
+}
+
+export default withRouter(BeforeEach)
+
+```
+
+```tsx
+// 使用组件
+
+<Router>
+  <BeforeEach>
+    <Route path='/' component={Home}></Route>
+  </BeforeEach>
+</Router>
+```
+
+
+
