@@ -19,8 +19,8 @@ const NewDisk: FC<IProps> = props => {
         if (res.data.code === 200) {
           // 每5项push成一项数组
           const list = res.data.albums || []
-          console.log('list', list)
           setList(chunk(list, 5))
+          console.log('list', chunk(list, 5))
         }
       })
       .catch(() => {})
@@ -47,9 +47,33 @@ const NewDisk: FC<IProps> = props => {
       <div className={styles.disk}>
         <div className='wrapper'>
           <div className='swiper'>
-            <Carousel autoplay>
+            <Carousel className='antd-carousel' autoplay>
               {/* TODO */}
+              {list.map((item, index) => {
+                return (
+                  <div className='carousel-item' key={index}>
+                    <div className='swiper-wrapper'>
+                      {item.map((ite, ind) => {
+                        console.log(ite)
+                        return (
+                          <div className='swiper-item' key={ite.picId}>
+                            <div className='img'>
+                              <img src={ite.picUrl} alt='' />
+                            </div>
+                            <p className='song-name'>耗尽</p>
+                            <p className='author'>
+                              <span>薛之谦</span> / <span>郭聪明</span>
+                            </p>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
             </Carousel>
+
+            {/* 左右箭头 */}
           </div>
         </div>
       </div>
