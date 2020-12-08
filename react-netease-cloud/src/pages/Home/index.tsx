@@ -1,4 +1,5 @@
 import { SearchOutlined } from '@ant-design/icons'
+import PlayBar from 'components/PlayBar'
 import Discover from 'pages/Discover'
 import Download from 'pages/Download'
 import Friend from 'pages/Friend'
