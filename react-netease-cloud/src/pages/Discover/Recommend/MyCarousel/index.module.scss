@@ -38,6 +38,10 @@
       .carousels {
         width: 730px;
         height: 270px;
+
+        .carousel-img{
+          cursor: pointer;
+        }
       }
 
       .img {

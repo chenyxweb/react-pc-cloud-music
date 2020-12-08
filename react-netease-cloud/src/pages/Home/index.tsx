@@ -82,6 +82,9 @@ const Home: FC<IProps> = props => {
       <Route path='/mall' component={Mall}></Route>
       <Route path='/musician' component={Musician}></Route>
       <Route path='/download' component={Download}></Route>
+
+      {/* 播放条 */}
+      <PlayBar></PlayBar>
     </div>
   )
 }

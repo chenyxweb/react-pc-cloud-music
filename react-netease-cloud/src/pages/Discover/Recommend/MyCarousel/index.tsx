@@ -59,7 +59,7 @@ const MyCarousel: FC<IProps> = props => {
               src={item.imageUrl}
               alt=''
               key={item.targetId}
-              style={{ cursor: 'pointer' }}
+              className='carousel-img'
               onClick={() => goSong(item.targetId)}
             />
           ))}

@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from 'react'
 import { HashRouter as Router, Route } from 'react-router-dom'
 import LoadingPage from 'components/LoadingPage'
 import { BackTop } from 'antd'
-import BeforeEach from 'components/LoadingPage/BeforeEach'
+import BeforeEach from 'components/BeforeEach'
 
 const Home = lazy(() => import('./pages/Home'))
 
