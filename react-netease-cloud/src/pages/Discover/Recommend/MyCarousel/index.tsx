@@ -4,13 +4,14 @@ import { Carousel } from 'antd'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import styles from './index.module.scss'
 import http from 'service/http'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 
-interface IProps {}
+interface IProps extends RouteComponentProps {}
 
-const MyCarousel: FC<IProps> = () => {
+const MyCarousel: FC<IProps> = props => {
   const [bannerList, setBannerList] = useState<Array<any>>([]) // 轮播图列表
-  const carouselRef = useRef<any>()
-  const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const carouselRef = useRef<any>() // 获取轮播图ref
+  const [currentIndex, setCurrentIndex] = useState<number>(0) // 轮播图当前轮播图片索引
 
   // 获取轮播图数据
   useEffect(() => {
@@ -41,6 +42,9 @@ const MyCarousel: FC<IProps> = () => {
     carouselRef?.current?.next()
   }
 
+  // 歌曲详情页
+  const goSong = (id: number) => props.history.push(`/discover/song?id=${id}`)
+
   return (
     <div
       className={styles.carousel}
@@ -51,7 +55,13 @@ const MyCarousel: FC<IProps> = () => {
       <div className='wrapper w980'>
         <Carousel className='carousels' ref={carouselRef} autoplay effect='fade' beforeChange={handleBeforeChange}>
           {bannerList.map(item => (
-            <img src={item.imageUrl} alt='' key={item.encodeId} />
+            <img
+              src={item.imageUrl}
+              alt=''
+              key={item.targetId}
+              style={{ cursor: 'pointer' }}
+              onClick={() => goSong(item.targetId)}
+            />
           ))}
         </Carousel>
 
@@ -65,7 +75,7 @@ const MyCarousel: FC<IProps> = () => {
           <RightOutlined style={{ color: '#ddd', fontSize: 36 }} />
         </div>
 
-        <div className='img'></div>
+        <div className='img' onClick={() => props.history.push('/download')}></div>
       </div>
     </div>
   )
@@ -75,4 +85,4 @@ MyCarousel.defaultProps = {}
 
 // 当 props 没有变化时 不进行渲染render  提高性能
 // 父组件的更新不会导致 当前组件的更新
-export default memo(MyCarousel)
+export default memo(withRouter(MyCarousel))

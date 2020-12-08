@@ -48,7 +48,7 @@ ul {
   padding: 0;
 }
 
-p{
+p {
   margin: 0;
 }
 
@@ -72,4 +72,11 @@ p{
   &:hover {
     background-color: rgba(194, 12, 12, 1);
   }
+}
+
+// 单行溢出隐藏
+.ellipsis-1 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

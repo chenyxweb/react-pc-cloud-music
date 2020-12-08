@@ -1,11 +1,11 @@
-// 发现音乐 - 新碟上架
+// 发现音乐 - 歌手详情
 import React, { FC } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 
 interface IProps extends RouteComponentProps {}
 
-const PlaylistPlay: FC<IProps> = () => {
-  return <div>PlaylistPlay</div>
+const ArtistDetail: FC<IProps> = () => {
+  return <div>ArtistDetail</div>
 }
 
-export default PlaylistPlay
+export default ArtistDetail
