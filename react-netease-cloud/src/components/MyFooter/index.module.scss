@@ -1,0 +1,126 @@
+.MyFooter {
+  position: relative;
+  height: 173px;
+  overflow: hidden;
+  border-top: 1px solid #d3d3d3;
+  background: #f2f2f2;
+
+  .container {
+    width: 980px;
+    margin: 0 auto;
+    display: flex;
+
+    :global {
+      .footer-left {
+        padding-top: 15px;
+        line-height: 24px;
+        width: 520px;
+
+        .links {
+          span {
+            color: #999;
+            padding-right: 8px;
+            cursor: pointer;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        .text {
+          span {
+            color: #666;
+            padding-right: 14px;
+
+            img {
+              width: 14px;
+              height: 14px;
+              position: relative;
+              top: -2px;
+              left: 0;
+            }
+          }
+        }
+      }
+
+      .footer-right {
+        width: 460px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        .footer-right-item {
+          width: 60px;
+          height: 70px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .logo {
+            width: 50px;
+            height: 45px;
+            background-image: url('~assets/img/foot_enter_new.png');
+            background-repeat: no-repeat;
+            background-size: 110px 552px;
+          }
+
+          .text {
+            width: 52px;
+            height: 14px;
+            margin-top: 5px;
+            background-image: url('~assets/img/sprite_footer_01.png');
+            background-repeat: no-repeat;
+            background-size: 180px 139px;
+          }
+        }
+
+        .footer-right-item:nth-child(1) {
+          .logo {
+            background-position: -63px -456.5px;
+          }
+          .text {
+            width: 72px;
+            background-position: 0 -108px;
+          }
+        }
+
+        .footer-right-item:nth-child(2) {
+          .logo {
+            background-position: -63px -101px;
+          }
+          .text {
+            background-position: -1px -91px;
+          }
+        }
+
+        .footer-right-item:nth-child(3) {
+          .logo {
+            background-position: 0 0;
+          }
+          .text {
+            background-position: 0 0;
+          }
+        }
+
+        .footer-right-item:nth-child(4) {
+          .logo {
+            background-position: -60px -50px;
+          }
+          .text {
+            background-position: 0 -54px;
+          }
+        }
+
+        .footer-right-item:nth-child(5) {
+          .logo {
+            background-position: 0 -101px;
+          }
+          .text {
+            background-position: -1px -72px;
+          }
+        }
+      }
+    }
+  }
+}

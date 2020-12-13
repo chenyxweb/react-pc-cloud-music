@@ -1,4 +1,8 @@
+import React, { FC } from 'react'
+import { Route, RouteComponentProps } from 'react-router-dom'
 import { SearchOutlined } from '@ant-design/icons'
+
+import MyFooter from 'components/MyFooter'
 import PlayBar from 'components/PlayBar'
 import Discover from 'pages/Discover'
 import Download from 'pages/Download'
@@ -6,8 +10,7 @@ import Friend from 'pages/Friend'
 import Mall from 'pages/Mall'
 import Musician from 'pages/Musician'
 import My from 'pages/My'
-import React, { FC } from 'react'
-import { Route, RouteComponentProps } from 'react-router-dom'
+
 import constants from 'utils/constants'
 import styles from './index.module.scss'
 
@@ -76,13 +79,18 @@ const Home: FC<IProps> = props => {
 
       {/* 路由 */}
 
-      <Route path='/' component={Discover} exact></Route>
-      <Route path='/discover' component={Discover}></Route>
-      <Route path='/my' component={My}></Route>
-      <Route path='/friend' component={Friend}></Route>
-      <Route path='/mall' component={Mall}></Route>
-      <Route path='/musician' component={Musician}></Route>
-      <Route path='/download' component={Download}></Route>
+      <div className={styles.routeWrapper}>
+        <Route path='/' component={Discover} exact></Route>
+        <Route path='/discover' component={Discover}></Route>
+        <Route path='/my' component={My}></Route>
+        <Route path='/friend' component={Friend}></Route>
+        <Route path='/mall' component={Mall}></Route>
+        <Route path='/musician' component={Musician}></Route>
+        <Route path='/download' component={Download}></Route>
+      </div>
+
+      {/* Footer */}
+      <MyFooter></MyFooter>
 
       {/* 播放条 */}
       <PlayBar></PlayBar>

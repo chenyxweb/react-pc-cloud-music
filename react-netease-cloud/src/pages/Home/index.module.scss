@@ -1,5 +1,5 @@
 .Home {
-  height: 2000px;
+  // height: 2000px;
 
   :global {
     // topBar
@@ -19,7 +19,7 @@
             width: 176px;
             height: 100%;
             cursor: pointer;
-            background: url('../../assets/img/sprite_01.png') 0 0 no-repeat;
+            background: url('~assets/img/sprite_01.png') 0 0 no-repeat;
           }
 
           .menu {
@@ -141,5 +141,10 @@
         background-color: #c20c0c;
       }
     }
+  }
+
+  // 
+  .routeWrapper{
+    min-height: 698px;
   }
 }

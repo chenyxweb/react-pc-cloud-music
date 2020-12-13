@@ -77,6 +77,13 @@ export default withRouter(BeforeEach)
 </Router>
 ```
 
-- auido标签相关
+- audio标签相关
 
 https://blog.csdn.net/gongstrong123/article/details/50339249
+
+- 资源访问
+```
+js内  使用@访问根目录
+css内 使用~访问根目录
+
+```
