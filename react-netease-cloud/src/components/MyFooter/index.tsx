@@ -11,15 +11,15 @@ const MyFooter: FC<IProps> = () => {
       <div className={styles.container}>
         <div className='footer-left'>
           <div className='links'>
-            <span> 服务条款 </span>
+            <span className='links-text'> 服务条款 </span>
             <span> | </span>
-            <span> 隐私政策 </span>
+            <span className='links-text'> 隐私政策 </span>
             <span> | </span>
-            <span> 儿童隐私政策 </span>
+            <span className='links-text'> 儿童隐私政策 </span>
             <span> | </span>
-            <span> 版权投诉指引 </span>
+            <span className='links-text'> 版权投诉指引 </span>
             <span> | </span>
-            <span> 意见反馈 </span>
+            <span className='links-text'> 意见反馈 </span>
             <span> | </span>
           </div>
           <p className='text'>
