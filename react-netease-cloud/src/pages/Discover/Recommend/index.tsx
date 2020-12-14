@@ -1,5 +1,5 @@
 // 发现音乐 - 推荐
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import HotRecommend from './HotRecommend'
 import MyCarousel from './MyCarousel'
@@ -7,10 +7,14 @@ import NewDisk from './NewDisk'
 
 import styles from './index.module.scss'
 import RecTopList from './RecTopList'
+import http from 'service/http'
+import RecArtistList from './RecArtistList'
 
 interface IProps extends RouteComponentProps {}
 
 const Recommend: FC<IProps> = () => {
+
+
   // 渲染login
   const renderLogin = () => {
     return (
@@ -44,6 +48,7 @@ const Recommend: FC<IProps> = () => {
             {renderLogin()}
 
             {/* 入驻歌手 */}
+            <RecArtistList />
             {/* 热门主播 */}
           </div>
         </div>

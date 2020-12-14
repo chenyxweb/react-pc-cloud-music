@@ -34,16 +34,24 @@ const newDisk = () => axios.get('/album/newest')
  */
 const getLyric = (id: number) => axios.get(`/lyric?id=${id}`)
 
-interface getArtistListParams {
+/**
+ * 获取歌手列表
+ */
+const getArtistList = (params: {
   limit?: number // 查询条数
   area?: 7 | 96 | 8 | 16 | 0 // 华语,欧美,日本,韩国,其他
   type?: 1 | 2 | 3 // 男,女,乐队
-}
+}) => axios.get('/artist/list', { params })
+
 /**
- * 获取歌手列表
- *
+ * 获取歌单详情
  */
-const getArtistList = (params: getArtistListParams) => axios.get('/artist/list', { params })
+const getPlaylistDetail = (params: {
+  id?: number // 19723756 | 3779629 | 2884035 // 云音乐飙升榜 | 云音乐新歌榜 | 网易原创歌曲榜
+}) => axios.get('/playlist/detail', { params })
+
+// 热门主播
+// const getDJToplistPopular = () => axios.get('/dj/toplist/popular?limit=5')
 
 //
 //
@@ -56,6 +64,8 @@ const http = {
   newDisk,
   getLyric,
   getArtistList,
+  getPlaylistDetail,
+  // getDJToplistPopular,
 }
 
 export default http

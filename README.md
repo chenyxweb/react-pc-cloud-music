@@ -1,4 +1,4 @@
-# 仿网易云音乐
+# react-netease-cloud
 
 ## 起步
 
@@ -14,13 +14,14 @@
 
 ## 技术点
 
-- 轮播背景实现: imageUrl+?imageView&blur=40x20 获取模糊背景, 设置背景样式
+### 轮播背景实现
 
 ```css
+// imageUrl+?imageView&blur=40x20 获取模糊背景, 设置背景样式
 background: url() center center/6000px   // 背景位置/背景大小
 ```
 
-- React.memo 
+### React.memo 
 
 ```
 // 性能优化
@@ -35,7 +36,7 @@ background: url() center center/6000px   // 背景位置/背景大小
 // 当props和state较为简单时才使用, 比较好, 因为仅仅做浅层对比
 ```
 
-- 跳转页面回到顶端功能
+### 跳转页面回到顶端功能
 
 ```tsx
 // 定义组件
@@ -77,11 +78,12 @@ export default withRouter(BeforeEach)
 </Router>
 ```
 
-- audio标签相关
+### audio标签相关
 
 https://blog.csdn.net/gongstrong123/article/details/50339249
 
-- 资源访问
+### 资源访问
+
 ```
 js内  使用@访问根目录
 css内 使用~访问根目录

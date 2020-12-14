@@ -1,32 +1,99 @@
-.RecTopList{
-    // 标题
-    .title {
-      height: 35px;
-      padding: 0 10px 0 34px;
-      border-bottom: 2px solid #c10d0c;
+.RecTopList {
+  // 标题
+  .title {
+    height: 35px;
+    padding: 0 10px 0 34px;
+    border-bottom: 2px solid #c10d0c;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: url('~assets/img/sprite_02.png') -225px -156px no-repeat;
+    margin-bottom: 20px;
+
+    .left {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      background: url('~assets/img/sprite_02.png') -225px -156px no-repeat;
-      margin-bottom: 20px;
-  
-      .left {
+
+      :global {
+        .key {
+          font-size: 20px;
+          padding-right: 15px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .right {
+      padding-right: 12px;
+      cursor: pointer;
+      background: url('~assets/img/sprite_02.png') 25px -238px no-repeat;
+    }
+  }
+
+  // 榜单
+  .toplist {
+    display: flex;
+    height: 472px;
+    background: url('~assets/img/recommend-top-bg.png') no-repeat;
+
+    :global {
+      .logo {
+        height: 120px;
+        padding: 20px 0 0 19px;
         display: flex;
-        align-items: center;
-  
-        :global {
-          .key {
-            font-size: 20px;
-            padding-right: 15px;
+        position: relative;
+        left: 1px;
+        top: 0;
+
+        img {
+          width: 80px;
+          height: 80px;
+          cursor: pointer;
+        }
+
+        .text {
+          margin: 6px 0 0 10px;
+
+          .name {
+            color: #333;
+            font-size: 14px;
+            font-weight: bold;
             cursor: pointer;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+
+          .btns {
+            margin-top: 10px;
+
+            .icon {
+              margin-right: 10px;
+              font-size: 24px;
+              color: #aaa;
+              transition: all 0.3s;
+              cursor: pointer;
+
+              &:hover {
+                color: #666;
+              }
+            }
           }
         }
       }
-  
-      .right {
-        padding-right: 12px;
-        cursor: pointer;
-        background: url('~assets/img/sprite_02.png') 25px -238px no-repeat;
-      }
     }
+
+    .up {
+      flex: 1;
+    }
+
+    .new {
+      flex: 1;
+    }
+
+    .origin {
+      flex: 1;
+    }
+  }
 }

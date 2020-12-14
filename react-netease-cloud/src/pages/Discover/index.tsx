@@ -24,6 +24,16 @@ const Discover: FC<IProps> = props => {
     location: { pathname },
   } = props
 
+  // 计算高亮menu
+  const calcActive = (item: { name: string; path: string }, index: number) => {
+    if (index === 0) {
+      // 发现音乐 - 推荐
+      return pathname === '/' || pathname === '/discover'
+    } else {
+      return pathname.includes(item.path)
+    }
+  }
+
   return (
     <div className={styles.Discover}>
       {/* 小menu */}
@@ -32,10 +42,7 @@ const Discover: FC<IProps> = props => {
           {constants.subMenu.map((item, index) => {
             return (
               <div
-                className={[
-                  'sub-menu-item',
-                  (index === 0 && pathname === '/') || pathname === item.path ? 'active' : '',
-                ].join(' ')}
+                className={['sub-menu-item', calcActive(item, index) ? 'active' : ''].join(' ')}
                 key={index}
                 onClick={() => props.history.push(item.path)}
               >

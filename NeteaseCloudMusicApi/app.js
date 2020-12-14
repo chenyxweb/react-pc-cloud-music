@@ -90,7 +90,7 @@ fs.readdirSync(path.join(__dirname, 'module'))
       )
 
       // proxy 公司电脑需要使用代理
-      // query.proxy = 'http://172.16.0.20:3128'
+       query.proxy = 'http://172.16.0.20:3128'
 
       question(query, request)
         .then((answer) => {

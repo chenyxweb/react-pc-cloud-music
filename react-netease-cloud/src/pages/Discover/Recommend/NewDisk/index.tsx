@@ -21,7 +21,7 @@ const NewDisk: FC<IProps> = props => {
         if (res.data.code === 200) {
           // 每5项push成一项数组
           const list = res.data.albums || []
-          console.log('list', chunk(list, 5))
+          // console.log('list', chunk(list, 5))
           setList(chunk(list, 5))
         }
       })
