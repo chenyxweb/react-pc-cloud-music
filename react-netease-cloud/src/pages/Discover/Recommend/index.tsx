@@ -9,18 +9,19 @@ import styles from './index.module.scss'
 import RecTopList from './RecTopList'
 import http from 'service/http'
 import RecArtistList from './RecArtistList'
+import { message } from 'antd'
 
 interface IProps extends RouteComponentProps {}
 
 const Recommend: FC<IProps> = () => {
-
-
   // 渲染login
   const renderLogin = () => {
     return (
       <div className='login'>
         <p>登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
-        <div className='btn'>用户登录</div>
+        <div className='btn' onClick={() => message.info('暂无此功能')}>
+          用户登录
+        </div>
       </div>
     )
   }

@@ -64,8 +64,12 @@ const HotRecommend: FC<IProps> = props => {
         {list.map(item => {
           return (
             <div className={styles.recommendListItem} key={item.id} title={item.name}>
-              <div className='img-wrapper' onClick={() => props.history.push(`/discover/playlist-detail?id=${item.id}`)}>
-                <img src={item.picUrl} alt='' />
+              <div className='img-wrapper'>
+                <img
+                  src={item.picUrl}
+                  alt=''
+                  onClick={() => props.history.push(`/discover/playlist-detail?id=${item.id}`)}
+                />
 
                 {/* 定位元素 */}
                 <div className='play-bar'>

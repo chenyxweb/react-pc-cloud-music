@@ -82,6 +82,74 @@
           }
         }
       }
+
+      // list
+      .list {
+        .list-item {
+          height: 32px;
+          line-height: 32px;
+          padding-left: 16px;
+          display: flex;
+
+          &:hover {
+            .list-item-btns {
+              display: flex;
+            }
+            .list-item-name {
+              width: 96px;
+              text-decoration: underline;
+            }
+          }
+
+          .list-item-num {
+            width: 35px;
+            font-size: 16px;
+            text-align: center;
+
+            &.red {
+              color: #c10d0c;
+            }
+          }
+
+          .list-item-name {
+            width: 170px;
+            color: #000;
+            padding-right: 2px;
+            cursor: pointer;
+          }
+
+          .list-item-btns {
+            display: none;
+            width: 78px;
+            align-items: center;
+
+            .icon {
+              font-size: 18px;
+              color: #666;
+              margin-right: 5px;
+              cursor: pointer;
+              transition: all 0.3s;
+
+              &:hover {
+                color: #333;
+              }
+            }
+          }
+
+          // 查看全部
+          .look-all {
+            cursor: pointer;
+            text-align: right;
+            width: 100%;
+            padding-right: 20px;
+            color: #000;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
     }
 
     .up {
