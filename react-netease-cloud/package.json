@@ -24,7 +24,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "dev": "cross-env REACT_A`PP_MODE=dev PORT=3000 react-app-rewired start",
+    "dev": "cross-env PORT=2333 REACT_A`PP_MODE=dev PORT=3000 react-app-rewired start",
     "build": "cross-env REACT_APP_MODE=build GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=10000 react-app-rewired build"
   },
   "eslintConfig": {

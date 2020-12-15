@@ -13,7 +13,7 @@ const PlayBar: FC<IProps> = () => {
 
   // 鼠标移入播放条
   const handleMouseEnter = () => {
-    if (lock) return // lock 为true 取消移入移出时间
+    if (lock) return // lock 为true 取消移入移出事件
     clearTimeout(mouseLeaveTimeId) // 每次移入清除定时器, 取消移出效果
     if (!playBarShow) {
       setPlayBarShow(true)
@@ -22,7 +22,7 @@ const PlayBar: FC<IProps> = () => {
 
   // 鼠标移出播放条
   const handleMouseLeave = () => {
-    if (lock) return // lock 为true 取消移入移出时间
+    if (lock) return // lock 为true 取消移入移出事件
     clearTimeout(mouseLeaveTimeId) // 每次移出清除定时器, 取消移出效果
     mouseLeaveTimeId = setTimeout(() => setPlayBarShow(false), 1000)
   }
