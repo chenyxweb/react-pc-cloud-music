@@ -1,6 +1,7 @@
 // 我的音乐
 
 import React from 'react'
+import styles from './index.module.scss'
 
 interface IProps {}
 
@@ -15,7 +16,13 @@ class My extends React.Component<IProps, IState> {
   // state: IState = {}
 
   render() {
-    return <div>My</div>
+    return (
+      <div className={styles.My}>
+        <div className={[styles.wrapper, 'w980'].join(' ')}>
+          <div className={styles.img}></div>
+        </div>
+      </div>
+    )
   }
 }
 

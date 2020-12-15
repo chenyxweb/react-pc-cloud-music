@@ -82,6 +82,12 @@ export default withRouter(BeforeEach)
 
 https://blog.csdn.net/gongstrong123/article/details/50339249
 
+```html
+
+```
+
+
+
 ### 资源访问
 
 ```
@@ -198,3 +204,6 @@ export default MyTransition
   </div>
 </MyTransition>
 ```
+
+### 歌曲播放地址
+

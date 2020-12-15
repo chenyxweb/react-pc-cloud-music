@@ -118,7 +118,7 @@ const PlayBar: FC<IProps> = () => {
         <div className='rightBtns'>
           <div className='btn voice' onClick={() => setVoiceBarShow(!voiceBarShow)}>
             {/* 音量大小bar 定位  */}
-            <MyTransition mode='scale' in={voiceBarShow} timeout={300}>
+            <MyTransition mode="scale" in={voiceBarShow} timeout={300}>
               <div className='voice-bar'>
                 <div style={{ height: 110 }}>
                   <Slider vertical />
@@ -134,7 +134,7 @@ const PlayBar: FC<IProps> = () => {
       </div>
 
       {/* audio */}
-      {/* <audio src=""></audio> */}
+      {/* <audio loop autoPlay src="https://music.163.com/song/media/outer/url?id=65533.mp3"></audio> */}
 
       {/* 背景图 左边 */}
       <div className={styles['bg-l']}></div>
