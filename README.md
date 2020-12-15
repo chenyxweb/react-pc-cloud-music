@@ -89,3 +89,112 @@ js内  使用@访问根目录
 css内 使用~访问根目录
 
 ```
+### 封装Transition 动画组件
+```tsx
+// index.tsx
+// 动画组件
+
+import React, { FC } from 'react'
+import { CSSTransition } from 'react-transition-group'
+import { CSSTransitionProps } from 'react-transition-group/CSSTransition'
+import './index.scss'
+
+interface IProps {
+  /** 动画名称 */
+  mode?: 'scale' | 'fade'
+}
+
+const MyTransition: FC<IProps & CSSTransitionProps> = props => {
+  const { mode, children, ...restProps } = props
+  return (
+    <CSSTransition classNames={`transition-${mode}`} {...restProps}>
+      {children}
+    </CSSTransition>
+  )
+}
+
+MyTransition.defaultProps = {
+  mode: 'fade',
+}
+
+export default MyTransition
+
+
+```
+
+```scss
+// index.scss
+
+// 动画
+// 当 in 属性指定成 true 时, 目标元素先添加 -enter 类名, 随后马上添加 -enter-active ; 
+// timeout 时间结束后, 删除 -enter 和 -enter-active 类名
+// 当 in 属性设置成 false 时, 同理...
+
+// -enter -enter-active
+// -enter-done
+// -exit -exit-active
+// exit-done
+
+// scale 动画
+.transition-scale-enter {
+  display: block !important;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.transition-scale-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.transition-scale-enter-done {
+  display: block !important;
+}
+
+.transition-scale-exit {
+  display: block !important;
+  opacity: 1;
+}
+
+.transition-scale-exit-active {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 300ms, transform 300ms;
+}
+
+// fade动画
+.transition-fade-enter {
+  display: block !important;
+  opacity: 0;
+}
+.transition-fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+.transition-fade-enter-done {
+  display: block !important;
+}
+.transition-fade-exit {
+  display: block !important;
+  opacity: 1;
+}
+.transition-fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+```
+```tsx
+// 使用
+
+// 控制 voiceBarShow 的 true 或 false
+
+<MyTransition mode="scale" in={voiceBarShow} timeout={300}>
+  <div className='voice-bar'>
+    <div style={{ height: 110 }}>
+      <Slider vertical />
+    </div>
+  </div>
+</MyTransition>
+```

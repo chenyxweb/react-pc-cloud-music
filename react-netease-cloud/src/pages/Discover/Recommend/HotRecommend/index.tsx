@@ -1,6 +1,6 @@
 // 发现 - 推荐 - 热门推荐
 import { CustomerServiceOutlined, PlayCircleOutlined } from '@ant-design/icons'
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, memo, useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import http from 'service/http'
 import utils from 'utils/utils'
@@ -91,4 +91,4 @@ const HotRecommend: FC<IProps> = props => {
 
 HotRecommend.defaultProps = {}
 
-export default withRouter(HotRecommend)
+export default memo(withRouter(HotRecommend))

@@ -47,11 +47,16 @@ const getArtistList = (params: {
  * 获取歌单详情
  */
 const getPlaylistDetail = (params: {
-  id?: number // 19723756 | 3779629 | 2884035 // 云音乐飙升榜 | 云音乐新歌榜 | 网易原创歌曲榜
+  id?: number // 19723756 | 3779629 | 2884035 | 3778678 // 云音乐飙升榜 | 云音乐新歌榜 | 网易原创歌曲榜 | 热歌榜
 }) => axios.get('/playlist/detail', { params })
 
 // 热门主播
 // const getDJToplistPopular = () => axios.get('/dj/toplist/popular?limit=5')
+
+/**
+ * 获取排行榜
+ */
+const getTopList = () => axios.get('/toplist')
 
 //
 //
@@ -66,6 +71,7 @@ const http = {
   getArtistList,
   getPlaylistDetail,
   // getDJToplistPopular,
+  getTopList,
 }
 
 export default http

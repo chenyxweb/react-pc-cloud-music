@@ -1,6 +1,6 @@
 // 发现 - 推荐 - 新碟上架
 import { Carousel } from 'antd'
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, memo, useEffect, useRef, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import http from 'service/http'
@@ -105,4 +105,4 @@ const NewDisk: FC<IProps> = props => {
 
 NewDisk.defaultProps = {}
 
-export default withRouter(NewDisk)
+export default memo(withRouter(NewDisk))

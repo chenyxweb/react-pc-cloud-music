@@ -2,7 +2,7 @@
 
 import { FolderAddOutlined, PlayCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { message } from 'antd'
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, memo, useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import http from 'service/http'
 
@@ -187,4 +187,4 @@ const RecTopList: FC<IProps> = props => {
 
 RecTopList.defaultProps = {}
 
-export default withRouter(RecTopList)
+export default memo(withRouter(RecTopList))

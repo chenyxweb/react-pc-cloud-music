@@ -1,6 +1,6 @@
-// 发现音乐 - 推荐 - 入驻歌手列表
+// 发现音乐 - 推荐 - 热门歌手列表
 
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, memo, useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import http from 'service/http'
 
@@ -10,10 +10,10 @@ interface IProps extends RouteComponentProps {}
 
 const RecArtistList: FC<IProps> = props => {
   const [list, setList] = useState<any[]>([]) // 歌手列表
-  // 获取入驻歌手列表
+  // 获取热门歌手列表
   useEffect(() => {
     http
-      .getArtistList({ limit: 5 })
+      .getArtistList({ limit: 10 })
       .then(res => {
         if (res.data.code === 200) {
           setList(res.data.artists || [])
@@ -25,7 +25,7 @@ const RecArtistList: FC<IProps> = props => {
   return (
     <div className={styles.RecArtistList}>
       <div className='title'>
-        <span>入驻歌手</span>
+        <span>热门歌手</span>
         <span onClick={() => props.history.push('/discover/artist/signed/')}>查看全部{' >'}</span>
       </div>
       {/* 列表 */}
@@ -36,7 +36,7 @@ const RecArtistList: FC<IProps> = props => {
               <img src={item.img1v1Url} alt='' />
               <div className='desc'>
                 <div className='name'>{item.name}</div>
-                <div className='type'>流行歌手</div>
+                <div className='type'>热门歌手</div>
               </div>
             </div>
           )
@@ -48,4 +48,4 @@ const RecArtistList: FC<IProps> = props => {
 
 RecArtistList.defaultProps = {}
 
-export default withRouter(RecArtistList)
+export default memo(withRouter(RecArtistList))

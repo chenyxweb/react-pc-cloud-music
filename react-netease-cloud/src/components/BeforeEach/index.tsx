@@ -28,9 +28,9 @@
 import { FC, ReactElement, useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 
-interface IProps extends RouteComponentProps {}
+interface IProps {}
 
-const BeforeEach: FC<IProps> = props => {
+const BeforeEach: FC<IProps & RouteComponentProps> = props => {
   useEffect(() => {
     // 滚动到顶部
     document.querySelector('#root > .app')?.scrollTo(0, 0)
