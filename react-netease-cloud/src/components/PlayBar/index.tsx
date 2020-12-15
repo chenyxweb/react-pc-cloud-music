@@ -90,7 +90,16 @@ const PlayBar: FC<IProps> = () => {
               {/* 歌手名 */}
               <div className='songAuthor'>许嵩</div>
             </div>
-            <div className='right-b'></div>
+            {/* 播放进度条 */}
+            <div className='right-b'>
+              <div className='process-bar'>
+                <Slider tooltipVisible={false} />
+              </div>
+              <div className='time'>
+                <span className='play-time'>01:37 </span>
+                <span className='total-time'>/ 03:00</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -109,7 +118,7 @@ const PlayBar: FC<IProps> = () => {
         <div className='rightBtns'>
           <div className='btn voice' onClick={() => setVoiceBarShow(!voiceBarShow)}>
             {/* 音量大小bar 定位  */}
-            <MyTransition mode="scale" in={voiceBarShow} timeout={300}>
+            <MyTransition mode='scale' in={voiceBarShow} timeout={300}>
               <div className='voice-bar'>
                 <div style={{ height: 110 }}>
                   <Slider vertical />
