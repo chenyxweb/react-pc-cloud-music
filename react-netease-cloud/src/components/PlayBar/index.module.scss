@@ -156,6 +156,17 @@
 
             .time {
               width: 107px;
+              padding-left: 15px;
+              position: relative;
+              top: -1px;
+
+              .play-time {
+                color: #a1a1a1;
+              }
+
+              .total-time {
+                color: #797979;
+              }
             }
           }
         }
