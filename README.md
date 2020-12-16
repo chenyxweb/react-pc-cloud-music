@@ -84,6 +84,80 @@ https://blog.csdn.net/gongstrong123/article/details/50339249
 
 歌曲时长  dt 字段
 
+#### 4.1 歌曲播放暂停
+
+```js
+  // 播放和暂停
+  useEffect(() => {
+    if (isPlay) {
+      audioRef.current?.play()
+    } else {
+      audioRef.current?.pause()
+    }
+  }, [isPlay])
+```
+
+#### 4.2 显示播放进度
+
+```tsx
+ <audio
+    ref={audioRef}
+    onTimeUpdate={handleOnTimeUpdate}
+    // autoPlay
+    preload='auto'
+    src={`https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`}
+  ></audio>
+
+  // 当前播放时间发生改变的时候, 修改当前已经播放的时间
+  const handleOnTimeUpdate = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+    // console.log(event)
+    const currentTime = event.currentTarget.currentTime
+    setCurrentTime(currentTime)
+  }
+```
+
+#### 4.3 调节播放进度
+
+```ts
+ <Slider
+  value={+(((currentTime * 1000) / currentSongInfo.dt) * 100).toFixed(1)}
+  step={0.1}
+  tooltipVisible={false}
+  onChange={handleSliderDrag}
+/>  
+
+// 拖拽进度条
+  const handleSliderDrag = (value: number) => {
+    console.log(value)
+    // 50/100
+    // currentSongInfo.dt 总长
+    const time = ((value / 100) * currentSongInfo.dt) / 1000
+    // 设置当前播放时间
+    setCurrentTime(time)
+    // 设置audio的播放时间
+    if (audioRef.current) {
+      audioRef.current.currentTime = time
+    }
+  }
+```
+
+#### 4.4 调节播放音量
+
+```tsx
+ <Slider vertical value={volume} onChange={handleVolumeChange} />  
+
+// 拖拽声音条
+  const handleVolumeChange = (value: number) => {
+    setVolume(value)
+    // 设置audio的音量
+    if (audioRef.current) {
+      audioRef.current.volume = value / 100
+    }
+  }
+```
+
+
+
 ### 5 资源访问
 
 ```
@@ -453,6 +527,26 @@ export default connect(mapStateToProps, mapDispatchToProps)(PlayBar)
 ```
 
 ### 9 下载音乐
+
+```js
+  const handleDownloadMP3 = () => {
+    const url = `https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`
+
+    let a = document.createElement('a')
+    a.target = '_blank'
+    a.download = 'aaa.mp3'
+    a.href = url
+    a.click()
+  }
+```
+
+
+
+### 10 ts中useRef的使用
+
+```ts
+const audioRef = useRef<HTMLAudioElement>(null)
+```
 
 
 

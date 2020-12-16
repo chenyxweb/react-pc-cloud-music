@@ -1,6 +1,6 @@
 // 音乐播放条
 import { CaretRightOutlined, CloseOutlined, DeleteOutlined, DownloadOutlined, RedoOutlined } from '@ant-design/icons'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { message, Slider, Tooltip } from 'antd'
 import MyTransition from 'components/MyTransition'
 import { connect } from 'react-redux'
@@ -19,7 +19,7 @@ interface IProps {
 const mode = ['loop', 'shuffle', 'one'] // 顺序播放/随机播放/单曲循环
 
 const PlayBar: FC<IProps & ICombineState> = props => {
-  console.log('PlayBar-props: ', props)
+  // console.log('PlayBar-props: ', props)
 
   const { songList, currentSongInfo } = props
 
@@ -30,8 +30,29 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   const [voiceBarShow, setVoiceBarShow] = useState(false) // 音量调节的bar是否显示
   const [listBoxShow, setListBoxShow] = useState(false) // 歌曲列表和歌词容器的显隐
   const [volume, setVolume] = useState(50) // 播放音量
+  const [currentTime, setCurrentTime] = useState(0) // 歌曲当前已播放时间
 
   let mouseLeaveTimeId: NodeJS.Timeout // 鼠标移出的延时timeId
+  const audioRef = useRef<HTMLAudioElement>(null)
+
+  // mounted
+  useEffect(() => {
+    // console.log(audioRef.current)
+    // 设置audio初始音量 0.5 // 因为audio默认初始音量为1
+
+    if (audioRef.current) {
+      audioRef.current.volume = 0.5
+    }
+  }, [])
+
+  // 播放和暂停
+  useEffect(() => {
+    if (isPlay) {
+      audioRef.current?.play()
+    } else {
+      audioRef.current?.pause()
+    }
+  }, [isPlay])
 
   // 鼠标移入播放条
   const handleMouseEnter = () => {
@@ -99,6 +120,36 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     a.click()
   }
 
+  // 当前播放时间发生改变的时候, 修改当前已经播放的时间
+  const handleOnTimeUpdate = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+    // console.log(event)
+    const currentTime = event.currentTarget.currentTime
+    setCurrentTime(currentTime)
+  }
+
+  // 拖拽进度条
+  const handleSliderDrag = (value: number) => {
+    console.log(value)
+    // 50/100
+    // currentSongInfo.dt 总长
+    const time = ((value / 100) * currentSongInfo.dt) / 1000
+    // 设置当前播放时间
+    setCurrentTime(time)
+    // 设置audio的播放时间
+    if (audioRef.current) {
+      audioRef.current.currentTime = time
+    }
+  }
+
+  // 拖拽声音条
+  const handleVolumeChange = (value: number) => {
+    setVolume(value)
+    // 设置audio的音量
+    if (audioRef.current) {
+      audioRef.current.volume = value / 100
+    }
+  }
+
   return (
     <div
       className={styles.PlayBar}
@@ -132,11 +183,16 @@ const PlayBar: FC<IProps & ICombineState> = props => {
             {/* 播放进度条 */}
             <div className='right-b'>
               <div className='process-bar'>
-                <Slider step={0.1} tooltipVisible={false} />
+                <Slider
+                  value={+(((currentTime * 1000) / currentSongInfo.dt) * 100).toFixed(1)}
+                  step={0.1}
+                  tooltipVisible={false}
+                  onChange={handleSliderDrag}
+                />
               </div>
               <div className='time'>
                 {/* 歌曲已播放时长 */}
-                <span className='play-time'>01:37 </span>
+                <span className='play-time'>{dayjs(currentTime * 1000).format('mm:ss')} </span>
                 {/* 歌曲总时长 */}
                 <span className='total-time'>/ {dayjs(currentSongInfo.dt).format('mm:ss')}</span>
               </div>
@@ -162,7 +218,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
             <MyTransition mode='scale' in={voiceBarShow} timeout={300}>
               <div className='voice-bar'>
                 <div style={{ height: 110 }}>
-                  <Slider vertical value={volume} onChange={(value: number) => setVolume(value)} />
+                  <Slider vertical value={volume} onChange={handleVolumeChange} />
                 </div>
               </div>
             </MyTransition>
@@ -178,7 +234,13 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       </div>
 
       {/* audio */}
-      {/* <audio loop autoPlay src="https://music.163.com/song/media/outer/url?id=65533.mp3"></audio> */}
+      <audio
+        ref={audioRef}
+        onTimeUpdate={handleOnTimeUpdate}
+        // autoPlay
+        preload='auto'
+        src={`https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`}
+      ></audio>
 
       {/* 播放列表和歌词box */}
       <MyTransition mode='scale' in={listBoxShow} timeout={300}>
@@ -221,7 +283,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
             {/* 歌词容器 */}
             <div className='lyric'>
               <div className='lyric-title'>
-                小娟(化名)
+                {currentSongInfo.name}
                 <CloseOutlined title='关闭' onClick={() => setListBoxShow(false)} className='icon' />
               </div>
               <div className='lyric-content'></div>
