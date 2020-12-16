@@ -1,6 +1,6 @@
 # react-netease-cloud
 
-## 起步
+## 相关
 
 官方网站 : https://music.163.com/#
 
@@ -14,14 +14,14 @@
 
 ## 技术点
 
-### 轮播背景实现
+### 1 轮播背景实现
 
 ```css
 // imageUrl+?imageView&blur=40x20 获取模糊背景, 设置背景样式
 background: url() center center/6000px   // 背景位置/背景大小
 ```
 
-### React.memo 
+### 2 React.memo 
 
 ```
 // 性能优化
@@ -36,7 +36,7 @@ background: url() center center/6000px   // 背景位置/背景大小
 // 当props和state较为简单时才使用, 比较好, 因为仅仅做浅层对比
 ```
 
-### 跳转页面回到顶端功能
+### 3 跳转页面回到顶端功能
 
 ```tsx
 // 定义组件
@@ -78,20 +78,20 @@ export default withRouter(BeforeEach)
 </Router>
 ```
 
-### audio标签相关
+### 4 audio标签相关
 
 https://blog.csdn.net/gongstrong123/article/details/50339249
 
 歌曲时长  dt 字段
 
-### 资源访问
+### 5 资源访问
 
 ```
 js内  使用@访问根目录
 css内 使用~访问根目录
 
 ```
-### 封装Transition 动画组件
+### 6 封装Transition 动画组件
 ```tsx
 // index.tsx
 // 动画组件
@@ -201,7 +201,7 @@ export default MyTransition
 </MyTransition>
 ```
 
-### 使用dayjs格式化歌曲时长
+### 7 使用dayjs格式化歌曲时长
 
 ```js
 // 由于 new Date(0) // 为 Thu Jan 01 1970 08:00:00 GMT+0800 (中国标准时间)
@@ -209,7 +209,7 @@ export default MyTransition
 dayjs(item.dt).format('mm:ss')
 ```
 
-###  redux标准使用 (以网易云音乐为例)
+###  8 redux标准使用 (以网易云音乐为例)
 #### 1 安装
 ```bash
 npm i redux react-redux redux-devtools-extension redux-logger redux-thunk
@@ -395,6 +395,8 @@ export default configStore
 
 ```tsx
 // PlayBar/index.tsx
+import { clear_song_list, del_song_list_item } from 'store/songList/actions'
+// ...
 
 interface IProps {
   clear_song_list: () => any
@@ -449,3 +451,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(PlayBar)
 
 ```
+
+### 9 下载音乐
+
+
+

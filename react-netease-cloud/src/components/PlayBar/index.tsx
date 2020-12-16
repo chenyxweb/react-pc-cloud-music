@@ -8,8 +8,8 @@ import { ICombineState } from 'store'
 import { Dispatch } from 'redux'
 import dayjs from 'dayjs'
 import utils from 'utils/utils'
-import styles from './index.module.scss'
 import { clear_song_list, del_song_list_item } from 'store/songList/actions'
+import styles from './index.module.scss'
 
 interface IProps {
   clear_song_list: () => any
@@ -88,6 +88,17 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     message.success('删除成功')
   }
 
+  // 下载MP3
+  const handleDownloadMP3 = () => {
+    const url = `https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`
+
+    let a = document.createElement('a')
+    a.target = '_blank'
+    a.download = 'aaa.mp3'
+    a.href = url
+    a.click()
+  }
+
   return (
     <div
       className={styles.PlayBar}
@@ -136,7 +147,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
         {/* 下载和重播 */}
         <div className='leftBtns'>
           <Tooltip title='下载音乐'>
-            <DownloadOutlined className='icon' />
+            <DownloadOutlined className='icon' onClick={handleDownloadMP3} />
           </Tooltip>
 
           <Tooltip title='重播播放'>
