@@ -1,0 +1,278 @@
+{
+  "songList": [
+    {
+      "name": "茫",
+      "id": 1495058484,
+      "pst": 0,
+      "t": 0,
+      "ar": [
+        {
+          "id": 12929031,
+          "name": "李润祺",
+          "tns": [],
+          "alias": []
+        }
+      ],
+      "alia": [],
+      "pop": 100,
+      "st": 0,
+      "rt": "",
+      "fee": 8,
+      "v": 3,
+      "crbt": null,
+      "cf": "",
+      "al": {
+        "id": 98268708,
+        "name": "茫",
+        "picUrl": "http://p3.music.126.net/qgyYbmmhKqr5A8UqwDk_4A==/109951165465934812.jpg",
+        "tns": [],
+        "pic_str": "109951165465934812",
+        "pic": 109951165465934820
+      },
+      "dt": 227213,
+      "h": {
+        "br": 320000,
+        "fid": 0,
+        "size": 9091245,
+        "vd": -45068
+      },
+      "m": {
+        "br": 192000,
+        "fid": 0,
+        "size": 5454765,
+        "vd": -42517
+      },
+      "l": {
+        "br": 128000,
+        "fid": 0,
+        "size": 3636525,
+        "vd": -40956
+      },
+      "a": null,
+      "cd": "01",
+      "no": 0,
+      "rtUrl": null,
+      "ftype": 0,
+      "rtUrls": [],
+      "djId": 0,
+      "copyright": 0,
+      "s_id": 0,
+      "mark": 8192,
+      "originCoverType": 0,
+      "noCopyrightRcmd": null,
+      "rtype": 0,
+      "rurl": null,
+      "mst": 9,
+      "cp": 729013,
+      "mv": 0,
+      "publishTime": 0
+    },
+    {
+      "name": "野心",
+      "id": 1803349526,
+      "pst": 0,
+      "t": 0,
+      "ar": [
+        {
+          "id": 5781,
+          "name": "薛之谦",
+          "tns": [],
+          "alias": []
+        }
+      ],
+      "alia": ["电影《缉魂》推广曲"],
+      "pop": 100,
+      "st": 0,
+      "rt": "",
+      "fee": 0,
+      "v": 3,
+      "crbt": null,
+      "cf": "",
+      "al": {
+        "id": 120279205,
+        "name": "野心",
+        "picUrl": "http://p4.music.126.net/wRWdpTaB7tCKS1TQTLv8BA==/109951165531747155.jpg",
+        "tns": [],
+        "pic_str": "109951165531747155",
+        "pic": 109951165531747150
+      },
+      "dt": 220014,
+      "h": {
+        "br": 320002,
+        "fid": 0,
+        "size": 8803309,
+        "vd": -64756
+      },
+      "m": {
+        "br": 192002,
+        "fid": 0,
+        "size": 5282003,
+        "vd": -62280
+      },
+      "l": {
+        "br": 128002,
+        "fid": 0,
+        "size": 3521350,
+        "vd": -60966
+      },
+      "a": null,
+      "cd": "01",
+      "no": 1,
+      "rtUrl": null,
+      "ftype": 0,
+      "rtUrls": [],
+      "djId": 0,
+      "copyright": 1,
+      "s_id": 0,
+      "mark": 128,
+      "originCoverType": 0,
+      "noCopyrightRcmd": null,
+      "rtype": 0,
+      "rurl": null,
+      "mst": 9,
+      "cp": 22036,
+      "mv": 0,
+      "publishTime": 1607616000000
+    },
+    {
+      "name": "耗尽",
+      "id": 1498342485,
+      "pst": 0,
+      "t": 0,
+      "ar": [
+        {
+          "id": 5781,
+          "name": "薛之谦",
+          "tns": [],
+          "alias": []
+        },
+        {
+          "id": 12479356,
+          "name": "郭聪明",
+          "tns": [],
+          "alias": []
+        }
+      ],
+      "alia": [],
+      "pop": 100,
+      "st": 0,
+      "rt": "",
+      "fee": 0,
+      "v": 3,
+      "crbt": null,
+      "cf": "",
+      "al": {
+        "id": 98799011,
+        "name": "耗尽",
+        "picUrl": "http://p4.music.126.net/yITtaf5rX2hOXQSBn60opA==/109951165498613448.jpg",
+        "tns": [],
+        "pic_str": "109951165498613448",
+        "pic": 109951165498613440
+      },
+      "dt": 259199,
+      "h": {
+        "br": 320000,
+        "fid": 0,
+        "size": 10370656,
+        "vd": -54329
+      },
+      "m": {
+        "br": 192000,
+        "fid": 0,
+        "size": 6222411,
+        "vd": -51790
+      },
+      "l": {
+        "br": 128000,
+        "fid": 0,
+        "size": 4148288,
+        "vd": -50175
+      },
+      "a": null,
+      "cd": "01",
+      "no": 1,
+      "rtUrl": null,
+      "ftype": 0,
+      "rtUrls": [],
+      "djId": 0,
+      "copyright": 1,
+      "s_id": 0,
+      "mark": 0,
+      "originCoverType": 0,
+      "noCopyrightRcmd": null,
+      "rtype": 0,
+      "rurl": null,
+      "mst": 9,
+      "cp": 22036,
+      "mv": 0,
+      "publishTime": 1606406400000
+    }
+  ],
+  "currentSongInfo": {
+    "name": "茫",
+    "id": 1495058484,
+    "pst": 0,
+    "t": 0,
+    "ar": [
+      {
+        "id": 12929031,
+        "name": "李润祺",
+        "tns": [],
+        "alias": []
+      }
+    ],
+    "alia": [],
+    "pop": 100,
+    "st": 0,
+    "rt": "",
+    "fee": 8,
+    "v": 3,
+    "crbt": null,
+    "cf": "",
+    "al": {
+      "id": 98268708,
+      "name": "茫",
+      "picUrl": "http://p3.music.126.net/qgyYbmmhKqr5A8UqwDk_4A==/109951165465934812.jpg",
+      "tns": [],
+      "pic_str": "109951165465934812",
+      "pic": 109951165465934820
+    },
+    "dt": 227213,
+    "h": {
+      "br": 320000,
+      "fid": 0,
+      "size": 9091245,
+      "vd": -45068
+    },
+    "m": {
+      "br": 192000,
+      "fid": 0,
+      "size": 5454765,
+      "vd": -42517
+    },
+    "l": {
+      "br": 128000,
+      "fid": 0,
+      "size": 3636525,
+      "vd": -40956
+    },
+    "a": null,
+    "cd": "01",
+    "no": 0,
+    "rtUrl": null,
+    "ftype": 0,
+    "rtUrls": [],
+    "djId": 0,
+    "copyright": 0,
+    "s_id": 0,
+    "mark": 8192,
+    "originCoverType": 0,
+    "noCopyrightRcmd": null,
+    "rtype": 0,
+    "rurl": null,
+    "mst": 9,
+    "cp": 729013,
+    "mv": 0,
+    "publishTime": 0
+  }
+}

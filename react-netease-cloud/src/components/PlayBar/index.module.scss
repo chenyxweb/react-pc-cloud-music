@@ -1,5 +1,6 @@
 .PlayBar {
   position: fixed;
+  z-index: 999;
   width: 100%;
   bottom: -46px;
   transition: all 0.3s;
@@ -218,7 +219,7 @@
           // 声音bar
           .voice-bar {
             position: absolute;
-            // z-index: -2;
+            z-index: 111;
             right: -3px;
             bottom: 37px;
             border-radius: 2px;
@@ -234,6 +235,10 @@
 
             .ant-slider-track {
               background-color: rgba($color: #c20c0c, $alpha: 0.8);
+            }
+
+            .ant-slider-rail {
+              background-color: rgba($color: #000000, $alpha: 0.8);
             }
           }
         }
@@ -271,9 +276,211 @@
           background-position: -42px -68px;
           width: 59px;
           height: 25px;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
 
           &:hover {
             background-position: -42px -98px;
+          }
+
+          .songCount {
+            width: 36px;
+            color: #ccc;
+            line-height: 18px;
+            text-align: center;
+            font-size: 12px;
+            position: relative;
+            right: 3px;
+          }
+        }
+      }
+    }
+  }
+
+  // 播放列表和歌词
+  // 加动画需要包装一个容器
+  .songListAndLyricWrapper {
+    display: none;
+
+    .songListAndLyric {
+      position: absolute;
+      width: 986px;
+      height: 301px;
+      left: 50%;
+      transform: translateX(-50.5%);
+      z-index: 5;
+      bottom: 47px;
+      display: flex;
+
+      :global {
+        // 歌曲列表
+        .songList {
+          width: 560px;
+          display: flex;
+          flex-direction: column;
+          border-right: 1px solid #222;
+
+          .songList-title {
+            height: 40px;
+            background-color: #1f1f1f;
+            border-radius: 5px 0 0 0;
+            padding: 0 15px;
+            line-height: 40px;
+            display: flex;
+            justify-content: space-between;
+
+            .songList-title-l {
+              font-size: 14px;
+              color: #e2e2e2;
+              font-weight: 700;
+            }
+
+            .songList-title-r {
+              color: #ccc;
+              font-size: 12px;
+              cursor: pointer;
+
+              &:hover {
+                text-decoration: underline;
+              }
+
+              .icon {
+                font-size: 14px;
+                position: relative;
+                top: 1px;
+              }
+            }
+          }
+
+          // 列表
+          .songList-content {
+            flex: 1;
+            overflow: auto;
+            background-color: rgba($color: #121212, $alpha: 0.9);
+
+            .songList-item {
+              cursor: pointer;
+              height: 30px;
+              line-height: 30px;
+              display: flex;
+              align-items: center;
+
+              .redIcon {
+                width: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .icon {
+                  color: #c20c0c;
+                  font-size: 18px;
+                  padding: 0 5px;
+                  display: none;
+                }
+              }
+
+              .songList-item-name {
+                width: 291px;
+                color: #ccc;
+              }
+
+              .btns {
+                padding-right: 10px;
+                width: 88px;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+
+                .icon {
+                  display: none;
+                  font-size: 15px;
+                  color: #ccc;
+
+                  :hover {
+                    color: #fff;
+                  }
+                }
+              }
+
+              .songList-item-author {
+                width: 100px;
+                padding-right: 5px;
+                color: #9b9b9b;
+              }
+
+              .songList-item-time {
+                width: 50px;
+                color: #666;
+              }
+
+              &:hover,
+              &.active {
+                background-color: rgba($color: #000000, $alpha: 0.8);
+
+                .songList-item-name,
+                .songList-item-author,
+                .songList-item-time {
+                  color: #fff;
+                }
+              }
+
+              &:hover {
+                // 显示删除按钮
+
+                .btns {
+                  .icon {
+                    display: block;
+                  }
+                }
+              }
+
+              &.active {
+                .redIcon {
+                  .icon {
+                    display: block;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // 歌词
+        .lyric {
+          width: 426px;
+          display: flex;
+          flex-direction: column;
+
+          .lyric-title {
+            height: 40px;
+            background-color: #1f1f1f;
+            border-radius: 0 5px 0 0;
+            color: #e2e2e2;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 40px;
+            text-align: center;
+            position: relative;
+
+            .icon {
+              position: absolute;
+              right: 15px;
+              top: 50%;
+              transform: translateY(-50%);
+              color: #ccc;
+              cursor: pointer;
+
+              &:hover {
+                color: #fff;
+              }
+            }
+          }
+
+          .lyric-content {
+            flex: 1;
+            overflow: auto;
+            background-color: rgba($color: #121212, $alpha: 0.9);
           }
         }
       }

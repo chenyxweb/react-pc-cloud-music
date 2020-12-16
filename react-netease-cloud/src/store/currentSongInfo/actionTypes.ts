@@ -1,0 +1,1 @@
+export const CHANGE_CURRENT_SONG_INFO = 'CHANGE_CURRENT_SONG_INFO' // 修改当前歌曲信息

@@ -6,6 +6,10 @@ import ReactDom from 'react-dom'
 import App from './App'
 // import 'moment/locale/zh-cn'
 import './index.scss'
+import configStore from './store/index'
+import { Provider } from 'react-redux'
+
+const store = configStore()
 
 // ReactDom.render(
 //   <ConfigProvider locale={zhCN}>
@@ -14,6 +18,12 @@ import './index.scss'
 //   document.getElementById('root')
 // )
 
-ReactDom.render(<App />, document.getElementById('root'))
+ReactDom.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+
+  document.getElementById('root')
+)
 
 console.log('env: ', process.env)

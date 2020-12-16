@@ -82,11 +82,7 @@ export default withRouter(BeforeEach)
 
 https://blog.csdn.net/gongstrong123/article/details/50339249
 
-```html
-
-```
-
-
+歌曲时长  dt 字段
 
 ### 资源访问
 
@@ -205,5 +201,11 @@ export default MyTransition
 </MyTransition>
 ```
 
-### 歌曲播放地址
+### 使用dayjs格式化歌曲时长
+
+```js
+// 由于 new Date(0) // 为 Thu Jan 01 1970 08:00:00 GMT+0800 (中国标准时间)
+// 可以传入毫秒数进行格式化歌曲时长
+dayjs(item.dt).format('mm:ss')
+```
 

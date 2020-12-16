@@ -31,9 +31,20 @@ const parseLyric = (lyrics: string) => {
   return lyricList
 }
 
+// 获取歌手字符串 'aaa/bbb/ccc'
+const getArtistStr = (list: any[]) => {
+  return (list || [])
+    .map((item: any, index: number) => {
+      if (index === 0) return item.name
+      return '/' + item.name
+    })
+    .join('')
+}
+
 const utils = {
   formatTenThousand,
   parseLyric,
+  getArtistStr,
 }
 
 export default utils
