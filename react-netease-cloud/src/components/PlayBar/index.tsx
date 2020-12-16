@@ -29,6 +29,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   const [currentMode, setCurrentMode] = useState('loop') // 当前播放模式
   const [voiceBarShow, setVoiceBarShow] = useState(false) // 音量调节的bar是否显示
   const [listBoxShow, setListBoxShow] = useState(false) // 歌曲列表和歌词容器的显隐
+  const [volume, setVolume] = useState(50) // 播放音量
 
   let mouseLeaveTimeId: NodeJS.Timeout // 鼠标移出的延时timeId
 
@@ -78,7 +79,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   const handleClearSongList = () => {
     if (!songList.length) return
     props.clear_song_list()
-    message.success('列表已清空')
+    message.success('列表清空成功')
   }
 
   // 删除一首歌曲
@@ -109,13 +110,13 @@ const PlayBar: FC<IProps & ICombineState> = props => {
 
         {/* 当前播放歌曲信息 */}
         <div className='currentSongInfo'>
-          <img src='' alt='' />
+          <img src={currentSongInfo?.al?.picUrl} alt='' />
           <div className='currentSongInfoRight'>
             <div className='right-t'>
               {/* 歌名 */}
-              <div className='songName'>有何不可</div>
+              <div className='songName'>{currentSongInfo.name}</div>
               {/* 歌手名 */}
-              <div className='songAuthor'>许嵩</div>
+              <div className='songAuthor'>{utils.getArtistStr(currentSongInfo.ar)}</div>
             </div>
             {/* 播放进度条 */}
             <div className='right-b'>
@@ -123,8 +124,10 @@ const PlayBar: FC<IProps & ICombineState> = props => {
                 <Slider step={0.1} tooltipVisible={false} />
               </div>
               <div className='time'>
+                {/* 歌曲已播放时长 */}
                 <span className='play-time'>01:37 </span>
-                <span className='total-time'>/ 03:00</span>
+                {/* 歌曲总时长 */}
+                <span className='total-time'>/ {dayjs(currentSongInfo.dt).format('mm:ss')}</span>
               </div>
             </div>
           </div>
@@ -148,7 +151,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
             <MyTransition mode='scale' in={voiceBarShow} timeout={300}>
               <div className='voice-bar'>
                 <div style={{ height: 110 }}>
-                  <Slider vertical />
+                  <Slider vertical value={volume} onChange={(value: number) => setVolume(value)} />
                 </div>
               </div>
             </MyTransition>
@@ -166,14 +169,14 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       {/* audio */}
       {/* <audio loop autoPlay src="https://music.163.com/song/media/outer/url?id=65533.mp3"></audio> */}
 
-      {/* 播放列表和歌词 */}
+      {/* 播放列表和歌词box */}
       <MyTransition mode='scale' in={listBoxShow} timeout={300}>
         <div className={styles.songListAndLyricWrapper}>
           <div className={styles.songListAndLyric}>
             {/* 歌曲列表容器 */}
             <div className='songList'>
               <div className='songList-title'>
-                <div className='songList-title-l'>播放列表(10)</div>
+                <div className='songList-title-l'>播放列表({songList?.length || 0})</div>
                 <div className='songList-title-r' title='清除播放列表' onClick={handleClearSongList}>
                   <DeleteOutlined className='icon' /> 清除
                 </div>
@@ -235,7 +238,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
 
 PlayBar.defaultProps = {}
 
-// redux 映射
+// ------------------------------- redux 映射 -------------------------------------
 // 映射state
 const mapStateToProps = (state: ICombineState) => {
   // console.log(state)
