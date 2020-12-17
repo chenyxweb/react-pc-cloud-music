@@ -12,6 +12,7 @@ import initialData from 'assets/data/data.json'
 import { songListReducer } from './songList/reducer'
 import { currentSongInfoReducer } from './currentSongInfo/reducer'
 import constants from 'utils/constants'
+import { playBarStateReducer } from './playBarState/reducer'
 
 export interface IAction {
   type: string
@@ -21,6 +22,7 @@ export interface IAction {
 export interface ICombineState {
   songList: any[]
   currentSongInfo: any
+  playBarState: any
 }
 
 // 将创建好的中间件或者第三方的中间件，作为参数传递给 applyMiddleware
@@ -34,6 +36,7 @@ const configStore = () => {
   const reducer = combineReducers({
     songList: songListReducer,
     currentSongInfo: currentSongInfoReducer,
+    playBarState: playBarStateReducer,
   })
 
   // 拿本地存储
@@ -47,10 +50,9 @@ const configStore = () => {
   const store = createStore(
     reducer,
     {
-      // songList: songList || initialData.songList || [],
       songList: songList.length > 0 ? songList : initialData.songList,
-      // currentSongInfo: currentSongInfo || initialData.currentSongInfo || {},
       currentSongInfo: currentSongInfo.name ? currentSongInfo : initialData.currentSongInfo,
+      playBarState: { isPlay: false },
     },
     composeWithDevTools(middlewares)
   )

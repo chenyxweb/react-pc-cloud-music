@@ -12,11 +12,13 @@ import { sample } from 'lodash-es'
 import { clear_song_list, del_song_list_item } from 'store/songList/actions'
 import { change_current_song_info } from 'store/currentSongInfo/actions'
 import styles from './index.module.scss'
+import { change_is_play } from 'store/playBarState/actions'
 
 interface IProps {
   clear_song_list: () => any
   del_song_list_item: (songId: number) => any
   change_current_song_info: (item: any) => any
+  change_is_play: () => any
 }
 
 const mode = ['loop', 'shuffle', 'one'] // 顺序播放/随机播放/单曲循环
@@ -26,11 +28,13 @@ type CurrentModeType = 'loop' | 'shuffle' | 'one'
 const PlayBar: FC<IProps & ICombineState> = props => {
   // console.log('PlayBar-props: ', props)
 
-  const { songList, currentSongInfo } = props
+  const { songList, currentSongInfo, playBarState } = props
+
+  const { isPlay } = playBarState
 
   const [lock, setLock] = useState(true) // 是否锁住
   const [playBarShow, setPlayBarShow] = useState(false) // 是否展示
-  const [isPlay, setIsPlay] = useState(false) // 是否正在播放
+  // const [isPlay, setIsPlay] = useState(false) // 是否正在播放
   const [currentMode, setCurrentMode] = useState<CurrentModeType>('loop') // 当前播放模式
   const [voiceBarShow, setVoiceBarShow] = useState(false) // 音量调节的bar是否显示
   const [listBoxShow, setListBoxShow] = useState(false) // 歌曲列表和歌词容器的显隐
@@ -167,7 +171,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     // currentSongInfo.dt // ms
     const percent = +((currentTime * 1000) / currentSongInfo.dt).toFixed(3)
     if (percent === process) return // 两次时间相同
-    console.log('播放进度:', (percent * 100).toFixed(1) + '%')
+    // console.log('播放进度:', (percent * 100).toFixed(1) + '%')
     setProcess(percent)
   }
 
@@ -184,7 +188,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       audioRef.current.currentTime = time
       // 如果当前为停止播放状态, 就播放
       if (!isPlay) {
-        setIsPlay(true)
+        props.change_is_play()
       }
     }
   }
@@ -309,7 +313,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   // 点击播放列表项, 切换歌曲, 开始播放
   const handleClickListItem = (item: any) => {
     if (item.id === currentSongInfo.id) return // 点击同一首 return
-    if (!isPlay) return setIsPlay(true) // 若暂停, 则自动开始播放
+    if (!isPlay) return props.change_is_play() // 若暂停, 则自动开始播放
     props.change_current_song_info(item)
   }
 
@@ -328,7 +332,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
           <div
             className={isPlay ? 'play' : 'stop'}
             title={isPlay ? '暂停' : '播放'}
-            onClick={() => setIsPlay(!isPlay)}
+            onClick={() => props.change_is_play()}
           ></div>
           <div className='next' title='下一首' onClick={handleClickNextBtn}></div>
         </div>
@@ -408,6 +412,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
 
       {/* audio */}
       <audio
+        id='audio'
         ref={audioRef}
         onTimeUpdate={handleOnTimeUpdate} // 播放时间更新时触发
         onEnded={handleOnEnded} // 播放结束时触发
@@ -498,6 +503,7 @@ const mapStateToProps = (state: ICombineState) => {
   return {
     songList: state.songList,
     currentSongInfo: state.currentSongInfo,
+    playBarState: state.playBarState,
   }
 }
 
@@ -509,6 +515,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
     clear_song_list: () => dispatch(clear_song_list()), // 清空歌曲列表
     del_song_list_item: (songId: number) => dispatch(del_song_list_item(songId)), // 删除一首歌
     change_current_song_info: (item: any) => dispatch(change_current_song_info(item)), // 修改当前播放歌曲信息
+    change_is_play: () => dispatch(change_is_play()),
   }
 }
 

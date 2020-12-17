@@ -8,6 +8,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Dispatch } from 'redux'
 import http from 'service/http'
 import { ICombineState } from 'store'
+import { change_current_song_info } from 'store/currentSongInfo/actions'
+import { change_is_play } from 'store/playBarState/actions'
 import { add_song_list_item } from 'store/songList/actions'
 
 import styles from './index.module.scss'
@@ -16,6 +18,7 @@ interface IProps extends RouteComponentProps {
   dispatch: Dispatch
   songList: any[]
   currentSongInfo: any
+  playBarState: any
 }
 
 const RecTopList: FC<IProps> = props => {
@@ -23,7 +26,9 @@ const RecTopList: FC<IProps> = props => {
   const [list2, setList2] = useState<any>({}) // 新歌榜
   const [list3, setList3] = useState<any>({}) // 原创歌曲榜
 
-  const { songList, currentSongInfo } = props
+  const { songList, currentSongInfo, playBarState } = props
+
+  const { isPlay } = playBarState
 
   // 获取飙升榜
   useEffect(() => {
@@ -77,7 +82,24 @@ const RecTopList: FC<IProps> = props => {
 
   // 播放当前歌曲
   const playCurrentSong = (item: any) => {
-    console.log(item)
+    // console.log(item)
+    const audioElement = document.getElementById('audio') as HTMLAudioElement
+
+    if (songList.findIndex(i => i.id === item.id) === -1) {
+      // 如果没有当前点击的歌曲
+
+      // 1. 添加歌曲到列表
+      props.dispatch(add_song_list_item(item))
+      // 2. 设置当前播放歌曲
+      props.dispatch(change_current_song_info(item))
+      // 3. 重新播放
+      if (!isPlay) props.dispatch(change_is_play())
+    } else {
+      // 如果有当前播放的歌曲,设置当前播放歌曲,  重新播放歌曲
+      props.dispatch(change_current_song_info(item))
+      audioElement.currentTime = 0
+      if (!isPlay) props.dispatch(change_is_play())
+    }
   }
 
   return (
@@ -218,6 +240,7 @@ const mapStateToProps = (state: ICombineState) => {
   return {
     songList: state.songList,
     currentSongInfo: state.currentSongInfo,
+    playBarState: state.playBarState,
   }
 }
 
