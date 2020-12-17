@@ -23,7 +23,10 @@ export interface ICombineState {
 }
 
 // 将创建好的中间件或者第三方的中间件，作为参数传递给 applyMiddleware
-const middlewares = applyMiddleware(logger, thunk)
+const middlewares = applyMiddleware(
+  // logger,
+  thunk
+)
 
 const configStore = () => {
   // 合并reducer
@@ -47,7 +50,7 @@ const configStore = () => {
 
   // 监听store的改变
   store.subscribe(() => {
-    console.log('store当前状态:', store.getState())
+    // console.log('store当前状态:', store.getState())
   })
 
   // 返回store

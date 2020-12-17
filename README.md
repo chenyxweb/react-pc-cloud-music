@@ -170,6 +170,41 @@ https://blog.csdn.net/gongstrong123/article/details/50339249
   }, [volume])
 ```
 
+#### 4.5 重新播放功能
+
+```tsx
+  // 重新播放当前歌曲
+  const handleRePlay = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0
+      audioRef.current.play()
+    }
+  }
+```
+
+#### 4.6 顺序播放/随机播放/单曲循环功能
+
+```tsx
+  <audio
+    ref={audioRef}
+    onTimeUpdate={handleOnTimeUpdate} // 播放时间更新时触发
+    onEnded={handleOnEnded} // 播放结束时触发
+    // autoPlay
+    preload='auto'
+    src={`https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`}
+  ></audio>
+
+
+```
+
+#### 4.7 切换歌曲逻辑
+
+```
+1. 修改audio的src
+2. 监听onCanPlay事件 缓冲至目前可以播放的状态, 
+调用 isPlay &&  audioRef.current.play()  // 过早的play会导致音乐没有准备号报错
+```
+
 
 
 ### 5 资源访问
