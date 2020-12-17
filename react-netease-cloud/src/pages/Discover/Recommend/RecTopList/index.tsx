@@ -10,7 +10,7 @@ import http from 'service/http'
 import { ICombineState } from 'store'
 import { change_current_song_info } from 'store/currentSongInfo/actions'
 import { change_is_play } from 'store/playBarState/actions'
-import { add_song_list_item } from 'store/songList/actions'
+import { add_song_list_item, replace_song_list } from 'store/songList/actions'
 
 import styles from './index.module.scss'
 
@@ -102,6 +102,27 @@ const RecTopList: FC<IProps> = props => {
     }
   }
 
+  // 点击播放榜单
+  const handleClickPlayTopList = (list: any[]) => {
+    const audioElement = document.getElementById('audio') as HTMLAudioElement
+
+    if (list.length) {
+      // 拿到榜单数据, 修改 store中的songList
+      props.dispatch(replace_song_list(list))
+
+      // 将歌曲切换到当前列表的第一项, 并播放
+      const firstItem = list[0]
+      props.dispatch(change_current_song_info(firstItem))
+
+      audioElement.currentTime = 0
+
+      // 重新播放
+      if (!isPlay) props.dispatch(change_is_play())
+
+      message.success('已开始播放当前榜单')
+    }
+  }
+
   return (
     <div className={styles.RecTopList}>
       {/* title */}
@@ -127,8 +148,12 @@ const RecTopList: FC<IProps> = props => {
                 {list1.name}
               </div>
               <div className='btns'>
-                <PlayCircleOutlined title='播放榜单' className='icon' />
-                <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无此功能')} />
+                <PlayCircleOutlined
+                  title='播放榜单'
+                  className='icon'
+                  onClick={() => handleClickPlayTopList(list1?.tracks || [])}
+                />
+                <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
               </div>
             </div>
           </div>
@@ -142,7 +167,7 @@ const RecTopList: FC<IProps> = props => {
                   <div className='list-item-btns'>
                     <PlayCircleOutlined title='播放' className='icon' onClick={() => playCurrentSong(item)} />
                     <PlusOutlined title='添加到播放列表' className='icon' onClick={() => addToSongList(item)} />
-                    <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无此功能')} />
+                    <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
                   </div>
                 </div>
               )
@@ -164,8 +189,12 @@ const RecTopList: FC<IProps> = props => {
                 {list2.name}
               </div>
               <div className='btns'>
-                <PlayCircleOutlined className='icon' title='播放榜单' />
-                <FolderAddOutlined className='icon' onClick={() => message.info('暂无此功能')} />
+                <PlayCircleOutlined
+                  className='icon'
+                  title='播放榜单'
+                  onClick={() => handleClickPlayTopList(list2?.tracks || [])}
+                />
+                <FolderAddOutlined className='icon' onClick={() => message.info('暂无收藏功能')} />
               </div>
             </div>
           </div>
@@ -179,7 +208,7 @@ const RecTopList: FC<IProps> = props => {
                   <div className='list-item-btns'>
                     <PlayCircleOutlined title='播放' className='icon' onClick={() => playCurrentSong(item)} />
                     <PlusOutlined title='添加到播放列表' className='icon' onClick={() => addToSongList(item)} />
-                    <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无此功能')} />
+                    <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
                   </div>
                 </div>
               )
@@ -201,8 +230,12 @@ const RecTopList: FC<IProps> = props => {
                 {list3.name}
               </div>
               <div className='btns'>
-                <PlayCircleOutlined className='icon' title='播放榜单' />
-                <FolderAddOutlined className='icon' onClick={() => message.info('暂无此功能')} />
+                <PlayCircleOutlined
+                  className='icon'
+                  title='播放榜单'
+                  onClick={() => handleClickPlayTopList(list3?.tracks || [])}
+                />
+                <FolderAddOutlined className='icon' onClick={() => message.info('暂无收藏功能')} />
               </div>
             </div>
           </div>
@@ -216,7 +249,7 @@ const RecTopList: FC<IProps> = props => {
                   <div className='list-item-btns'>
                     <PlayCircleOutlined title='播放' className='icon' onClick={() => playCurrentSong(item)} />
                     <PlusOutlined title='添加到播放列表' className='icon' onClick={() => addToSongList(item)} />
-                    <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无此功能')} />
+                    <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
                   </div>
                 </div>
               )
