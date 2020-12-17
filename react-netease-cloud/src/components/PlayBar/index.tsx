@@ -309,7 +309,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   // 点击播放列表项, 切换歌曲, 开始播放
   const handleClickListItem = (item: any) => {
     if (item.id === currentSongInfo.id) return // 点击同一首 return
-    if (!isPlay) return setIsPlay(true)
+    if (!isPlay) return setIsPlay(true) // 若暂停, 则自动开始播放
     props.change_current_song_info(item)
   }
 
