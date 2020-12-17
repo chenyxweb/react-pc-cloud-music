@@ -13,6 +13,7 @@ import { clear_song_list, del_song_list_item } from 'store/songList/actions'
 import { change_current_song_info } from 'store/currentSongInfo/actions'
 import styles from './index.module.scss'
 import { change_is_play } from 'store/playBarState/actions'
+import http from 'service/http'
 
 interface IProps {
   clear_song_list: () => any
@@ -66,6 +67,19 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       console.log('audio音量: ', audioRef.current.volume)
     }
   }, [volume])
+
+  // 获取歌词
+  useEffect(() => {
+    console.log('获取歌词')
+    http.getLyric(currentSongInfo.id).then(res => {
+      if (res.data.code === 200) {
+        const lyricString = res.data.lrc.lyric
+        console.log('lyricString: ', lyricString);
+        const lyricArr = utils.parseLyric(lyricString)
+        console.log('lyricArr: ', lyricArr);
+      }
+    })
+  }, [currentSongInfo.id])
 
   // 鼠标移入播放条
   const handleMouseEnter = () => {
