@@ -11,6 +11,7 @@ import initialData from 'assets/data/data.json'
 // 导入所有reducer
 import { songListReducer } from './songList/reducer'
 import { currentSongInfoReducer } from './currentSongInfo/reducer'
+import constants from 'utils/constants'
 
 export interface IAction {
   type: string
@@ -35,6 +36,10 @@ const configStore = () => {
     currentSongInfo: currentSongInfoReducer,
   })
 
+  // 拿本地存储
+  const songList = JSON.parse(localStorage.getItem(constants.SONG_LIST) || '[]')
+  const currentSongInfo = JSON.parse(localStorage.getItem(constants.CURRENT_SONG_INFO) || '{}')
+
   // 创建store
   // 参数1 : reducer
   // 参数2 : 初始值, 初始值可以放在每个reducer中, 也可以放在createStore的第二个参数
@@ -42,15 +47,21 @@ const configStore = () => {
   const store = createStore(
     reducer,
     {
-      songList: initialData.songList || [],
-      currentSongInfo: initialData.currentSongInfo || {},
+      // songList: songList || initialData.songList || [],
+      songList: songList.length > 0 ? songList : initialData.songList,
+      // currentSongInfo: currentSongInfo || initialData.currentSongInfo || {},
+      currentSongInfo: currentSongInfo.name ? currentSongInfo : initialData.currentSongInfo,
     },
     composeWithDevTools(middlewares)
   )
 
   // 监听store的改变
   store.subscribe(() => {
-    console.log('store当前状态:', store.getState())
+    // console.log('store当前状态:', store.getState())
+    const { songList, currentSongInfo } = store.getState()
+    // 保存到本地
+    localStorage.setItem(constants.SONG_LIST, JSON.stringify(songList))
+    localStorage.setItem(constants.CURRENT_SONG_INFO, JSON.stringify(currentSongInfo))
   })
 
   // 返回store

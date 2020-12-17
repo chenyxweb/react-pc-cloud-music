@@ -19,6 +19,9 @@ const constants = {
     { name: '歌手', path: '/discover/artist' },
     { name: '新碟上架', path: '/discover/album' },
   ],
+  
+  SONG_LIST: 'songList',
+  CURRENT_SONG_INFO: 'currentSongInfo',
 }
 
 export default constants

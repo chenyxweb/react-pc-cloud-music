@@ -306,9 +306,10 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     if (currentMode === 'shuffle') return randomPlay()
   }
 
-  // 点击播放列表项, 切换歌曲
+  // 点击播放列表项, 切换歌曲, 开始播放
   const handleClickListItem = (item: any) => {
     if (item.id === currentSongInfo.id) return // 点击同一首 return
+    if (!isPlay) return setIsPlay(true)
     props.change_current_song_info(item)
   }
 

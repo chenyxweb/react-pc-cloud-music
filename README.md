@@ -78,7 +78,7 @@ export default withRouter(BeforeEach)
 </Router>
 ```
 
-### 4 audio标签功能
+### 4 歌曲播放相关功能
 
 https://blog.csdn.net/gongstrong123/article/details/50339249
 
@@ -204,6 +204,16 @@ https://blog.csdn.net/gongstrong123/article/details/50339249
 2. 监听onCanPlay事件 缓冲至目前可以播放的状态, 
 调用 isPlay &&  audioRef.current.play()  // 过早的play会导致音乐没有准备号报错
 ```
+
+#### 4.8 本地存储歌曲列表
+
+
+
+#### 4.9 歌曲列表自动居中当前播放歌曲
+
+#### 4.10 改写歌曲和歌词滚动条
+
+
 
 
 
@@ -599,3 +609,6 @@ const audioRef = useRef<HTMLAudioElement>(null)
 
 
 
+## 坑
+
+- 删除歌曲冒泡导致点击了歌曲列表项  , 需要清除冒泡 (***), 习惯性清除冒泡
