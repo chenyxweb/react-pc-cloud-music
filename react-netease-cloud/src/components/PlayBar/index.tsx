@@ -18,6 +18,8 @@ interface IProps {
 
 const mode = ['loop', 'shuffle', 'one'] // 顺序播放/随机播放/单曲循环
 
+type ICurrentMode = 'loop' | 'shuffle' | 'one'
+
 const PlayBar: FC<IProps & ICombineState> = props => {
   // console.log('PlayBar-props: ', props)
 
@@ -26,24 +28,14 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   const [lock, setLock] = useState(true) // 是否锁住
   const [playBarShow, setPlayBarShow] = useState(false) // 是否展示
   const [isPlay, setIsPlay] = useState(false) // 是否正在播放
-  const [currentMode, setCurrentMode] = useState('loop') // 当前播放模式
+  const [currentMode, setCurrentMode] = useState<ICurrentMode>('loop') // 当前播放模式
   const [voiceBarShow, setVoiceBarShow] = useState(false) // 音量调节的bar是否显示
   const [listBoxShow, setListBoxShow] = useState(false) // 歌曲列表和歌词容器的显隐
-  const [volume, setVolume] = useState(50) // 播放音量
-  const [currentTime, setCurrentTime] = useState(0) // 歌曲当前已播放时间
+  const [volume, setVolume] = useState(0.5) // 播放音量 0 ~ 1  刻度 0.01
+  const [process, setProcess] = useState(0) // 播放进度 0 ~ 1  刻度 0.01
 
   let mouseLeaveTimeId: NodeJS.Timeout // 鼠标移出的延时timeId
   const audioRef = useRef<HTMLAudioElement>(null)
-
-  // mounted
-  useEffect(() => {
-    // console.log(audioRef.current)
-    // 设置audio初始音量 0.5 // 因为audio默认初始音量为1
-
-    if (audioRef.current) {
-      audioRef.current.volume = 0.5
-    }
-  }, [])
 
   // 播放和暂停
   useEffect(() => {
@@ -53,6 +45,15 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       audioRef.current?.pause()
     }
   }, [isPlay])
+
+  // 设置audio的音量以及初始音量 mounted 和 update
+  useEffect(() => {
+    // 设置audio的音量
+    if (audioRef.current) {
+      audioRef.current.volume = volume
+      console.log('audio音量: ', audioRef.current.volume)
+    }
+  }, [volume])
 
   // 鼠标移入播放条
   const handleMouseEnter = () => {
@@ -75,7 +76,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     setCurrentMode(prevState => {
       let index = mode.findIndex(item => item === prevState)
       index++
-      return mode[index % 3]
+      return mode[index % 3] as ICurrentMode
     })
   }
 
@@ -120,33 +121,45 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     a.click()
   }
 
-  // 当前播放时间发生改变的时候, 修改当前已经播放的时间
+  // 当前播放时间发生改变的时候, 同步播放进度
   const handleOnTimeUpdate = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
     // console.log(event)
-    const currentTime = event.currentTarget.currentTime
-    setCurrentTime(currentTime)
+    const currentTime = event.currentTarget.currentTime // 当前播放时间 s
+    // currentSongInfo.dt // ms
+    const percent = +((currentTime * 1000) / currentSongInfo.dt).toFixed(3)
+    if (percent === process) return // 两次时间相同
+    console.log('播放进度:', percent)
+    setProcess(percent)
   }
 
+  // audio播放 -> 设置process bar -> 监听process改变设置audio播放进度  反向设置的时候不准确,这种方式不合理导致声音卡顿, 使用如下方式设置监听bar的拖拽
   // 拖拽进度条
-  const handleSliderDrag = (value: number) => {
+  const handleProcessSliderDrag = (value: number) => {
     console.log(value)
-    // 50/100
-    // currentSongInfo.dt 总长
-    const time = ((value / 100) * currentSongInfo.dt) / 1000
-    // 设置当前播放时间
-    setCurrentTime(time)
-    // 设置audio的播放时间
+    // 1 设置当前播放进度
+    setProcess(value)
+    // 2 设置audio的播放时间
+    // currentSongInfo.dt 总时长 ms
+    const time = (value * currentSongInfo.dt) / 1000
     if (audioRef.current) {
       audioRef.current.currentTime = time
     }
   }
 
-  // 拖拽声音条
-  const handleVolumeChange = (value: number) => {
-    setVolume(value)
-    // 设置audio的音量
-    if (audioRef.current) {
-      audioRef.current.volume = value / 100
+  // audio当前歌曲播放结束
+  const handleOnEnded = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+    console.log('播放结束')
+    // 当前播放模式 currentMode
+    switch (currentMode) {
+      case 'loop': // 顺序播放
+        break
+      case 'shuffle': // 随机播放
+        break
+      case 'one': // 单曲循环
+        break
+
+      default:
+        break
     }
   }
 
@@ -184,15 +197,17 @@ const PlayBar: FC<IProps & ICombineState> = props => {
             <div className='right-b'>
               <div className='process-bar'>
                 <Slider
-                  value={+(((currentTime * 1000) / currentSongInfo.dt) * 100).toFixed(1)}
-                  step={0.1}
+                  value={process}
+                  min={0}
+                  max={1}
+                  step={0.001}
                   tooltipVisible={false}
-                  onChange={handleSliderDrag}
+                  onChange={handleProcessSliderDrag}
                 />
               </div>
               <div className='time'>
                 {/* 歌曲已播放时长 */}
-                <span className='play-time'>{dayjs(currentTime * 1000).format('mm:ss')} </span>
+                <span className='play-time'>{dayjs(process * currentSongInfo.dt).format('mm:ss')} </span>
                 {/* 歌曲总时长 */}
                 <span className='total-time'>/ {dayjs(currentSongInfo.dt).format('mm:ss')}</span>
               </div>
@@ -218,7 +233,15 @@ const PlayBar: FC<IProps & ICombineState> = props => {
             <MyTransition mode='scale' in={voiceBarShow} timeout={300}>
               <div className='voice-bar'>
                 <div style={{ height: 110 }}>
-                  <Slider vertical value={volume} onChange={handleVolumeChange} />
+                  <Slider
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    vertical
+                    value={volume}
+                    tipFormatter={(value?: number | undefined) => (value && value * 100)?.toFixed(0)}
+                    onChange={(value: number) => setVolume(value)}
+                  />
                 </div>
               </div>
             </MyTransition>
@@ -236,7 +259,8 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       {/* audio */}
       <audio
         ref={audioRef}
-        onTimeUpdate={handleOnTimeUpdate}
+        onTimeUpdate={handleOnTimeUpdate} // 播放时间更新时触发
+        onEnded={handleOnEnded} // 播放结束时触发
         // autoPlay
         preload='auto'
         src={`https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`}

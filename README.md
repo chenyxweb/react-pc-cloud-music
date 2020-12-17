@@ -78,7 +78,7 @@ export default withRouter(BeforeEach)
 </Router>
 ```
 
-### 4 audio标签相关
+### 4 audio标签功能
 
 https://blog.csdn.net/gongstrong123/article/details/50339249
 
@@ -100,7 +100,7 @@ https://blog.csdn.net/gongstrong123/article/details/50339249
 #### 4.2 显示播放进度
 
 ```tsx
- <audio
+  <audio
     ref={audioRef}
     onTimeUpdate={handleOnTimeUpdate}
     // autoPlay
@@ -108,33 +108,39 @@ https://blog.csdn.net/gongstrong123/article/details/50339249
     src={`https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`}
   ></audio>
 
-  // 当前播放时间发生改变的时候, 修改当前已经播放的时间
+  // 当前播放时间发生改变的时候, 同步播放进度
   const handleOnTimeUpdate = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
     // console.log(event)
-    const currentTime = event.currentTarget.currentTime
-    setCurrentTime(currentTime)
+    const currentTime = event.currentTarget.currentTime // 当前播放时间 s
+    // currentSongInfo.dt // ms
+    const percent = +((currentTime * 1000) / currentSongInfo.dt).toFixed(3)
+    if (percent === process) return // 两次时间相同
+    console.log('播放进度:', percent)
+    setProcess(percent)
   }
 ```
 
 #### 4.3 调节播放进度
 
 ```ts
- <Slider
-  value={+(((currentTime * 1000) / currentSongInfo.dt) * 100).toFixed(1)}
-  step={0.1}
+<Slider
+  value={process}
+  min={0}
+  max={1}
+  step={0.001}
   tooltipVisible={false}
-  onChange={handleSliderDrag}
-/>  
+  onChange={handleProcessSliderDrag}
+/> 
 
-// 拖拽进度条
-  const handleSliderDrag = (value: number) => {
+  // audio播放 -> 设置process bar -> 通过useEffect监听process改变设置audio播放进度  反向设置的时候不准确,这种方式不合理导致声音卡顿, 使用如下方式设置监听bar的拖拽
+  // 拖拽进度条
+  const handleProcessSliderDrag = (value: number) => {
     console.log(value)
-    // 50/100
-    // currentSongInfo.dt 总长
-    const time = ((value / 100) * currentSongInfo.dt) / 1000
-    // 设置当前播放时间
-    setCurrentTime(time)
-    // 设置audio的播放时间
+    // 1 设置当前播放进度
+    setProcess(value)
+    // 2 设置audio的播放时间
+    // currentSongInfo.dt 总时长 ms
+    const time = (value * currentSongInfo.dt) / 1000
     if (audioRef.current) {
       audioRef.current.currentTime = time
     }
@@ -144,16 +150,24 @@ https://blog.csdn.net/gongstrong123/article/details/50339249
 #### 4.4 调节播放音量
 
 ```tsx
- <Slider vertical value={volume} onChange={handleVolumeChange} />  
+<Slider
+    min={0}
+    max={1}
+    step={0.01}
+    vertical
+    value={volume}
+    tipFormatter={(value?: number | undefined) => (value && value * 100)?.toFixed(0)}
+    onChange={(value: number) => setVolume(value)}
+  />
 
-// 拖拽声音条
-  const handleVolumeChange = (value: number) => {
-    setVolume(value)
+  // 设置audio的音量以及初始音量 mounted 和 update
+  useEffect(() => {
     // 设置audio的音量
     if (audioRef.current) {
-      audioRef.current.volume = value / 100
+      audioRef.current.volume = volume
+      console.log('audio音量: ', audioRef.current.volume)
     }
-  }
+  }, [volume])
 ```
 
 
