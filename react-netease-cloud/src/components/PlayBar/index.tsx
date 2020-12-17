@@ -1,6 +1,6 @@
 // 音乐播放条
 import { CaretRightOutlined, CloseOutlined, DeleteOutlined, DownloadOutlined, RedoOutlined } from '@ant-design/icons'
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { message, Slider, Tooltip } from 'antd'
 import MyTransition from 'components/MyTransition'
 import { connect } from 'react-redux'
@@ -8,7 +8,7 @@ import { ICombineState } from 'store'
 import { Dispatch } from 'redux'
 import dayjs from 'dayjs'
 import utils from 'utils/utils'
-import { debounce, sample, throttle } from 'lodash-es'
+import { sample } from 'lodash-es'
 import { clear_song_list, del_song_list_item } from 'store/songList/actions'
 import { change_current_song_info } from 'store/currentSongInfo/actions'
 import styles from './index.module.scss'
@@ -188,6 +188,24 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     }
   }
 
+  // 随机播放歌曲
+  const randomPlay = () => {
+    if (songList.length === 1) {
+      // 只有一项, 则循环这一项
+      handleRePlay()
+    } else if (songList.length > 1) {
+      // 如果songList.length>1, 排除当前项, 随机取一项
+      const item = sample(songList.filter(i => i.id !== currentSongInfo.id))
+      // dispatch 修改store
+      props.change_current_song_info(item)
+      // 播放
+      handleRePlay()
+    } else {
+      // list为空
+      message.info('暂无随机播放歌曲')
+    }
+  }
+
   // audio当前歌曲播放结束
   const handleOnEnded = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
     console.log('播放结束')
@@ -200,20 +218,8 @@ const PlayBar: FC<IProps & ICombineState> = props => {
         break
       case 'shuffle': // 随机播放, 随机播放列表中的某一首歌曲
         // songList
-        if (songList.length === 1) {
-          // 只有一项, 则循环这一项
-          handleRePlay()
-        } else if (songList.length > 1) {
-          // 如果songList.length>1, 排除当前项, 随机取一项
-          const item = sample(songList.filter(i => i.id !== currentSongInfo.id))
-          // dispatch 修改store
-          props.change_current_song_info(item)
-          // 播放
-          handleRePlay()
-        } else {
-          // list为空
-          message.info('暂无随机播放歌曲')
-        }
+        randomPlay()
+
         // currentSongInfo
         break
       case 'one': // 单曲循环, 循环当前歌曲
@@ -239,9 +245,28 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       if (audioRef.current) {
         // audioRef.current.load()
         audioRef.current.currentTime = 0 // 设置当前播放时间为0
-        audioRef.current.play() // 重新播放
+        // audioRef.current.play() // 重新播放
       }
     }, 50)
+  }
+
+  // 播放上一首
+  const playPrevSong = () => {
+    if (songList.length > 1) {
+      const currentSongIndex = songList.findIndex(item => item.id === currentSongInfo.id)
+
+      // 当前歌曲时第一项时, 设置当前播放为最后一项
+      if (currentSongIndex === 0) {
+        props.change_current_song_info(songList[songList.length - 1])
+        // isPlay && handleRePlay()
+      } else {
+        // 当前歌曲不是第一项, 设置当前播放为上一项
+        const nextItem = songList[currentSongIndex - 1]
+        // props.del_song_list_item(songId)
+        props.change_current_song_info(nextItem)
+        // isPlay && handleRePlay()
+      }
+    }
   }
 
   // 播放下一首
@@ -265,23 +290,20 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     }
   }
 
-  // 播放上一首
-  const playPrevSong = () => {
-    if (songList.length > 1) {
-      const currentSongIndex = songList.findIndex(item => item.id === currentSongInfo.id)
+  // 点击上一首按钮
+  const handleClickPrevBtn = () => {
+    // 单曲,循环模式 --> 播放上一首
+    if (currentMode === 'one' || currentMode === 'loop') return playPrevSong()
+    // 随机模式 --> 随机播放
+    if (currentMode === 'shuffle') return randomPlay()
+  }
 
-      // 当前歌曲时第一项时, 设置当前播放为最后一项
-      if (currentSongIndex === 0) {
-        props.change_current_song_info(songList[songList.length - 1])
-        // isPlay && handleRePlay()
-      } else {
-        // 当前歌曲不是第一项, 设置当前播放为上一项
-        const nextItem = songList[currentSongIndex - 1]
-        // props.del_song_list_item(songId)
-        props.change_current_song_info(nextItem)
-        // isPlay && handleRePlay()
-      }
-    }
+  // 点击下一首按钮
+  const handleClickNextBtn = () => {
+    // 单曲,循环模式 --> 播放下一首
+    if (currentMode === 'one' || currentMode === 'loop') return playNextSong()
+    // 随机模式 --> 随机播放
+    if (currentMode === 'shuffle') return randomPlay()
   }
 
   // 点击播放列表项, 切换歌曲
@@ -301,13 +323,13 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       <div className={[styles.container, 'w980'].join(' ')}>
         {/* 上一首 暂停/播放 下一首 */}
         <div className='playBtns'>
-          <div className='prev' title='上一首' onClick={playPrevSong}></div>
+          <div className='prev' title='上一首' onClick={handleClickPrevBtn}></div>
           <div
             className={isPlay ? 'play' : 'stop'}
             title={isPlay ? '暂停' : '播放'}
             onClick={() => setIsPlay(!isPlay)}
           ></div>
-          <div className='next' title='下一首' onClick={playNextSong}></div>
+          <div className='next' title='下一首' onClick={handleClickNextBtn}></div>
         </div>
 
         {/* 当前播放歌曲信息 */}
