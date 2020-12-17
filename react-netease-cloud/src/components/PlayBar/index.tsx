@@ -113,7 +113,8 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   }
 
   // 删除一首歌曲
-  const delSongListItem = (songId: number) => {
+  const delSongListItem = (songId: number, e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    e.stopPropagation() // 阻止冒泡, 防止歌曲列表项被点击 ***** 坑 , 养成喜欢清除冒泡行为
     if (currentSongInfo.id === songId) {
       // 删除的是当前播放的歌曲
 
@@ -272,7 +273,6 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   // 播放下一首
   const playNextSong = () => {
     if (songList.length > 1) {
-      // debugger
       // 列表中有其他歌曲
       const currentSongIndex = songList.findIndex(item => item.id === currentSongInfo.id)
 
@@ -447,7 +447,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
                       <div className='songList-item-name ellipsis-1'>{item.name}</div>
                       {/* 按钮 */}
                       <div className='btns'>
-                        <DeleteOutlined title='删除' className='icon' onClick={() => delSongListItem(item.id)} />
+                        <DeleteOutlined title='删除' className='icon' onClick={e => delSongListItem(item.id, e)} />
                       </div>
                       {/* 歌手 */}
                       <div className='songList-item-author ellipsis-1'>{utils.getArtistStr(item.ar)}</div>

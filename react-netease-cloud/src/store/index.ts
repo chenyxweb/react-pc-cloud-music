@@ -50,7 +50,7 @@ const configStore = () => {
 
   // 监听store的改变
   store.subscribe(() => {
-    // console.log('store当前状态:', store.getState())
+    console.log('store当前状态:', store.getState())
   })
 
   // 返回store
