@@ -14,6 +14,8 @@ import { change_current_song_info } from 'store/currentSongInfo/actions'
 import styles from './index.module.scss'
 import { change_is_play } from 'store/playBarState/actions'
 import http from 'service/http'
+import { axios } from 'service/axios'
+import FileSaver from 'file-saver'
 
 interface IProps {
   clear_song_list: () => any
@@ -179,14 +181,42 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   }
 
   // 下载MP3
-  const handleDownloadMP3 = () => {
-    const url = `https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`
-
-    let a = document.createElement('a')
-    a.target = '_blank'
-    a.download = 'aaa.mp3'
-    a.href = url
-    a.click()
+  let handleDownloadMP3 = () => {
+    const songId = currentSongInfo.id
+    if (songId) {
+      // 1. 下载歌曲url
+      http
+        .getSongUrl(songId)
+        .then(res => {
+          if (res.data.code === 200) {
+            const url = res.data?.data[0]?.url || ''
+            // console.log('url: ', url)
+            if (url) {
+              // 2. 根据url下载blob
+              axios
+                .get(url, { responseType: 'blob' })
+                .then(res => {
+                  if (res.status === 200) {
+                    const blob = res.data
+                    // 3. 使用file-saver下载mp3文件
+                    console.log('blob: ', blob, currentSongInfo)
+                    const name = currentSongInfo?.name || '' // 歌名
+                    const author = currentSongInfo?.ar[0]?.name // 作者
+                    FileSaver.saveAs(blob, `${name} - ${author}.mp3`)
+                  }
+                })
+                .catch(() => {})
+            } else {
+              // 4. 如果没有获取到url, 创建a标签
+              const a = document.createElement('a')
+              a.href = `https://music.163.com/song/media/outer/url?id=${songId}.mp3`
+              a.target = '_blank'
+              a.click()
+            }
+          }
+        })
+        .catch(() => {})
+    }
   }
 
   // 当前播放时间发生改变的时候, 同步播放进度
@@ -203,7 +233,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   // audio播放 -> 设置process bar -> 监听process改变设置audio播放进度  反向设置的时候不准确,这种方式不合理导致声音卡顿, 使用如下方式设置监听bar的拖拽
   // 拖拽进度条
   const handleProcessSliderDrag = (value: number) => {
-    console.log(value)
+    // console.log(value)
     // 1 设置当前播放进度
     setProcess(value)
     // 2 设置audio的播放时间

@@ -643,19 +643,46 @@ export default connect(mapStateToProps, mapDispatchToProps)(PlayBar)
 
 
 
-
-
 ### 9 下载音乐
 
 ```js
-  const handleDownloadMP3 = () => {
-    const url = `https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`
-
-    let a = document.createElement('a')
-    a.target = '_blank'
-    a.download = 'aaa.mp3'
-    a.href = url
-    a.click()
+  // 下载MP3
+  let handleDownloadMP3 = () => {
+    const songId = currentSongInfo.id
+    if (songId) {
+      // 1. 下载歌曲url
+      http
+        .getSongUrl(songId)
+        .then(res => {
+          if (res.data.code === 200) {
+            const url = res.data?.data[0]?.url || ''
+            // console.log('url: ', url)
+            if (url) {
+              // 2. 根据url下载blob
+              axios
+                .get(url, { responseType: 'blob' })
+                .then(res => {
+                  if (res.status === 200) {
+                    const blob = res.data
+                    // 3. 使用file-saver下载mp3文件
+                    console.log('blob: ', blob, currentSongInfo)
+                    const name = currentSongInfo?.name || '' // 歌名
+                    const author = currentSongInfo?.ar[0]?.name // 作者
+                    FileSaver.saveAs(blob, `${name} - ${author}.mp3`)
+                  }
+                })
+                .catch(() => {})
+            } else {
+              // 4. 如果没有获取到url, 创建a标签
+              const a = document.createElement('a')
+              a.href = `https://music.163.com/song/media/outer/url?id=${songId}.mp3`
+              a.target = '_blank'
+              a.click()
+            }
+          }
+        })
+        .catch(() => {})
+    }
   }
 ```
 

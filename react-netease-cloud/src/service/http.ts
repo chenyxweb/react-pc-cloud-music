@@ -58,6 +58,12 @@ const getPlaylistDetail = (params: {
  */
 const getTopList = () => axios.get('/toplist')
 
+/**
+ * 获取音乐url
+ * @param id 歌曲id
+ */
+const getSongUrl = (id: number) => axios.get(`/song/url?id=${id}`)
+
 //
 //
 // ------------------------- 统一导出 -------------------------
@@ -72,6 +78,7 @@ const http = {
   getPlaylistDetail,
   // getDJToplistPopular,
   getTopList,
+  getSongUrl,
 }
 
 export default http
