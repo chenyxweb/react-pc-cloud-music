@@ -22,14 +22,11 @@ export interface IAction {
 export interface ICombineState {
   songList: any[]
   currentSongInfo: any
-  playBarState: any
+  playBarState: { isPlay: boolean }
 }
 
 // 将创建好的中间件或者第三方的中间件，作为参数传递给 applyMiddleware
-const middlewares = applyMiddleware(
-  // logger,
-  thunk
-)
+const middlewares = applyMiddleware(logger, thunk)
 
 const configStore = () => {
   // 合并reducer

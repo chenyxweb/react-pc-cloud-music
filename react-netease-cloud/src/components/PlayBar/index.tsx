@@ -26,6 +26,14 @@ const mode = ['loop', 'shuffle', 'one'] // 顺序播放/随机播放/单曲循�
 
 type CurrentModeType = 'loop' | 'shuffle' | 'one'
 
+// 歌词数组类型
+type LyricArrType = {
+  /** 时间节点 */
+  totalTime: number
+  /** 歌词 */
+  content: string
+}[]
+
 const PlayBar: FC<IProps & ICombineState> = props => {
   // console.log('PlayBar-props: ', props)
 
@@ -41,6 +49,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   const [listBoxShow, setListBoxShow] = useState(false) // 歌曲列表和歌词容器的显隐
   const [volume, setVolume] = useState(0.5) // 播放音量 0 ~ 1  刻度 0.01
   const [process, setProcess] = useState(0) // 播放进度 0 ~ 1  刻度 0.01
+  const [lyricArr, setLyricArr] = useState<LyricArrType>([]) // 歌词数组
 
   let mouseLeaveTimeId: NodeJS.Timeout // 鼠标移出的延时timeId
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -70,15 +79,17 @@ const PlayBar: FC<IProps & ICombineState> = props => {
 
   // 获取歌词
   useEffect(() => {
-    console.log('获取歌词')
-    http.getLyric(currentSongInfo.id).then(res => {
-      if (res.data.code === 200) {
-        const lyricString = res.data.lrc.lyric
-        console.log('lyricString: ', lyricString);
-        const lyricArr = utils.parseLyric(lyricString)
-        console.log('lyricArr: ', lyricArr);
-      }
-    })
+    http
+      .getLyric(currentSongInfo.id)
+      .then(res => {
+        if (res.data.code === 200) {
+          const lyricString = res.data.lrc?.lyric || ''
+          const lyricArr = utils.parseLyric(lyricString)
+          console.log('获取歌词:', lyricArr || [])
+          setLyricArr(lyricArr || [])
+        }
+      })
+      .catch(() => {})
   }, [currentSongInfo.id])
 
   // 鼠标移入播放条

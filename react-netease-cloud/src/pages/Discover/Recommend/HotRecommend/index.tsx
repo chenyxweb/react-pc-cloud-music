@@ -1,13 +1,20 @@
 // 发现 - 推荐 - 热门推荐
 import { CustomerServiceOutlined, PlayCircleOutlined } from '@ant-design/icons'
+import { message } from 'antd'
 import React, { FC, memo, useEffect, useState } from 'react'
+import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import http from 'service/http'
+import { ICombineState } from 'store'
+import { change_is_play } from 'store/playBarState/actions'
+import { replace_song_list_async } from 'store/songList/actions'
 import utils from 'utils/utils'
 
 import styles from './index.module.scss'
 
-interface IProps extends RouteComponentProps {}
+interface IProps {
+  dispatch: any
+}
 
 // 占位列表
 const tempList = Array(8)
@@ -16,7 +23,7 @@ const tempList = Array(8)
     id: index,
   }))
 
-const HotRecommend: FC<IProps> = props => {
+const HotRecommend: FC<IProps & Pick<ICombineState, 'playBarState'> & RouteComponentProps> = props => {
   const [list, setList] = useState<any[]>(tempList) // 推荐列表
 
   // 获取热门推荐列表
@@ -30,6 +37,28 @@ const HotRecommend: FC<IProps> = props => {
       })
       .catch(() => {})
   }, [])
+
+  /**
+   * 点击播放按钮
+   * @param id 歌单或榜单id
+   */
+  const handleClickPlay = (id: number) => {
+    // 提交异步的action 修改songList
+    props.dispatch(
+      replace_song_list_async(id, (list: any[]) => {
+        const audio = document.getElementById('audio') as HTMLAudioElement
+        if (audio) {
+          audio.currentTime = 0 // 设置audio播放时间为0
+        }
+
+        // isPlay 为false 就改成true
+        const { isPlay } = props.playBarState
+        if (!isPlay) props.dispatch(change_is_play())
+
+        message.success('开始播放热门推荐歌单')
+      })
+    )
+  }
 
   // 点击热门推荐分类
   const handleClickTitle = (cat: string) => props.history.push(`/discover/playlist?cat=${cat}`)
@@ -77,7 +106,7 @@ const HotRecommend: FC<IProps> = props => {
                     <CustomerServiceOutlined />
                     <span style={{ fontSize: 12, paddingLeft: 4 }}>{utils.formatTenThousand(item.playCount)}</span>
                   </div>
-                  <PlayCircleOutlined className='play' />
+                  <PlayCircleOutlined className='play' onClick={() => handleClickPlay(item.id)} />
                 </div>
               </div>
               <div className='name'>{item.name}</div>
@@ -91,4 +120,10 @@ const HotRecommend: FC<IProps> = props => {
 
 HotRecommend.defaultProps = {}
 
-export default memo(withRouter(HotRecommend))
+const mapStateToProps = (state: ICombineState) => {
+  return {
+    playBarState: state.playBarState,
+  }
+}
+
+export default connect(mapStateToProps)(memo(withRouter(HotRecommend)))

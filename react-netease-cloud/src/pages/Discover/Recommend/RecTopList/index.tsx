@@ -119,7 +119,7 @@ const RecTopList: FC<IProps> = props => {
       // 重新播放
       if (!isPlay) props.dispatch(change_is_play())
 
-      message.success('已开始播放当前榜单')
+      message.success('开始播放榜单歌曲')
     }
   }
 

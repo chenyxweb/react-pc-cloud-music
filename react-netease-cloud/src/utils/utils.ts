@@ -27,7 +27,6 @@ const parseLyric = (lyrics: string) => {
     if (line) {
       // line --> [00:00.000] 作词 : 无比
       const result = parseExp.exec(line) as Array<any>
-      console.log(result)
 
       if (!result) continue
       const time1 = result[1] * 60 * 1000 // 分    和第1个子表达式匹配 [0-9]{2}
