@@ -213,51 +213,6 @@ https://blog.csdn.net/gongstrong123/article/details/50339249
 
 #### 4.10 改写歌曲和歌词滚动条
 
-#### 4.11 获取歌词
-
-```
-1. 当前歌曲id改变, 获取歌词信息
-2. 使用正则方法exec, 获取当前时间戳, 和当前时间戳展示的歌词
-```
-
-```ts
-/**
- * 转化歌词
- * @param lyrics
- * [00:00.000] 作词 : 无比
- * [00:01.000] 作曲 : PIggy
- * [00:10.442]你看那 月儿 弯弯 有几分似你
- * [00:13.943]耀眼的月光 快照进我心
- * [00:16.693]你说这是最美好的风景
- * [00:21.693]但静 悄悄 距离 却越靠越近
- */
-const parseLyric = (lyrics: string) => {
-  const parseExp = /\[([0-9]{2}):([0-9]{2})\.([0-9]{2,3})\]/ // 匹配 [00:00.000]
-  if (!lyrics) return
-  const lineStrings = lyrics.split('\n')
-  const lyricList = []
-  for (const line of lineStrings) {
-    if (line) {
-      // line --> [00:00.000] 作词 : 无比
-      const result = parseExp.exec(line) as Array<any>
-      console.log(result)
-
-      if (!result) continue
-      const time1 = result[1] * 60 * 1000 // 分    和第1个子表达式匹配 [0-9]{2}
-      const time2 = result[2] * 1000 // 秒   和第2个子表达式匹配 [0-9]{2}
-      const time3 = result[3].length > 2 ? result[3] * 1 : result[3] * 1000 // 毫秒  和第3个子表达式匹配 [0-9]{2,3}
-      const totalTime = time1 + time2 + time3 // 当前歌曲播放的总时长(毫秒)
-      const content = line.replace(parseExp, '').trim()
-      const lineObj = { totalTime, content }
-      lyricList.push(lineObj)
-    }
-  }
-  return lyricList
-}
-```
-
-
-
 
 
 
@@ -452,10 +407,10 @@ export const songListReducer = (state: any[] = [], action: IAction) => {
 ```
 
 ```ts
-// songList/actions.ts
-
 // actions creator  指挥者(要干什么)
 
+import http from 'service/http'
+import { change_current_song_info } from 'store/currentSongInfo/actions'
 import { ADD_SONG_LIST_ITEM, DEL_SONG_LIST_ITEM, CLEAR_SONG_LIST, REPLACE_SONG_LIST } from './actionTypes'
 
 // 添加一首歌
@@ -469,6 +424,34 @@ export const clear_song_list = () => ({ type: CLEAR_SONG_LIST })
 
 // 替换播放列表
 export const replace_song_list = (list: any[]) => ({ type: REPLACE_SONG_LIST, payload: list })
+
+/**
+ * 根据歌单id获取歌单列表,并替换原来的列表;
+ * redux-thunk 的使用
+ * @param id 歌单id
+ */
+export const replace_song_list_async = (id: number, callback?: Function) => {
+  return (dispatch: any) => {
+    // 异步操作
+    http
+      .getPlaylistDetail({ id })
+      .then(res => {
+        if (res.data.code === 200) {
+          const list = res.data.playlist?.tracks || []
+          // ...
+          // 同步的dispatch
+          dispatch(replace_song_list(list)) // 修改songList
+          if (list.length) {
+            dispatch(change_current_song_info(list[0])) // 修改当前播放歌曲为第一项
+
+            callback && callback(list)
+          }
+        }
+      })
+      .catch(() => {})
+  }
+}
+
 
 ```
 
@@ -629,6 +612,38 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(PlayBar)
 
 ```
+
+#### 5 redux-thunk的使用
+
+> dispatch之后, 有回调或者有异步操作的时候, 可以使用此方式
+
+```tsx
+  /**
+   * 点击播放按钮
+   * @param id 歌单或榜单id
+   */
+  const handleClickPlay = (id: number) => {
+    // 提交异步的action 修改songList
+    props.dispatch(
+      replace_song_list_async(id, (list: any[]) => {
+        const audio = document.getElementById('audio') as HTMLAudioElement
+        if (audio) {
+          audio.currentTime = 0 // 设置audio播放时间为0
+        }
+
+        // isPlay 为false 就改成true
+        const { isPlay } = props.playBarState
+        if (!isPlay) props.dispatch(change_is_play())
+
+        message.success('开始播放热门推荐歌单')
+      })
+    )
+  }
+```
+
+
+
+
 
 ### 9 下载音乐
 
