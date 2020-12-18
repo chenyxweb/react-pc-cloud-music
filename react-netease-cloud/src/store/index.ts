@@ -19,6 +19,7 @@ export interface IAction {
   payload: any
 }
 
+// store 的数据类型
 export interface ICombineState {
   songList: any[]
   currentSongInfo: any

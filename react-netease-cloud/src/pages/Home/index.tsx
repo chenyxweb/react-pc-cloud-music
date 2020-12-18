@@ -13,6 +13,7 @@ import My from 'pages/My'
 
 import constants from 'utils/constants'
 import styles from './index.module.scss'
+import Test from 'pages/Test'
 
 interface IProps extends RouteComponentProps {}
 
@@ -87,6 +88,7 @@ const Home: FC<IProps> = props => {
         <Route path='/mall' component={Mall}></Route>
         <Route path='/musician' component={Musician}></Route>
         <Route path='/download' component={Download}></Route>
+        <Route path='/test' component={Test}></Route>
       </div>
 
       {/* Footer */}

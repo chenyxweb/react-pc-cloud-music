@@ -686,6 +686,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(PlayBar)
   }
 ```
 
+```js
+  // 防抖化
+  const handleDownloadMP3 = useCallback(debounce(_handleDownloadMP3, 5000, { leading: true, trailing: false }), [
+    currentSongInfo.id,
+  ])
+```
+
 
 
 ### 10 ts中useRef的使用

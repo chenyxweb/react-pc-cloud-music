@@ -1,6 +1,6 @@
 // 音乐播放条
 import { CaretRightOutlined, CloseOutlined, DeleteOutlined, DownloadOutlined, RedoOutlined } from '@ant-design/icons'
-import React, { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
 import { message, Slider, Tooltip } from 'antd'
 import MyTransition from 'components/MyTransition'
 import { connect } from 'react-redux'
@@ -8,7 +8,7 @@ import { ICombineState } from 'store'
 import { Dispatch } from 'redux'
 import dayjs from 'dayjs'
 import utils from 'utils/utils'
-import { sample } from 'lodash-es'
+import { debounce, sample } from 'lodash-es'
 import { clear_song_list, del_song_list_item } from 'store/songList/actions'
 import { change_current_song_info } from 'store/currentSongInfo/actions'
 import styles from './index.module.scss'
@@ -181,7 +181,8 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   }
 
   // 下载MP3
-  let handleDownloadMP3 = () => {
+  const _handleDownloadMP3 = () => {
+    console.log('download')
     const songId = currentSongInfo.id
     if (songId) {
       // 1. 下载歌曲url
@@ -218,6 +219,10 @@ const PlayBar: FC<IProps & ICombineState> = props => {
         .catch(() => {})
     }
   }
+  // 防抖化
+  const handleDownloadMP3 = useCallback(debounce(_handleDownloadMP3, 5000, { leading: true, trailing: false }), [
+    currentSongInfo.id,
+  ])
 
   // 当前播放时间发生改变的时候, 同步播放进度
   const handleOnTimeUpdate = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {

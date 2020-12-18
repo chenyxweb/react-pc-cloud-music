@@ -55,7 +55,7 @@ const HotRecommend: FC<IProps & Pick<ICombineState, 'playBarState'> & RouteCompo
         const { isPlay } = props.playBarState
         if (!isPlay) props.dispatch(change_is_play())
 
-        message.success('开始播放热门推荐歌单')
+        message.success('开始播放 热门推荐歌单')
       })
     )
   }

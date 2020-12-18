@@ -16,12 +16,9 @@ import styles from './index.module.scss'
 
 interface IProps extends RouteComponentProps {
   dispatch: Dispatch
-  songList: any[]
-  currentSongInfo: any
-  playBarState: any
 }
 
-const RecTopList: FC<IProps> = props => {
+const RecTopList: FC<IProps & ICombineState> = props => {
   const [list1, setList1] = useState<any>({}) // 飙升榜
   const [list2, setList2] = useState<any>({}) // 新歌榜
   const [list3, setList3] = useState<any>({}) // 原创歌曲榜
@@ -102,8 +99,12 @@ const RecTopList: FC<IProps> = props => {
     }
   }
 
-  // 点击播放榜单
-  const handleClickPlayTopList = (list: any[]) => {
+  /**
+   * 点击播放榜单
+   * @param list 榜单歌曲列表
+   * @param name 榜单名
+   */
+  const handleClickPlayTopList = (list: any[], name: string) => {
     const audioElement = document.getElementById('audio') as HTMLAudioElement
 
     if (list.length) {
@@ -114,12 +115,12 @@ const RecTopList: FC<IProps> = props => {
       const firstItem = list[0]
       props.dispatch(change_current_song_info(firstItem))
 
-      audioElement.currentTime = 0
+      audioElement.currentTime = 0 // 设置播放时间
 
       // 重新播放
       if (!isPlay) props.dispatch(change_is_play())
 
-      message.success('开始播放榜单歌曲')
+      message.success(`开始播放 ${name}`)
     }
   }
 
@@ -151,7 +152,7 @@ const RecTopList: FC<IProps> = props => {
                 <PlayCircleOutlined
                   title='播放榜单'
                   className='icon'
-                  onClick={() => handleClickPlayTopList(list1?.tracks || [])}
+                  onClick={() => handleClickPlayTopList(list1?.tracks || [], list1?.name)}
                 />
                 <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
               </div>
@@ -192,7 +193,7 @@ const RecTopList: FC<IProps> = props => {
                 <PlayCircleOutlined
                   className='icon'
                   title='播放榜单'
-                  onClick={() => handleClickPlayTopList(list2?.tracks || [])}
+                  onClick={() => handleClickPlayTopList(list2?.tracks || [], list2?.name)}
                 />
                 <FolderAddOutlined className='icon' onClick={() => message.info('暂无收藏功能')} />
               </div>
@@ -233,7 +234,7 @@ const RecTopList: FC<IProps> = props => {
                 <PlayCircleOutlined
                   className='icon'
                   title='播放榜单'
-                  onClick={() => handleClickPlayTopList(list3?.tracks || [])}
+                  onClick={() => handleClickPlayTopList(list3?.tracks || [], list3?.name)}
                 />
                 <FolderAddOutlined className='icon' onClick={() => message.info('暂无收藏功能')} />
               </div>
@@ -277,10 +278,5 @@ const mapStateToProps = (state: ICombineState) => {
   }
 }
 
-// const mapDispatchToProps = (dispatch: Dispatch) => {
-//   return {
-//     addSongListItem: (item: any) => dispatch(add_song_list_item(item)),
-//   }
-// }
-
+// dispatch 自动映射
 export default connect(mapStateToProps)(memo(withRouter(RecTopList)))
