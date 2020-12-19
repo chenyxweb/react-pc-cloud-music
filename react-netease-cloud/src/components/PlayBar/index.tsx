@@ -376,7 +376,8 @@ const PlayBar: FC<IProps & ICombineState> = props => {
 
   // audio 加载期间遇到错误, 播放下一首歌曲
   const handleOnError = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
-    message.info('当前歌曲无法播放,自动播放下一首')
+    message.destroy()
+    message.info('当前歌曲无法播放,自动切换下一首')
     handleClickNextBtn()
   }
 
@@ -571,7 +572,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       {/* 播放列表和歌词box */}
       <MyTransition mode='scale' in={listBoxShow} timeout={300}>
         <div className={styles.songListAndLyricWrapper}>
-          <div className={styles.songListAndLyric}>
+          <div className={styles.songListAndLyric}  style={{background:`rgba(31, 31, 31, 0.9)  url('${currentSongInfo?.al?.picUrl}') center center `}}>
             {/* 歌曲列表容器 */}
             <div className='songList'>
               <div className='songList-title'>
