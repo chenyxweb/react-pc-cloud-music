@@ -74,7 +74,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
           console.log(res)
         })
         .catch(err => {
-          // 歌曲无法播放时, 进入下一首
+          // 调用play方法报错
           message.error(err.message)
         })
     } else {
@@ -376,7 +376,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
 
   // audio 加载期间遇到错误, 播放下一首歌曲
   const handleOnError = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
-    message.error('歌曲无法播放')
+    message.info('当前歌曲无法播放,自动播放下一首')
     handleClickNextBtn()
   }
 
