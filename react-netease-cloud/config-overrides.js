@@ -1,4 +1,4 @@
-const { override, fixBabelImports } = require('customize-cra')
+const { override, fixBabelImports, addWebpackExternals } = require('customize-cra')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 //生产环境去除console.
@@ -50,6 +50,21 @@ module.exports = {
 
     dropConsole(), // 去除console.
     prodConfig(), // production 配置
-    compileSpeed() // 加快编译速度
+    compileSpeed(), // 加快编译速度
+
+    // cdn
+    addWebpackExternals(
+      process.env.REACT_APP_MODE === 'build'
+        ? {
+            // 库名 : 变量名
+            react: 'React',
+            'react-dom': 'ReactDOM',
+            'react-router-dom': 'ReactRouterDOM',
+            axios: 'axios',
+            dayjs: 'dayjs',
+            redux: 'Redux',
+          }
+        : {}
+    )
   ),
 }

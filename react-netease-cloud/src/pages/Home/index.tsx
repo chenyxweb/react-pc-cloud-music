@@ -1,19 +1,30 @@
-import React, { FC } from 'react'
+import React, { FC, lazy } from 'react'
 import { Route, RouteComponentProps } from 'react-router-dom'
 import { SearchOutlined } from '@ant-design/icons'
 
-import MyFooter from 'components/MyFooter'
-import PlayBar from 'components/PlayBar'
-import Discover from 'pages/Discover'
-import Download from 'pages/Download'
-import Friend from 'pages/Friend'
-import Mall from 'pages/Mall'
-import Musician from 'pages/Musician'
-import My from 'pages/My'
+// import MyFooter from 'components/MyFooter'
+// import PlayBar from 'components/PlayBar'
+// import Discover from 'pages/Discover'
+// import Download from 'pages/Download'
+// import Friend from 'pages/Friend'
+// import Mall from 'pages/Mall'
+// import Musician from 'pages/Musician'
+// import My from 'pages/My'
+// import Test from 'pages/Test'
 
 import constants from 'utils/constants'
 import styles from './index.module.scss'
-import Test from 'pages/Test'
+
+// 按需加载
+const MyFooter = lazy(() => import('components/MyFooter'))
+const PlayBar = lazy(() => import('components/PlayBar'))
+const Discover = lazy(() => import('pages/Discover'))
+const Download = lazy(() => import('pages/Download'))
+const Friend = lazy(() => import('pages/Friend'))
+const Mall = lazy(() => import('pages/Mall'))
+const Musician = lazy(() => import('pages/Musician'))
+const My = lazy(() => import('pages/My'))
+const Test = lazy(() => import('pages/Test'))
 
 interface IProps extends RouteComponentProps {}
 

@@ -340,7 +340,27 @@ export default useClickOutsideComponent
 
 #### 4.13 获取歌词高亮项
 
+```scss
+// 歌词渐变    
+.lyric-item {
+      padding: 0 15px;
+      height: 32px;
+      text-align: center;
+      color: #989898;
+      line-height: 32px;
+      font-size: 12px;
+      overflow: hidden;
+      transition: font-size 0.5s, color 1s;
+
+      &.active {
+        color: #fff;
+        font-size: 14px;
+      }
+    }
+```
+
 ```ts
+// // 封装hook
 // 获取当前高亮歌词索引 的 hook
 
 import { LyricArrType } from 'components/PlayBar'

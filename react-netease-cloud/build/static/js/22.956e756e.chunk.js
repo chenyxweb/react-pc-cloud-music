@@ -1,0 +1,1 @@
+(this["webpackJsonpreact-template"]=this["webpackJsonpreact-template"]||[]).push([[22],{297:function(t,e,a){"use strict";a.r(e);var c=a(7),n=(a(0),function(){return Object(c.jsx)("div",{children:"Download"})});n.defaultProps={},e.default=n}}]);

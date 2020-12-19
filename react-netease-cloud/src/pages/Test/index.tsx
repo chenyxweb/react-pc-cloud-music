@@ -1,26 +1,24 @@
 // 测试页面
-import { Button, Input } from 'antd'
+import { Input } from 'antd'
 import React, { FC, useState } from 'react'
-import { debounce } from 'lodash-es'
+import useThrottleFn from 'hooks/useThrottleFn'
 
 interface IProps {}
 
 const Test: FC<IProps> = () => {
   const [input, setInput] = useState('')
+  const [throttleValue, setThrottleValue] = useState('')
 
-  const log = () => {
-    console.log('哈哈哈')
-  }
-
-  const handleClick = debounce(log, 1000)
+  useThrottleFn(input, 2000, () => {
+    console.log('throttle', input)
+    setThrottleValue(input)
+  })
 
   return (
     <div>
       Test
-      <Button type='primary' onClick={handleClick}>
-        click
-      </Button>
       <Input value={input} onChange={event => setInput(event.target.value)}></Input>
+      <div>{throttleValue}</div>
     </div>
   )
 }

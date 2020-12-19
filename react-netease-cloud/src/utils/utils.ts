@@ -42,7 +42,7 @@ const parseLyric = (lyrics: string) => {
 
   // 排序
   lyricList = lyricList.sort((a, b) => a.totalTime - b.totalTime)
-  console.log(lineStrings, lyricList)
+  // console.log(lineStrings, lyricList)
 
   return lyricList
 }

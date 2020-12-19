@@ -3,16 +3,16 @@
 import { throttle } from 'lodash-es'
 import { useEffect, useRef } from 'react'
 
-const useThrottleFn = (dependence: any, delay: number, callback: Function) => {
+const useThrottleFn = (dependence: string, delay: number, callback: Function) => {
   const throttleFn = useRef({
-    fn: throttle(() => {
+    fn: throttle(callback => {
       callback && callback()
     }, delay),
   })
 
   useEffect(() => {
-    throttleFn.current.fn()
-  }, [dependence])
+    throttleFn.current.fn(callback)
+  }, [callback, dependence])
 }
 
 export default useThrottleFn

@@ -1,21 +1,32 @@
 // 发现音乐
 
-import React, { FC } from 'react'
+import React, { FC, lazy } from 'react'
 import { Route, RouteComponentProps } from 'react-router-dom'
 import constants from 'utils/constants'
 
-import Album from './Album'
-import Artist from './Artist'
-import Djradio from './Djradio'
-import Playlist from './Playlist'
-import Recommend from './Recommend'
-import Toplist from './Toplist'
-import PlaylistDetail from './PlaylistDetail'
-import AlbumDetail from './AlbumDetail'
+// import Album from './Album'
+// import Artist from './Artist'
+// import Djradio from './Djradio'
+// import Playlist from './Playlist'
+// import Recommend from './Recommend'
+// import Toplist from './Toplist'
+// import PlaylistDetail from './PlaylistDetail'
+// import AlbumDetail from './AlbumDetail'
+// import Song from './Song'
 
 import styles from './index.module.scss'
 import ArtistDetail from './ArtistDetail'
-import Song from './Song'
+
+// 按需引入
+const Album = lazy(() => import('./Album'))
+const Artist = lazy(() => import('./Artist'))
+const Djradio = lazy(() => import('./Djradio'))
+const Playlist = lazy(() => import('./Playlist'))
+const Recommend = lazy(() => import('./Recommend'))
+const Toplist = lazy(() => import('./Toplist'))
+const PlaylistDetail = lazy(() => import('./PlaylistDetail'))
+const AlbumDetail = lazy(() => import('./AlbumDetail'))
+const Song = lazy(() => import('./Song'))
 
 interface IProps extends RouteComponentProps {}
 
