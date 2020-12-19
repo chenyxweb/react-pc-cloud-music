@@ -16,12 +16,14 @@ import { change_is_play } from 'store/playBarState/actions'
 import http from 'service/http'
 import { axios } from 'service/axios'
 import FileSaver from 'file-saver'
+import useActiveLyricIndex from 'hooks/useActiveLyricIndex'
+import useClickOutsideComponent from 'hooks/useClickOutsideComponent'
 
 interface IProps {
-  clear_song_list: () => any
-  del_song_list_item: (songId: number) => any
-  change_current_song_info: (item: any) => any
-  change_is_play: () => any
+  clear_song_list: () => void
+  del_song_list_item: (songId: number) => void
+  change_current_song_info: (item: any) => void
+  change_is_play: () => void
 }
 
 const mode = ['loop', 'shuffle', 'one'] // 顺序播放/随机播放/单曲循环
@@ -29,7 +31,7 @@ const mode = ['loop', 'shuffle', 'one'] // 顺序播放/随机播放/单曲循�
 type CurrentModeType = 'loop' | 'shuffle' | 'one'
 
 // 歌词数组类型
-type LyricArrType = {
+export type LyricArrType = {
   /** 时间节点 */
   totalTime: number
   /** 歌词 */
@@ -51,10 +53,12 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   const [listBoxShow, setListBoxShow] = useState(false) // 歌曲列表和歌词容器的显隐
   const [volume, setVolume] = useState(0.5) // 播放音量 0 ~ 1  刻度 0.01
   const [process, setProcess] = useState(0) // 播放进度 0 ~ 1  刻度 0.01
+  const [currentTime, setCurrentTime] = useState(0) // 当前播放时间戳
   const [lyricArr, setLyricArr] = useState<LyricArrType>([]) // 歌词数组
 
   let mouseLeaveTimeId: NodeJS.Timeout // 鼠标移出的延时timeId
-  const audioRef = useRef<HTMLAudioElement>(null)
+  const audioRef = useRef<HTMLAudioElement>(null) //  audio标签
+  const playBarRef = useRef<HTMLDivElement>(null) // 歌曲列表和歌词容器
 
   useEffect(() => {
     console.log('audio: ')
@@ -64,7 +68,14 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   // 播放和暂停
   useEffect(() => {
     if (isPlay) {
-      audioRef.current?.play()
+      audioRef.current
+        ?.play()
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          message.error(err.message)
+        })
     } else {
       audioRef.current?.pause()
     }
@@ -87,12 +98,77 @@ const PlayBar: FC<IProps & ICombineState> = props => {
         if (res.data.code === 200) {
           const lyricString = res.data.lrc?.lyric || ''
           const lyricArr = utils.parseLyric(lyricString)
-          console.log('获取歌词:', lyricArr || [])
+          // console.log('获取歌词:', lyricArr || [])
           setLyricArr(lyricArr || [])
         }
       })
       .catch(() => {})
   }, [currentSongInfo.id])
+
+  // 上/下一曲 播放暂停快捷键
+  // onkeypress  字母数字键才会触发
+  // 每次更新都需要重新运行useEffect , 不然记住的是以前的数据
+  useEffect(() => {
+    window.onkeyup = (e: KeyboardEvent) => {
+      // console.log(e)
+      if (e.ctrlKey && e.code === 'ArrowRight') {
+        // ctrl + → 下一首
+        console.log('下一首')
+        handleClickNextBtn()
+      }
+
+      if (e.ctrlKey && e.code === 'ArrowLeft') {
+        // ctrl + ← 上一首
+        console.log('上一首')
+        handleClickPrevBtn()
+      }
+
+      if (e.code === 'KeyP') {
+        console.log('播放/暂停')
+        props.change_is_play()
+      }
+
+      // 切换模式
+      if (e.code === 'KeyM') {
+        switchCurrentMode()
+      }
+    }
+
+    // 每次需要清除事件
+    return () => {
+      window.onkeyup = null
+    }
+  })
+
+  // 歌曲列表当前项滚动居中
+  useEffect(() => {
+    const songListItemElement = document.querySelector('.songList-content .songList-item.active')
+    if (songListItemElement) {
+      songListItemElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      })
+    }
+  }, [currentSongInfo.id])
+
+  const [activeLyricIndex] = useActiveLyricIndex(currentTime, currentSongInfo.dt, lyricArr)
+
+  // 歌词列表当前项滚动居中
+  useEffect(() => {
+    const lyricListItemElement = document.querySelector('.lyric-content .lyric-item.active')
+    if (lyricListItemElement) {
+      lyricListItemElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      })
+    }
+  }, [activeLyricIndex])
+
+  // 点击playBar外部
+  useClickOutsideComponent(playBarRef, () => {
+    // 关闭歌词和歌曲列表
+    listBoxShow && setListBoxShow(false)
+  })
 
   // 鼠标移入播放条
   const handleMouseEnter = () => {
@@ -202,8 +278,8 @@ const PlayBar: FC<IProps & ICombineState> = props => {
                     // 3. 使用file-saver下载mp3文件
                     console.log('blob: ', blob, currentSongInfo)
                     const name = currentSongInfo?.name || '' // 歌名
-                    const author = currentSongInfo?.ar[0]?.name // 作者
-                    FileSaver.saveAs(blob, `${name} - ${author}.mp3`)
+                    const authors = (currentSongInfo?.ar || []).map((item: any) => item.name).join(' ') // 作者
+                    FileSaver.saveAs(blob, `${authors} - ${name}.mp3`)
                   }
                 })
                 .catch(() => {})
@@ -232,6 +308,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     const percent = +((currentTime * 1000) / currentSongInfo.dt).toFixed(3)
     if (percent === process) return // 两次时间相同
     // console.log('播放进度:', (percent * 100).toFixed(1) + '%')
+    setCurrentTime(currentTime)
     setProcess(percent)
   }
 
@@ -379,6 +456,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
 
   return (
     <div
+      ref={playBarRef}
       className={styles.PlayBar}
       style={{ bottom: lock || playBarShow ? 0 : -46 }}
       onMouseEnter={handleMouseEnter} // 鼠标移入
@@ -388,13 +466,13 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       <div className={[styles.container, 'w980'].join(' ')}>
         {/* 上一首 暂停/播放 下一首 */}
         <div className='playBtns'>
-          <div className='prev' title='上一首' onClick={handleClickPrevBtn}></div>
+          <div className='prev' title='上一首(Ctrl+←)' onClick={handleClickPrevBtn}></div>
           <div
             className={isPlay ? 'play' : 'stop'}
-            title={isPlay ? '暂停' : '播放'}
+            title={isPlay ? '暂停(P)' : '播放(P)'}
             onClick={() => props.change_is_play()}
           ></div>
-          <div className='next' title='下一首' onClick={handleClickNextBtn}></div>
+          <div className='next' title='下一首(Ctrl+→)' onClick={handleClickNextBtn}></div>
         </div>
 
         {/* 当前播放歌曲信息 */}
@@ -460,7 +538,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
               </div>
             </MyTransition>
           </div>
-          <Tooltip title={currentModeTip}>
+          <Tooltip title={`${currentModeTip()}(M)`}>
             <div className={`btn circle-mode ${currentMode}`} onClick={switchCurrentMode}></div>
           </Tooltip>
           <div className='btn song-list' onClick={() => setListBoxShow(!listBoxShow)}>
@@ -496,7 +574,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
                 </div>
               </div>
               {/* 列表 */}
-              <div className='songList-content'>
+              <div className='songList-content custom-scroll-bar'>
                 {songList.map(item => {
                   return (
                     /* 列表项 */
@@ -531,7 +609,16 @@ const PlayBar: FC<IProps & ICombineState> = props => {
                 {currentSongInfo.name}
                 <CloseOutlined title='关闭' onClick={() => setListBoxShow(false)} className='icon' />
               </div>
-              <div className='lyric-content'></div>
+              <div className='lyric-content custom-scroll-bar'>
+                {/* 渲染歌词列表 */}
+                {lyricArr.map((item, index) => {
+                  return (
+                    <div className={`lyric-item  ellipsis-1 ${activeLyricIndex === index ? 'active' : ''}`} key={index}>
+                      {item.content}
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>

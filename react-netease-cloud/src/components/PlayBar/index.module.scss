@@ -447,6 +447,8 @@
                 }
               }
             }
+
+            // 改写滚动条
           }
         }
 
@@ -485,6 +487,22 @@
             flex: 1;
             overflow: auto;
             background-color: rgba($color: #121212, $alpha: 0.9);
+
+            .lyric-item {
+              padding: 0 15px;
+              height: 32px;
+              text-align: center;
+              color: #989898;
+              line-height: 32px;
+              font-size: 12px;
+              overflow: hidden;
+              transition: font-size 0.5s, color 1s;
+
+              &.active {
+                color: #fff;
+                font-size: 14px;
+              }
+            }
           }
         }
       }
@@ -546,5 +564,28 @@
     top: 0;
     right: 0;
     background: url('~assets/img/playbar.png') 0 0;
+  }
+
+  :global {
+    // 自定义滚动条
+    .custom-scroll-bar {
+      /*修改滚动条样式*/
+      &::-webkit-scrollbar {
+        width: 6px; // 横向滚动条宽度
+        height: 6px; // 纵向滚动条高度
+        background-clip: padding-box;
+      }
+      &::-webkit-scrollbar-track {
+        background: #000;
+        border-radius: 2px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background: #aaa;
+      }
+    }
   }
 }

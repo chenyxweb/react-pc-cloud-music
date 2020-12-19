@@ -19,10 +19,10 @@ const formatTenThousand = (num: number) => {
  * [00:21.693]但静 悄悄 距离 却越靠越近
  */
 const parseLyric = (lyrics: string) => {
-  const parseExp = /\[([0-9]{2}):([0-9]{2})\.([0-9]{2,3})\]/ // 匹配 [00:00.000]
+  const parseExp = /\[([0-9]{2}):([0-9]{2})\.([0-9]{1,3})\]/ // 匹配 [00:00.000]
   if (!lyrics) return
   const lineStrings = lyrics.split('\n')
-  const lyricList = []
+  let lyricList = []
   for (const line of lineStrings) {
     if (line) {
       // line --> [00:00.000] 作词 : 无比
@@ -31,13 +31,19 @@ const parseLyric = (lyrics: string) => {
       if (!result) continue
       const time1 = result[1] * 60 * 1000 // 分    和第1个子表达式匹配 [0-9]{2}
       const time2 = result[2] * 1000 // 秒   和第2个子表达式匹配 [0-9]{2}
-      const time3 = result[3].length > 2 ? result[3] * 1 : result[3] * 1000 // 毫秒  和第3个子表达式匹配 [0-9]{2,3}
+      // const time3 = result[3].length > 2 ? result[3] * 1 : result[3] * 1000  和第3个子表达式匹配 [0-9]{2,3}
+      const time3 = Number('0.' + String(result[3])) * 1000 // 毫秒
       const totalTime = time1 + time2 + time3 // 当前歌曲播放的总时长(毫秒)
       const content = line.replace(parseExp, '').trim()
       const lineObj = { totalTime, content }
       lyricList.push(lineObj)
     }
   }
+
+  // 排序
+  lyricList = lyricList.sort((a, b) => a.totalTime - b.totalTime)
+  console.log(lineStrings, lyricList)
+
   return lyricList
 }
 

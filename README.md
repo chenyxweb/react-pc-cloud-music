@@ -194,7 +194,6 @@ https://blog.csdn.net/gongstrong123/article/details/50339249
     src={`https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`}
   ></audio>
 
-
 ```
 
 #### 4.7 切换歌曲逻辑
@@ -207,13 +206,194 @@ https://blog.csdn.net/gongstrong123/article/details/50339249
 
 #### 4.8 本地存储歌曲列表
 
+```ts
+// 存数据
 
+// 监听store的改变
+  store.subscribe(() => {
+    // console.log('store当前状态:', store.getState())
+    const { songList, currentSongInfo } = store.getState()
+    // 保存到本地
+    localStorage.setItem(constants.SONG_LIST, JSON.stringify(songList))
+    localStorage.setItem(constants.CURRENT_SONG_INFO, JSON.stringify(currentSongInfo))
+  })
+```
 
-#### 4.9 歌曲列表自动居中当前播放歌曲
+```tx
+  // 拿本地存储
+  const songList = JSON.parse(localStorage.getItem(constants.SONG_LIST) || '[]')
+  const currentSongInfo = JSON.parse(localStorage.getItem(constants.CURRENT_SONG_INFO) || '{}')
+```
+
+#### 4.9 快捷键
+
+```ts
+  // 上/下一曲 播放暂停快捷键
+  // onkeypress  字母数字键才会触发
+  // 每次更新都需要重新运行useEffect , 不然记住的是以前的数据
+  useEffect(() => {
+    window.onkeyup = (e: KeyboardEvent) => {
+      // console.log(e)
+      if (e.ctrlKey && e.code === 'ArrowRight') {
+        // ctrl + → 下一首
+        console.log('下一首')
+        handleClickNextBtn()
+      }
+
+      if (e.ctrlKey && e.code === 'ArrowLeft') {
+        // ctrl + ← 上一首
+        console.log('上一首')
+        handleClickPrevBtn()
+      }
+
+      if (e.code === 'KeyP') {
+        console.log('播放/暂停')
+        props.change_is_play()
+      }
+    }
+	
+    // 每次需要清除事件
+    return () => {
+      window.onkeyup = null
+    }
+  })
+```
+
+#### 4.9 歌曲,歌词切换时列表自动居中当前播放歌曲
+
+```js
+  // 歌曲列表当前项滚动居中
+  useEffect(() => {
+    const songListItemElement = document.querySelector('.songList-content .songList-item.active')
+    if (songListItemElement) {
+      songListItemElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      })
+    }
+  }, [currentSongInfo.id])
+```
 
 #### 4.10 改写歌曲和歌词滚动条
 
+```scss
+  :global {
+    // 自定义滚动条
+    .custom-scroll-bar {
+      /*修改滚动条样式*/
+      &::-webkit-scrollbar {
+        width: 6px; // 横向滚动条宽度
+        height: 6px; // 纵向滚动条高度
+        background-clip: padding-box;
+      }
+      &::-webkit-scrollbar-track {
+        background: #000;
+        border-radius: 2px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+      }
+      &::-webkit-scrollbar-thumb:hover {
+        background: #aaa;
+      }
+    }
+  }
+```
 
+#### 4.11 点击playBar外部, 自动隐藏歌词和歌曲列表
+
+```ts
+// 封装hook
+
+// 点击传入的组件外时触发回调的hook
+import { useEffect, RefObject } from 'react'
+
+const useClickOutsideComponent = (ref: RefObject<HTMLElement>, callback: Function) => {
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      // console.log(e.target)
+      // 如果 dom 中没有这个节点 或者这个节点包括了点击的这个元素 return
+      if (!ref.current || ref.current.contains(e.target as HTMLElement)) return
+      callback()
+    }
+
+    document.addEventListener('click', handleClick)
+
+    return () => {
+      document.removeEventListener('click', handleClick)
+    }
+  }, [callback, ref])
+}
+
+export default useClickOutsideComponent
+
+```
+
+```tsx
+  // 点击playBar外部
+  useClickOutsideComponent(playBarRef, () => {
+    // 关闭歌词和歌曲列表
+    listBoxShow && setListBoxShow(false)
+  })
+```
+
+#### 4.13 获取歌词高亮项
+
+```ts
+// 获取当前高亮歌词索引 的 hook
+
+import { LyricArrType } from 'components/PlayBar'
+import { throttle } from 'lodash-es'
+import { useEffect, useRef, useState } from 'react'
+
+/**
+ * 获取当前高亮歌词索引
+ * @param currentTime 当前播放时间 s
+ * @param totalTime 歌曲总时间 ms
+ * @param lyricArr 歌词数组
+ * @returns [index] 当前高亮歌词索引
+ */
+const useActiveLyricIndex = (currentTime: number, totalTime: number, lyricArr: LyricArrType) => {
+  const [index, setIndex] = useState(0) // 当前激活的歌词索引
+
+  // 节流 方法一
+  // const throttleFn = useCallback(
+  //   throttle(callback => {
+  //     callback && callback()
+  //   }, 300),
+  //   []
+  // )
+
+  // 节流 方法二
+  // 保持每次更新节流函数不变
+  const throttleFnRef = useRef({
+    fn: throttle(callback => {
+      callback && callback()
+    }, 500),
+  })
+
+  useEffect(() => {
+    throttleFnRef.current.fn(() => {
+      if (!lyricArr.length) return
+
+      const tempIndex = lyricArr.findIndex(item => item.totalTime >= currentTime * 1000)
+
+      // 如果找到的index>0 或者找到的index和原来的index不相等 就设置新的index
+      if (tempIndex > 0 && tempIndex - 1 !== index) {
+        // console.log(index)
+        setIndex(tempIndex - 1)
+      }
+    })
+  }, [currentTime, totalTime, lyricArr, index])
+
+  // 返回currentActiveIndex
+  return [index]
+}
+
+export default useActiveLyricIndex
+
+```
 
 
 
@@ -706,3 +886,4 @@ const audioRef = useRef<HTMLAudioElement>(null)
 ## 坑
 
 - 删除歌曲冒泡导致点击了歌曲列表项  , 需要清除冒泡 (***), 习惯性清除冒泡
+
