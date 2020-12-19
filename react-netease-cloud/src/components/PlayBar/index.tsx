@@ -572,7 +572,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       {/* 播放列表和歌词box */}
       <MyTransition mode='scale' in={listBoxShow} timeout={300}>
         <div className={styles.songListAndLyricWrapper}>
-          <div className={styles.songListAndLyric}  style={{background:`rgba(31, 31, 31, 0.9)  url('${currentSongInfo?.al?.picUrl}') center center `}}>
+          <div className={styles.songListAndLyric} style={{background:`rgba(31, 31, 31, 0.9)  url('${currentSongInfo?.al?.picUrl}') no-repeat center center/986px `}}>
             {/* 歌曲列表容器 */}
             <div className='songList'>
               <div className='songList-title'>

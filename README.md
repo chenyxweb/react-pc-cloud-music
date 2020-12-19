@@ -426,6 +426,12 @@ export default useActiveLyricIndex
   }
 ```
 
+#### 4.15 歌单歌词列表背景图片
+
+```tsx
+style={{background:`rgba(31, 31, 31, 0.9)  url('${currentSongInfo?.al?.picUrl}') no-repeat center center/986px `}} // 居中 宽度撑满
+```
+
 
 
 ### 5 资源访问
