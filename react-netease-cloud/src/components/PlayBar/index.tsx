@@ -1,7 +1,7 @@
 // 音乐播放条
 import { CaretRightOutlined, CloseOutlined, DeleteOutlined, DownloadOutlined, RedoOutlined } from '@ant-design/icons'
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
-import { message, Slider, Tooltip } from 'antd'
+import { Empty, message, Slider, Tooltip } from 'antd'
 import MyTransition from 'components/MyTransition'
 import { connect } from 'react-redux'
 import { ICombineState } from 'store'
@@ -74,6 +74,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
           console.log(res)
         })
         .catch(err => {
+          // 歌曲无法播放时, 进入下一首
           message.error(err.message)
         })
     } else {
@@ -373,6 +374,12 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     }
   }
 
+  // audio 加载期间遇到错误, 播放下一首歌曲
+  const handleOnError = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+    message.error('歌曲无法播放')
+    handleClickNextBtn()
+  }
+
   // audio 缓冲至目前可以播放的状态  再播放, 避免无法播放调用了play方法
   const handleOncanplay = () => {
     console.log('canplay')
@@ -420,13 +427,13 @@ const PlayBar: FC<IProps & ICombineState> = props => {
       if (currentSongIndex === songList.length - 1) {
         // 当前歌曲是最后一项, 设置当前播放为第一项
         props.change_current_song_info(songList[0])
-        // isPlay && handleRePlay() // 在播放就播放
+        isPlay && handleRePlay() // 在播放就播放
       } else {
         // 当前歌曲不是最后一项, 设置当前播放歌曲为下一项
         const nextItem = songList[currentSongIndex + 1]
         // props.del_song_list_item(songId)
         props.change_current_song_info(nextItem)
-        // isPlay && handleRePlay()
+        isPlay && handleRePlay()
       }
     }
   }
@@ -481,9 +488,9 @@ const PlayBar: FC<IProps & ICombineState> = props => {
           <div className='currentSongInfoRight'>
             <div className='right-t'>
               {/* 歌名 */}
-              <div className='songName'>{currentSongInfo.name}</div>
+              <div className='songName ellipsis-1'>{currentSongInfo.name}</div>
               {/* 歌手名 */}
-              <div className='songAuthor'>{utils.getArtistStr(currentSongInfo.ar)}</div>
+              <div className='songAuthor ellipsis-1'>{utils.getArtistStr(currentSongInfo.ar)}</div>
             </div>
             {/* 播放进度条 */}
             <div className='right-b'>
@@ -555,7 +562,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
         onTimeUpdate={handleOnTimeUpdate} // 播放时间更新时触发
         onEnded={handleOnEnded} // 播放结束时触发
         // autoPlay
-        // onEmptied={e => console.log('网络错误、加载错误')}
+        onError={handleOnError} // 当在元素加载期间发生错误时运行脚本, 此时播放下一首歌
         preload='auto'
         onCanPlay={handleOncanplay} // 缓冲至目前可以播放的状态
         src={`https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`}
@@ -611,13 +618,24 @@ const PlayBar: FC<IProps & ICombineState> = props => {
               </div>
               <div className='lyric-content custom-scroll-bar'>
                 {/* 渲染歌词列表 */}
-                {lyricArr.map((item, index) => {
-                  return (
-                    <div className={`lyric-item  ellipsis-1 ${activeLyricIndex === index ? 'active' : ''}`} key={index}>
-                      {item.content}
-                    </div>
-                  )
-                })}
+                {lyricArr.length
+                  ? lyricArr.map((item, index) => {
+                      return (
+                        <div
+                          className={`lyric-item  ellipsis-1 ${activeLyricIndex === index ? 'active' : ''}`}
+                          key={index}
+                        >
+                          {item.content}
+                        </div>
+                      )
+                    })
+                  : null}
+                {/* 空状态 */}
+                {lyricArr.length === 0 ? (
+                  <div style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Empty style={{ color: 'white' }} description='暂无歌词信息' image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>

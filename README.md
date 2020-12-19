@@ -415,6 +415,17 @@ export default useActiveLyricIndex
 
 ```
 
+#### 4.14 歌曲无法播放时, 自动下一首
+
+```tsx
+// 给audio注册onError事件  //  当在元素加载期间发生错误时运行脚本
+
+  const handleOnError = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+    message.error('歌曲无法播放')
+    handleClickNextBtn() // 点击下一首按钮
+  }
+```
+
 
 
 ### 5 资源访问
