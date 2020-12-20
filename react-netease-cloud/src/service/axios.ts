@@ -3,14 +3,14 @@ import Axios from 'axios'
 import { message } from 'antd'
 
 // 接口基地址
-// export const BASE_URL = 'http://123.57.176.198:3000/'
-export const BASE_URL =
-  process.env.NODE_ENV === 'development' ? 'http://localhost:2333/' : 'http://123.57.176.198:3000/'
+// export const BASE_URL =
+// process.env.NODE_ENV === 'development' ? 'http://localhost:2333/' : 'http://123.57.176.198:3000/'
+export const BASE_URL = 'http://123.57.176.198:3000/'
 
 // 创建实例
 export const axios = Axios.create({
   baseURL: BASE_URL,
-  timeout: 8000,
+  // timeout: 8000,
 })
 
 // 添加请求拦截器
@@ -29,6 +29,7 @@ axios.interceptors.response.use(
   function (response) {
     // 对响应数据做点什么
     if (response.status !== 200) {
+      message.destroy()
       message.error('系统错误')
     }
 
@@ -42,7 +43,8 @@ axios.interceptors.response.use(
       err.message = '系统请求异常'
     }
     // 弹框提示
-    message.error(err.message)
+      message.destroy()
+      message.error(err.message)
 
     return Promise.reject(err)
   }

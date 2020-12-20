@@ -21,7 +21,7 @@ interface IProps extends RouteComponentProps {
 const RecTopList: FC<IProps & ICombineState> = props => {
   const [list1, setList1] = useState<any>({}) // 飙升榜
   const [list2, setList2] = useState<any>({}) // 新歌榜
-  const [list3, setList3] = useState<any>({}) // 原创歌曲榜
+  const [list3, setList3] = useState<any>({}) // 热歌榜
 
   const { songList, currentSongInfo, playBarState } = props
 
@@ -54,7 +54,7 @@ const RecTopList: FC<IProps & ICombineState> = props => {
   // 获取原创歌曲榜
   useEffect(() => {
     http
-      .getPlaylistDetail({ id: 2884035 })
+      .getPlaylistDetail({ id: 3778678 })
       .then(res => {
         if (res.data.code === 200) {
           setList3(res.data.playlist || [])
