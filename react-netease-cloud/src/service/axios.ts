@@ -5,7 +5,8 @@ import { message } from 'antd'
 // 接口基地址
 // export const BASE_URL =
 // process.env.NODE_ENV === 'development' ? 'http://localhost:2333/' : 'http://123.57.176.198:3000/'
-export const BASE_URL = 'http://123.57.176.198:3000/'
+// export const BASE_URL = 'http://123.57.176.198:3000/'
+export const BASE_URL = '/'
 
 // 创建实例
 export const axios = Axios.create({

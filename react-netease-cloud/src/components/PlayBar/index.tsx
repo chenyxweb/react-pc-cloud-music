@@ -222,7 +222,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
 
   // 删除一首歌曲
   const delSongListItem = (songId: number, e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-    e.stopPropagation() // 阻止冒泡, 防止歌曲列表项被点击 ***** 坑 , 养成喜欢清除冒泡行为
+    e.stopPropagation() // 阻止冒泡, 防止歌曲列表项被点击 ***** 坑 , 养成习惯清除冒泡行为
     if (currentSongInfo.id === songId) {
       // 删除的是当前播放的歌曲
 
