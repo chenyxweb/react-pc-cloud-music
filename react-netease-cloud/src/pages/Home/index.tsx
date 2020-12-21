@@ -1,4 +1,4 @@
-import React, { FC, lazy } from 'react'
+import React, { FC, lazy, useEffect, useState } from 'react'
 import { Route, RouteComponentProps } from 'react-router-dom'
 import { SearchOutlined } from '@ant-design/icons'
 
@@ -14,6 +14,8 @@ import { SearchOutlined } from '@ant-design/icons'
 
 import constants from 'utils/constants'
 import styles from './index.module.scss'
+import useDebounce from 'hooks/useDebounce'
+import http from 'service/http'
 
 // 按需加载
 const MyFooter = lazy(() => import('components/MyFooter'))
@@ -30,6 +32,32 @@ interface IProps extends RouteComponentProps {}
 
 const Home: FC<IProps> = props => {
   const pathname = props.location.pathname
+
+  const [inputValue, setInputValue] = useState('') // input的值
+  const [songs, setSongs] = useState([]) // 单曲列表
+  const [artists, setArtists] = useState([]) // 歌手列表
+  const [albums, setAlbums] = useState([]) // 专辑列表
+
+  // 获取防抖化后的input值
+  const [debounceInputValue] = useDebounce(inputValue, 300)
+
+  // 请求搜索接口
+  useEffect(() => {
+    console.log(debounceInputValue)
+    if (!debounceInputValue.trim()) return
+    http
+      .getSearchSuggest(debounceInputValue)
+      .then(res => {
+        console.log(res)
+        if (res.data.code === 200) {
+          const { songs, artists, albums } = res.data?.result || {}
+          setSongs(songs || [])
+          setArtists(artists || [])
+          setAlbums(albums || [])
+        }
+      })
+      .catch(() => {})
+  }, [debounceInputValue])
 
   // 渲染topBar元素
   const renderTopBar = () => (
@@ -68,7 +96,13 @@ const Home: FC<IProps> = props => {
             <div className='input-wrapper'>
               <div className='input-outer'>
                 <SearchOutlined className='icon' />
-                <input type='text' className='input' placeholder='音乐/视频/电台/用户' />
+                <input
+                  value={inputValue}
+                  onChange={e => setInputValue(e.currentTarget.value)}
+                  type='text'
+                  className='input'
+                  placeholder='音乐/视频/电台/用户'
+                />
               </div>
             </div>
             <div className='center'>

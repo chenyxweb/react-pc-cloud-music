@@ -1,8 +1,12 @@
 // 集中管理接口
 import { axios } from './axios'
 
+// 搜索建议
+const getSearchSuggest = (keywords: string, type?: 'mobile') =>
+  axios.get('/search/suggest', { params: { keywords, type } })
+
 // 搜索
-const search = (keywords: string) => axios.get(`/search?keywords=${keywords}`)
+const getSearch = (keywords: string) => axios.get(`/cloudsearch?keywords=${keywords}`)
 
 // --------------------------- 发现音乐 - 推荐 ---------------------------------------------------
 
@@ -68,7 +72,8 @@ const getSongUrl = (id: number) => axios.get(`/song/url?id=${id}`)
 //
 // ------------------------- 统一导出 -------------------------
 const http = {
-  search,
+  getSearchSuggest,
+  getSearch,
   banner,
   hotRecommend,
   recommendPlaylist,
