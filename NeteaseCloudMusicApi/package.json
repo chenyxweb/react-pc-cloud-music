@@ -3,7 +3,8 @@
   "version": "3.47.4",
   "description": "网易云音乐 NodeJS 版 API",
   "scripts": {
-    "start": "node app.js",
+    "start": "nodemon app.js",
+    "start:proxy": "cross-env proxy=true nodemon node app.js",
     "test": "mocha -r intelli-espower-loader -t 20000 app.test.js --exit",
     "lint": "eslint **/*.{js,ts}",
     "lint-fix": "eslint --fix **/*.{js,ts}"
@@ -37,6 +38,7 @@
   ],
   "dependencies": {
     "axios": "^0.20.0",
+    "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.9",
     "pac-proxy-agent": "^4.0.0",

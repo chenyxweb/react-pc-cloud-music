@@ -78,6 +78,7 @@ fs.readdirSync(path.join(__dirname, 'module'))
         : '/' + file.replace(/\.js$/i, '').replace(/_/g, '/')
     let question = require(path.join(__dirname, 'module', file))
 
+    // 修改添加统一前缀
     app.use('/musicApi' + route, (req, res) => {
       if (typeof req.query.cookie === 'string') {
         req.query.cookie = cookieToJson(req.query.cookie)
@@ -91,7 +92,9 @@ fs.readdirSync(path.join(__dirname, 'module'))
       )
 
       // proxy
-      // query.proxy = 'http://172.16.0.20:3128'
+      if (process.env.proxy === 'true') {
+        query.proxy = 'http://172.16.0.20:3128'
+      }
 
       question(query, request)
         .then((answer) => {
