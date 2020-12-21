@@ -37,7 +37,8 @@
   },
   "scripts": {
     "dev": "cross-env REACT_APP_MODE=dev REACT_APP_JS_NAME=.js PORT=3000 react-app-rewired start",
-    "build": "cross-env REACT_APP_MODE=build REACT_APP_JS_NAME=.min.js GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=10000 react-app-rewired build"
+    "build": "cross-env REACT_APP_MODE=build REACT_APP_JS_NAME=.min.js GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=10000 react-app-rewired build",
+    "build:WBJ": "cross-env REACT_APP_MODE=build_wbj REACT_APP_JS_NAME=.min.js GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=10000 react-app-rewired build"
   },
   "eslintConfig": {
     "extends": [

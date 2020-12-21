@@ -2,11 +2,24 @@
 import Axios from 'axios'
 import { message } from 'antd'
 
-// 接口基地址
-// export const BASE_URL =
-// process.env.NODE_ENV === 'development' ? 'http://localhost:2333/' : 'http://123.57.176.198:3000/'
-// export const BASE_URL = 'http://123.57.176.198:3000/'
-export const BASE_URL = '/'
+// 接口基地址设置
+let BASE_URL = ''
+switch (process.env.REACT_APP_MODE) {
+  case 'dev':
+  case 'build':
+    BASE_URL = 'http://123.57.176.198:3000'
+    // BASE_URL = 'http://localhost:2333/musicApi' // 本地
+    break
+
+  case 'build_wbj':
+    BASE_URL = 'http://www.wbjazy.com:2333/musicApi' // WBJ
+    break
+
+  default:
+    break
+}
+
+export { BASE_URL }
 
 // 创建实例
 export const axios = Axios.create({
@@ -44,8 +57,8 @@ axios.interceptors.response.use(
       err.message = '系统请求异常'
     }
     // 弹框提示
-      message.destroy()
-      message.error(err.message)
+    message.destroy()
+    message.error(err.message)
 
     return Promise.reject(err)
   }

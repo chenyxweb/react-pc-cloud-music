@@ -27,7 +27,8 @@ app.use((req, res, next) => {
   if (req.path !== '/' && !req.path.includes('.')) {
     res.set({
       'Access-Control-Allow-Credentials': true,
-      'Access-Control-Allow-Origin': req.headers.origin || '*',
+      // 'Access-Control-Allow-Origin': req.headers.origin || '*',
+      'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
       'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
       'Content-Type': 'application/json; charset=utf-8',
@@ -77,7 +78,7 @@ fs.readdirSync(path.join(__dirname, 'module'))
         : '/' + file.replace(/\.js$/i, '').replace(/_/g, '/')
     let question = require(path.join(__dirname, 'module', file))
 
-    app.use(route, (req, res) => {
+    app.use('/musicApi' + route, (req, res) => {
       if (typeof req.query.cookie === 'string') {
         req.query.cookie = cookieToJson(req.query.cookie)
       }
@@ -88,9 +89,9 @@ fs.readdirSync(path.join(__dirname, 'module'))
         req.body,
         req.files,
       )
-	  
-	  // proxy
-	  // query.proxy = 'http://172.16.0.20:3128'
+
+      // proxy
+      // query.proxy = 'http://172.16.0.20:3128'
 
       question(query, request)
         .then((answer) => {

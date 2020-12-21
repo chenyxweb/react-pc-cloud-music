@@ -3,7 +3,7 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 //生产环境去除console.
 const dropConsole = () => config => {
-  if (process.env.REACT_APP_MODE === 'build') {
+  if (process.env.NODE_ENV === 'production') {
     if (config.optimization.minimizer) {
       config.optimization.minimizer.forEach(minimizer => {
         if (minimizer.constructor.name === 'TerserPlugin') {
@@ -54,7 +54,7 @@ module.exports = {
 
     // cdn
     addWebpackExternals(
-      process.env.REACT_APP_MODE === 'build'
+      process.env.NODE_ENV === 'production'
         ? {
             // 库名 : 变量名
             react: 'React',
