@@ -16,6 +16,7 @@ import constants from 'utils/constants'
 import styles from './index.module.scss'
 import useDebounce from 'hooks/useDebounce'
 import http from 'service/http'
+import MyTransition from 'components/MyTransition'
 
 // 按需加载
 const MyFooter = lazy(() => import('components/MyFooter'))
@@ -34,26 +35,29 @@ const Home: FC<IProps> = props => {
   const pathname = props.location.pathname
 
   const [inputValue, setInputValue] = useState('') // input的值
-  const [songs, setSongs] = useState([]) // 单曲列表
-  const [artists, setArtists] = useState([]) // 歌手列表
-  const [albums, setAlbums] = useState([]) // 专辑列表
+  const [songs, setSongs] = useState<any[]>([]) // 单曲列表
+  const [artists, setArtists] = useState<any[]>([]) // 歌手列表
+  const [albums, setAlbums] = useState<any[]>([]) // 专辑列表
+  const [order, setOrder] = useState<('songs' | 'artists' | 'albums')[]>([]) // 单曲,歌手,专辑等...展示排序
+  const [showSearchSuggest, setShowSearchSuggest] = useState(false) // 是否展示搜索建议框
 
   // 获取防抖化后的input值
   const [debounceInputValue] = useDebounce(inputValue, 300)
 
   // 请求搜索接口
   useEffect(() => {
-    console.log(debounceInputValue)
+    // console.log(debounceInputValue)
     if (!debounceInputValue.trim()) return
     http
       .getSearchSuggest(debounceInputValue)
       .then(res => {
         console.log(res)
         if (res.data.code === 200) {
-          const { songs, artists, albums } = res.data?.result || {}
+          const { songs, artists, albums, order } = res.data?.result || {}
           setSongs(songs || [])
           setArtists(artists || [])
           setAlbums(albums || [])
+          setOrder(order || [])
         }
       })
       .catch(() => {})
@@ -97,12 +101,119 @@ const Home: FC<IProps> = props => {
               <div className='input-outer'>
                 <SearchOutlined className='icon' />
                 <input
+                  onFocus={() => setShowSearchSuggest(true)}
+                  // onBlur={() => setShowSearchSuggest(false)}
                   value={inputValue}
                   onChange={e => setInputValue(e.currentTarget.value)}
                   type='text'
                   className='input'
                   placeholder='音乐/视频/电台/用户'
                 />
+
+                {/* 定位搜索建议列表 */}
+                <MyTransition in={showSearchSuggest} mode='fade' timeout={300}>
+                  <div className='search-suggest-wrapper'>
+                    {order.length ? (
+                      <div className='search-suggest-box' style={{ display: 'block' }}>
+                        {/* 搜xx相关用户 */}
+                        <div className='search-user'>
+                          <span>
+                            搜“{debounceInputValue}”相关用户{' ＞'}
+                          </span>
+                        </div>
+                        {/* 单曲,歌手,专辑 */}
+                        {order.map(item => {
+                          if (item === 'songs') {
+                            return (
+                              //  单曲
+                              <div className='search-item search-song' key={item}>
+                                <div className='search-item-left'>
+                                  <div className='icon'></div>
+                                  <div className='search-item-name'>单曲</div>
+                                </div>
+                                <div className='search-item-right'>
+                                  {songs.map(i => (
+                                    <div
+                                      className='right-item ellipsis-1'
+                                      key={i.id}
+                                      dangerouslySetInnerHTML={{
+                                        __html:
+                                          (debounceInputValue
+                                            ? i.name.replace(debounceInputValue, `<span>${debounceInputValue}</span>`)
+                                            : i.name) + `-${(i?.artists || []).map((ite: any) => ite.name).join(' ')}`,
+                                      }}
+                                    ></div>
+                                  ))}
+                                </div>
+                              </div>
+                            )
+                          }
+
+                          // 歌手
+                          if (item === 'artists') {
+                            return (
+                              <div className='search-item search-artist' key={item}>
+                                <div className='search-item-left'>
+                                  <div className='icon'></div>
+                                  <div className='search-item-name'>歌手</div>
+                                </div>
+                                <div className='search-item-right'>
+                                  {artists.map(i => (
+                                    <div
+                                      className='right-item ellipsis-1'
+                                      key={i.id}
+                                      dangerouslySetInnerHTML={{
+                                        __html: debounceInputValue
+                                          ? i.name.replace(debounceInputValue, `<span>${debounceInputValue}</span>`)
+                                          : i.name,
+                                      }}
+                                    ></div>
+                                  ))}
+                                </div>
+                              </div>
+                            )
+                          }
+
+                          // 专辑
+                          if (item === 'albums') {
+                            return (
+                              <div className='search-item search-album' key={item}>
+                                <div className='search-item-left'>
+                                  <div className='icon'></div>
+                                  <div className='search-item-name'>专辑</div>
+                                </div>
+                                <div className='search-item-right'>
+                                  {albums.map(i => (
+                                    <div
+                                      className='right-item ellipsis-1'
+                                      key={i.id}
+                                      dangerouslySetInnerHTML={{
+                                        __html:
+                                          (debounceInputValue
+                                            ? i.name.replace(debounceInputValue, `<span>${debounceInputValue}</span>`)
+                                            : i.name) +
+                                          `-${
+                                            debounceInputValue
+                                              ? i.artist?.name.replace(
+                                                  debounceInputValue,
+                                                  `<span>${debounceInputValue}</span>`
+                                                )
+                                              : i.artist?.name
+                                          }`,
+                                      }}
+                                    ></div>
+                                  ))}
+                                </div>
+                              </div>
+                            )
+                          }
+
+                          return null
+                        })}
+                      </div>
+                    ) : null}
+                  </div>
+                </MyTransition>
               </div>
             </div>
             <div className='center'>

@@ -57,6 +57,8 @@ const getArtistStr = (list: any[]) => {
     .join('')
 }
 
+// 替换字符串内所有指定字符
+
 const utils = {
   formatTenThousand,
   parseLyric,

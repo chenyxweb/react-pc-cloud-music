@@ -85,6 +85,7 @@
                 justify-content: center;
                 align-items: center;
                 padding: 0 8px;
+                position: relative;
 
                 .icon {
                   font-size: 14px;
@@ -95,6 +96,102 @@
                   width: 115px;
                   border: none;
                   outline: none;
+                }
+
+                // 定位搜索建议列表
+                .search-suggest-wrapper {
+                  position: absolute;
+                  left: 0;
+                  top: 40px;
+                  z-index: 120;
+                  display: none;
+
+                  .search-suggest-box {
+                    width: 240px;
+                    border: 1px solid #bebebe;
+                    border-radius: 4px;
+                    background: #fff;
+                    box-shadow: 0 4px 7px #555;
+                    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+
+                    .search-user {
+                      height: 40px;
+                      line-height: 39px;
+                      padding: 0 10px;
+                      border-bottom: 1px solid #e2e2e2;
+                      color: #666;
+                      cursor: pointer;
+
+                      span:hover {
+                        background-color: #e3e5e7;
+                      }
+                    }
+
+                    //  单曲,歌手,专辑
+                    .search-item {
+                      display: flex;
+
+                      .search-item-left {
+                        padding: 10px 0 0 10px;
+                        width: 62px;
+                        display: flex;
+
+                        .icon {
+                          width: 14px;
+                          height: 15px;
+                          background: url('~assets/img/icon.png') no-repeat;
+                          margin: 2px 4px 0 0;
+                        }
+                      }
+                      .search-item-right {
+                        border-left: 1px solid #e2e2e2;
+                        border-bottom: 1px solid #e2e2e2;
+                        width: 176px;
+                        padding: 6px 0 5px;
+
+                        .right-item {
+                          width: 100%;
+                          padding: 0 12px;
+                          height: 24px;
+                          line-height: 24px;
+                          cursor: pointer;
+
+                          span {
+                            color: #0c73c2;
+                          }
+
+                          &:hover {
+                            background-color: #e3e5e7;
+                          }
+                        }
+                      }
+
+                      &:last-child {
+                        border-bottom: none;
+                      }
+                    }
+
+                    // 单曲
+                    .search-item.search-song {
+                      .icon {
+                        background-position: -35px -300px;
+                      }
+                    }
+
+                    // 歌手
+                    .search-item.search-artist {
+                      .icon {
+                        background-position: -50px -300px;
+                      }
+                    }
+
+                    // 专辑
+                    .search-item.search-album {
+                      .icon {
+                        background-position: -35px -320px;
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -143,8 +240,8 @@
     }
   }
 
-  // 
-  .routeWrapper{
+  //
+  .routeWrapper {
     min-height: 712px;
   }
 }
