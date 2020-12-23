@@ -43,10 +43,10 @@ const compileSpeed = () => config => {
 module.exports = {
   webpack: override(
     // antd 按需加载
-    fixBabelImports('antd', {
-      libraryName: 'antd',
-      style: 'css',
-    }),
+    // fixBabelImports('antd', {
+    //   libraryName: 'antd',
+    //   style: 'css',
+    // }),
 
     dropConsole(), // 去除console.
     prodConfig(), // production 配置
@@ -63,6 +63,10 @@ module.exports = {
             axios: 'axios',
             dayjs: 'dayjs',
             redux: 'Redux',
+            'react-redux': 'ReactRedux',
+            'react-transition-group': 'ReactTransitionGroup',
+            'redux-thunk': 'ReduxThunk',
+            antd: 'antd',
           }
         : {}
     )
