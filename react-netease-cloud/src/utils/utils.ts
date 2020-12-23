@@ -57,12 +57,23 @@ const getArtistStr = (list: any[]) => {
     .join('')
 }
 
-// 替换字符串内所有指定字符
+/**
+ * 替换字符串内所有指定字符
+ * @param str 要操作的字符串
+ * @param target 要被替换的字符串
+ * @param to 替换成什么字符串
+ */
+const replaceTargetStr = (str: string, target: string, to: string) => {
+  const reg = new RegExp(`${target}`, 'g') // --> /target/g
+  if (!target) return str
+  return str.replace(reg, to)
+}
 
 const utils = {
   formatTenThousand,
   parseLyric,
   getArtistStr,
+  replaceTargetStr,
 }
 
 export default utils

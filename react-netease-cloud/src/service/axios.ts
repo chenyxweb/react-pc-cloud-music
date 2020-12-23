@@ -7,6 +7,7 @@ let BASE_URL = ''
 switch (process.env.REACT_APP_MODE) {
   case 'dev':
     BASE_URL = 'http://localhost:2333/musicApi' // 本地启动
+    // BASE_URL = 'http://10.176.169.146:2333/musicApi' // 本地启动
     break
 
   case 'build':

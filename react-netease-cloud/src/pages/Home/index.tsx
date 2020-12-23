@@ -17,6 +17,7 @@ import styles from './index.module.scss'
 import useDebounce from 'hooks/useDebounce'
 import http from 'service/http'
 import MyTransition from 'components/MyTransition'
+import utils from 'utils/utils'
 
 // 按需加载
 const MyFooter = lazy(() => import('components/MyFooter'))
@@ -104,7 +105,7 @@ const Home: FC<IProps> = props => {
                   onFocus={() => setShowSearchSuggest(true)}
                   // onBlur={() => setShowSearchSuggest(false)}
                   value={inputValue}
-                  onChange={e => setInputValue(e.currentTarget.value)}
+                  onChange={e => setInputValue(e.currentTarget.value.trim())}
                   type='text'
                   className='input'
                   placeholder='音乐/视频/电台/用户'
@@ -137,10 +138,11 @@ const Home: FC<IProps> = props => {
                                       className='right-item ellipsis-1'
                                       key={i.id}
                                       dangerouslySetInnerHTML={{
-                                        __html:
-                                          (debounceInputValue
-                                            ? i.name.replace(debounceInputValue, `<span>${debounceInputValue}</span>`)
-                                            : i.name) + `-${(i?.artists || []).map((ite: any) => ite.name).join(' ')}`,
+                                        __html: utils.replaceTargetStr(
+                                          i.name + `-${(i?.artists || []).map((ite: any) => ite.name).join(' ')}`,
+                                          debounceInputValue,
+                                          `<span>${debounceInputValue}</span>`
+                                        ),
                                       }}
                                     ></div>
                                   ))}
@@ -163,9 +165,11 @@ const Home: FC<IProps> = props => {
                                       className='right-item ellipsis-1'
                                       key={i.id}
                                       dangerouslySetInnerHTML={{
-                                        __html: debounceInputValue
-                                          ? i.name.replace(debounceInputValue, `<span>${debounceInputValue}</span>`)
-                                          : i.name,
+                                        __html: utils.replaceTargetStr(
+                                          i.name,
+                                          debounceInputValue,
+                                          `<span>${debounceInputValue}</span>`
+                                        ),
                                       }}
                                     ></div>
                                   ))}
@@ -188,18 +192,11 @@ const Home: FC<IProps> = props => {
                                       className='right-item ellipsis-1'
                                       key={i.id}
                                       dangerouslySetInnerHTML={{
-                                        __html:
-                                          (debounceInputValue
-                                            ? i.name.replace(debounceInputValue, `<span>${debounceInputValue}</span>`)
-                                            : i.name) +
-                                          `-${
-                                            debounceInputValue
-                                              ? i.artist?.name.replace(
-                                                  debounceInputValue,
-                                                  `<span>${debounceInputValue}</span>`
-                                                )
-                                              : i.artist?.name
-                                          }`,
+                                        __html: utils.replaceTargetStr(
+                                          i.name + `-${i.artist?.name}`,
+                                          debounceInputValue,
+                                          `<span>${debounceInputValue}</span>`
+                                        ),
                                       }}
                                     ></div>
                                   ))}
