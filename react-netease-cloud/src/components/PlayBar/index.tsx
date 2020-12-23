@@ -56,9 +56,11 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   const [currentTime, setCurrentTime] = useState(0) // 当前播放时间戳
   const [lyricArr, setLyricArr] = useState<LyricArrType>([]) // 歌词数组
 
-  let mouseLeaveTimeId: NodeJS.Timeout // 鼠标移出的延时timeId
+  // let mouseLeaveTimeId: NodeJS.Timeout  // x
   const audioRef = useRef<HTMLAudioElement>(null) //  audio标签
   const playBarRef = useRef<HTMLDivElement>(null) // 歌曲列表和歌词容器
+
+  let mouseLeaveTimeId = useRef<any>({ id: null }) // 鼠标移出的延时timeId
 
   useEffect(() => {
     console.log('audio: ')
@@ -174,7 +176,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   // 鼠标移入播放条
   const handleMouseEnter = () => {
     if (lock) return // lock 为true 取消移入移出事件
-    clearTimeout(mouseLeaveTimeId) // 每次移入清除定时器, 取消移出效果
+    clearTimeout(mouseLeaveTimeId.current.id) // 每次移入清除定时器, 取消移出效果
     if (!playBarShow) {
       setPlayBarShow(true)
     }
@@ -183,8 +185,8 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   // 鼠标移出播放条
   const handleMouseLeave = () => {
     if (lock) return // lock 为true 取消移入移出事件
-    clearTimeout(mouseLeaveTimeId) // 每次移出清除定时器, 取消移出效果
-    mouseLeaveTimeId = setTimeout(() => setPlayBarShow(false), 1000)
+    clearTimeout(mouseLeaveTimeId.current.id) // 每次移出清除定时器, 取消移出效果
+    mouseLeaveTimeId.current.id = setTimeout(() => setPlayBarShow(false), 500)
   }
 
   // 切换播放模式

@@ -103,7 +103,7 @@ const Home: FC<IProps> = props => {
                 <SearchOutlined className='icon' />
                 <input
                   onFocus={() => setShowSearchSuggest(true)}
-                  // onBlur={() => setShowSearchSuggest(false)}
+                  onBlur={() => setShowSearchSuggest(false)}
                   value={inputValue}
                   onChange={e => setInputValue(e.currentTarget.value.trim())}
                   type='text'
