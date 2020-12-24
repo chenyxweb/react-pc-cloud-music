@@ -1,5 +1,5 @@
 // 发现音乐 - 推荐
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, memo } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import HotRecommend from './HotRecommend'
 import MyCarousel from './MyCarousel'
@@ -7,7 +7,6 @@ import NewDisk from './NewDisk'
 
 import styles from './index.module.scss'
 import RecTopList from './RecTopList'
-import http from 'service/http'
 import RecArtistList from './RecArtistList'
 import { message } from 'antd'
 
@@ -58,4 +57,4 @@ const Recommend: FC<IProps> = () => {
   )
 }
 
-export default Recommend
+export default memo(Recommend)

@@ -26,6 +26,12 @@
         background: #fafafa;
         margin-top: 14px;
         display: flex;
+        cursor: pointer;
+        transition: box-shadow 0.3s;
+
+        &:hover {
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
 
         img {
           width: 62px;

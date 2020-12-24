@@ -17,7 +17,7 @@
     "@types/react-router-dom": "^5.1.6",
     "@types/react-transition-group": "^4.4.0",
     "@types/redux-logger": "^3.0.8",
-    "antd": "^4.8.5",
+    "antd": "^4.9.3",
     "axios": "^0.21.0",
     "dayjs": "^1.9.7",
     "file-saver": "^2.0.5",

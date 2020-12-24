@@ -30,9 +30,9 @@ const Musician = lazy(() => import('pages/Musician'))
 const My = lazy(() => import('pages/My'))
 const Test = lazy(() => import('pages/Test'))
 
-interface IProps extends RouteComponentProps {}
+interface IProps {}
 
-const Home: FC<IProps> = props => {
+const Home: FC<IProps & RouteComponentProps> = props => {
   const pathname = props.location.pathname
 
   const [inputValue, setInputValue] = useState('') // input的值
@@ -63,6 +63,30 @@ const Home: FC<IProps> = props => {
       })
       .catch(() => {})
   }, [debounceInputValue])
+
+  // 点击歌曲
+  const handleSongsItemClick = (song: any) => {
+    console.log('song: ', song)
+    if (song?.id) {
+      props.history.push(`/discover/song?id=${song.id}`)
+    }
+  }
+
+  // 点击歌手
+  const handleArtistsItemClick = (artist: any) => {
+    console.log('artist: ', artist)
+    if (artist?.id) {
+      props.history.push(`/discover/artist?id=${artist.id}`)
+    }
+  }
+
+  // 点击专辑
+  const handleAlbumsItemClick = (album: any) => {
+    console.log('album: ', album)
+    if (album?.id) {
+      props.history.push(`/discover/album?id=${album.id}`)
+    }
+  }
 
   // 渲染topBar元素
   const renderTopBar = () => (
@@ -124,9 +148,9 @@ const Home: FC<IProps> = props => {
                         </div>
                         {/* 单曲,歌手,专辑 */}
                         {order.map(item => {
+                          //  --------------------------- 单曲 ------------------------------------------
                           if (item === 'songs') {
                             return (
-                              //  单曲
                               <div className='search-item search-song' key={item}>
                                 <div className='search-item-left'>
                                   <div className='icon'></div>
@@ -144,6 +168,7 @@ const Home: FC<IProps> = props => {
                                           `<span>${debounceInputValue}</span>`
                                         ),
                                       }}
+                                      onClick={() => handleSongsItemClick(i)}
                                     ></div>
                                   ))}
                                 </div>
@@ -151,7 +176,7 @@ const Home: FC<IProps> = props => {
                             )
                           }
 
-                          // 歌手
+                          // --------------------------- 歌手 ------------------------------------------
                           if (item === 'artists') {
                             return (
                               <div className='search-item search-artist' key={item}>
@@ -171,6 +196,7 @@ const Home: FC<IProps> = props => {
                                           `<span>${debounceInputValue}</span>`
                                         ),
                                       }}
+                                      onClick={() => handleArtistsItemClick(i)}
                                     ></div>
                                   ))}
                                 </div>
@@ -178,7 +204,7 @@ const Home: FC<IProps> = props => {
                             )
                           }
 
-                          // 专辑
+                          // --------------------------- 专辑 ------------------------------------------
                           if (item === 'albums') {
                             return (
                               <div className='search-item search-album' key={item}>
@@ -198,6 +224,7 @@ const Home: FC<IProps> = props => {
                                           `<span>${debounceInputValue}</span>`
                                         ),
                                       }}
+                                      onClick={() => handleAlbumsItemClick(i)}
                                     ></div>
                                   ))}
                                 </div>

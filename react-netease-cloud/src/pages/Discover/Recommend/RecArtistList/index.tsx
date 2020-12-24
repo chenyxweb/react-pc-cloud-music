@@ -22,6 +22,11 @@ const RecArtistList: FC<IProps> = props => {
       .catch(() => {})
   }, [])
 
+  // 点击歌手项
+  const handleListItemClick = (id: number) => {
+    id && props.history.push(`/discover/artist?id=${id}`)
+  }
+
   return (
     <div className={styles.RecArtistList}>
       <div className='title'>
@@ -32,7 +37,7 @@ const RecArtistList: FC<IProps> = props => {
       <div className='list'>
         {list.map(item => {
           return (
-            <div className='list-item' key={item.id}>
+            <div className='list-item' key={item.id} onClick={() => handleListItemClick(item.id)}>
               <img src={item.img1v1Url} alt='' />
               <div className='desc'>
                 <div className='name'>{item.name}</div>

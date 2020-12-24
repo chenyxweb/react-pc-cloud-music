@@ -126,4 +126,4 @@ const mapStateToProps = (state: ICombineState) => {
   }
 }
 
-export default connect(mapStateToProps)(memo(withRouter(HotRecommend)))
+export default memo(connect(mapStateToProps)(withRouter(HotRecommend)))

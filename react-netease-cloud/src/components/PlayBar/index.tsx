@@ -1,6 +1,6 @@
 // 音乐播放条
 import { CaretRightOutlined, CloseOutlined, DeleteOutlined, DownloadOutlined, RedoOutlined } from '@ant-design/icons'
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
+import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Empty, message, Slider, Tooltip } from 'antd'
 import MyTransition from 'components/MyTransition'
 import { connect } from 'react-redux'
@@ -154,6 +154,7 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     }
   }, [currentSongInfo.id])
 
+  // 获取激活的歌词索引
   const [activeLyricIndex] = useActiveLyricIndex(currentTime, currentSongInfo.dt, lyricArr)
 
   // 歌词列表当前项滚动居中
@@ -227,32 +228,10 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     e.stopPropagation() // 阻止冒泡, 防止歌曲列表项被点击 ***** 坑 , 养成习惯清除冒泡行为
     if (currentSongInfo.id === songId) {
       // 删除的是当前播放的歌曲
-
       // songList.length为1, 直接删除
-      if (songList.length === 1) {
-        // props.del_song_list_item(songId)
-      } else {
-        // songList.length>1  播放下一首歌曲
-
-        // const currentSongIndex = songList.findIndex(item => item.id === songId)
-        // if (currentSongIndex === songList.length - 1) {
-        //   // 当前播放歌曲是最后一项, 删除当前播放歌曲, 设置当前播放歌曲为第一项, 播放
-        //   // props.del_song_list_item(songId)
-        //   props.change_current_song_info(songList[0])
-        //   isPlay && handleRePlay() // 如果在播放, 就播放
-        // } else {
-        //   // 不是最后一项, 删除当前播放歌曲, 设置当前播放歌曲为下一项, 播放
-        //   const nextItem = songList[currentSongIndex + 1]
-        //   // props.del_song_list_item(songId)
-        //   props.change_current_song_info(nextItem)
-        //   isPlay && handleRePlay()
-        // }
-
+      if (songList.length > 1) {
         playNextSong()
       }
-    } else {
-      // 删除的不是当前播放的歌曲,直接删除
-      // props.del_song_list_item(songId)
     }
 
     // 删除操作提出来
@@ -460,7 +439,10 @@ const PlayBar: FC<IProps & ICombineState> = props => {
   // 点击播放列表项, 切换歌曲, 开始播放
   const handleClickListItem = (item: any) => {
     if (item.id === currentSongInfo.id) return // 点击同一首 return
-    if (!isPlay) return props.change_is_play() // 若暂停, 则自动开始播放
+    if (!isPlay) {
+      // 若暂停, 则自动开始播放
+      props.change_is_play()
+    }
     props.change_current_song_info(item)
   }
 
@@ -692,4 +674,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PlayBar)
+export default memo(connect(mapStateToProps, mapDispatchToProps)(PlayBar))

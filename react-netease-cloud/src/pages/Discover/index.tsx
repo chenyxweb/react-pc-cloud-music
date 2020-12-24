@@ -1,6 +1,6 @@
 // 发现音乐
 
-import React, { FC, lazy } from 'react'
+import React, { FC, lazy, memo } from 'react'
 import { Route, RouteComponentProps } from 'react-router-dom'
 import constants from 'utils/constants'
 
@@ -90,4 +90,4 @@ const Discover: FC<IProps> = props => {
   )
 }
 
-export default Discover
+export default memo(Discover)

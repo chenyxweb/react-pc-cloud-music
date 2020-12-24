@@ -67,7 +67,8 @@ const RecTopList: FC<IProps & ICombineState> = props => {
   const ToTopList = (id?: number) => props.history.push(id ? `/discover/toplist?id=${id}` : '/discover/toplist')
 
   // 添加歌曲到播放列表
-  const addToSongList = (item: any) => {
+  const addToSongList = (item: any, event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    event.stopPropagation()
     // 没有就添加
     if (songList.findIndex(i => i.id === item.id) === -1) {
       props.dispatch(add_song_list_item(item))
@@ -78,7 +79,8 @@ const RecTopList: FC<IProps & ICombineState> = props => {
   }
 
   // 播放当前歌曲
-  const playCurrentSong = (item: any) => {
+  const playCurrentSong = (item: any, event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    event.stopPropagation()
     // console.log(item)
     const audioElement = document.getElementById('audio') as HTMLAudioElement
 
@@ -124,6 +126,12 @@ const RecTopList: FC<IProps & ICombineState> = props => {
     }
   }
 
+  // 点击歌曲
+  const handleSongClick = (id: number) => {
+    console.log(id)
+    id && props.history.push(`/discover/song?id=${id}`)
+  }
+
   return (
     <div className={styles.RecTopList}>
       {/* title */}
@@ -164,10 +172,12 @@ const RecTopList: FC<IProps & ICombineState> = props => {
               return (
                 <div className='list-item' key={item.id}>
                   <div className={`list-item-num ${index <= 2 ? 'red' : ''}`}>{index + 1}</div>
-                  <div className='list-item-name ellipsis-1'>{item.name}</div>
+                  <div className='list-item-name ellipsis-1' onClick={() => handleSongClick(item.id)}>
+                    {item.name}
+                  </div>
                   <div className='list-item-btns'>
-                    <PlayCircleOutlined title='播放' className='icon' onClick={() => playCurrentSong(item)} />
-                    <PlusOutlined title='添加到播放列表' className='icon' onClick={() => addToSongList(item)} />
+                    <PlayCircleOutlined title='播放' className='icon' onClick={e => playCurrentSong(item, e)} />
+                    <PlusOutlined title='添加到播放列表' className='icon' onClick={e => addToSongList(item, e)} />
                     <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
                   </div>
                 </div>
@@ -205,10 +215,12 @@ const RecTopList: FC<IProps & ICombineState> = props => {
               return (
                 <div className='list-item' key={item.id}>
                   <div className={`list-item-num ${index <= 2 ? 'red' : ''}`}>{index + 1}</div>
-                  <div className='list-item-name ellipsis-1'>{item.name}</div>
+                  <div className='list-item-name ellipsis-1' onClick={() => handleSongClick(item.id)}>
+                    {item.name}
+                  </div>
                   <div className='list-item-btns'>
-                    <PlayCircleOutlined title='播放' className='icon' onClick={() => playCurrentSong(item)} />
-                    <PlusOutlined title='添加到播放列表' className='icon' onClick={() => addToSongList(item)} />
+                    <PlayCircleOutlined title='播放' className='icon' onClick={e => playCurrentSong(item, e)} />
+                    <PlusOutlined title='添加到播放列表' className='icon' onClick={e => addToSongList(item, e)} />
                     <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
                   </div>
                 </div>
@@ -222,7 +234,7 @@ const RecTopList: FC<IProps & ICombineState> = props => {
           </div>
         </div>
 
-        {/* 原创歌曲榜 3 */}
+        {/* 热歌榜 3 */}
         <div className={styles.origin}>
           <div className='logo'>
             <img src={list3.coverImgUrl} alt='' title={list3.name} onClick={() => ToTopList(list3.id)} />
@@ -246,10 +258,12 @@ const RecTopList: FC<IProps & ICombineState> = props => {
               return (
                 <div className='list-item' key={item.id}>
                   <div className={`list-item-num ${index <= 2 ? 'red' : ''}`}>{index + 1}</div>
-                  <div className='list-item-name ellipsis-1'>{item.name}</div>
+                  <div className='list-item-name ellipsis-1' onClick={() => handleSongClick(item.id)}>
+                    {item.name}
+                  </div>
                   <div className='list-item-btns'>
-                    <PlayCircleOutlined title='播放' className='icon' onClick={() => playCurrentSong(item)} />
-                    <PlusOutlined title='添加到播放列表' className='icon' onClick={() => addToSongList(item)} />
+                    <PlayCircleOutlined title='播放' className='icon' onClick={e => playCurrentSong(item, e)} />
+                    <PlusOutlined title='添加到播放列表' className='icon' onClick={e => addToSongList(item, e)} />
                     <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
                   </div>
                 </div>
@@ -279,4 +293,4 @@ const mapStateToProps = (state: ICombineState) => {
 }
 
 // dispatch 自动映射
-export default connect(mapStateToProps)(memo(withRouter(RecTopList)))
+export default memo(connect(mapStateToProps)(withRouter(RecTopList)))
