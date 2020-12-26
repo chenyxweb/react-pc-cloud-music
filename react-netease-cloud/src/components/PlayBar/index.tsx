@@ -18,6 +18,7 @@ import { axios } from 'service/axios'
 import FileSaver from 'file-saver'
 import useActiveLyricIndex from 'hooks/useActiveLyricIndex'
 import useClickOutsideComponent from 'hooks/useClickOutsideComponent'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 interface IProps {
   clear_song_list: () => void
@@ -38,7 +39,7 @@ export type LyricArrType = {
   content: string
 }[]
 
-const PlayBar: FC<IProps & ICombineState> = props => {
+const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
   // console.log('PlayBar-props: ', props)
 
   const { songList, currentSongInfo, playBarState } = props
@@ -446,6 +447,16 @@ const PlayBar: FC<IProps & ICombineState> = props => {
     props.change_current_song_info(item)
   }
 
+  // 点击歌曲名
+  const handleClickSongName = () => {
+    currentSongInfo.id && props.history.push(`/discover/song?id=${currentSongInfo.id}`)
+  }
+
+  // 点击歌手
+  const handleClickAuthorName = (item: any) => {
+    item.id && props.history.push(`/discover/artist?id=${item.id}`)
+  }
+
   return (
     <div
       ref={playBarRef}
@@ -473,9 +484,27 @@ const PlayBar: FC<IProps & ICombineState> = props => {
           <div className='currentSongInfoRight'>
             <div className='right-t'>
               {/* 歌名 */}
-              <div className='songName ellipsis-1'>{currentSongInfo.name}</div>
+              <div className='songName ellipsis-1' onClick={handleClickSongName}>
+                {currentSongInfo.name}
+              </div>
               {/* 歌手名 */}
-              <div className='songAuthor ellipsis-1'>{utils.getArtistStr(currentSongInfo.ar)}</div>
+              <div className='songAuthor ellipsis-1'>
+                {(currentSongInfo?.ar || []).map((item: any, index: number) => {
+                  return index === 0 ? (
+                    <span className='songAuthor-item' onClick={() => handleClickAuthorName(item)}>
+                      {item.name}
+                    </span>
+                  ) : (
+                    <>
+                      {' '}
+                      /{' '}
+                      <span className='songAuthor-item' onClick={() => handleClickAuthorName(item)}>
+                        {item.name}
+                      </span>
+                    </>
+                  )
+                })}
+              </div>
             </div>
             {/* 播放进度条 */}
             <div className='right-b'>
@@ -674,4 +703,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   }
 }
 
-export default memo(connect(mapStateToProps, mapDispatchToProps)(PlayBar))
+export default memo(connect(mapStateToProps, mapDispatchToProps)(withRouter(PlayBar)))

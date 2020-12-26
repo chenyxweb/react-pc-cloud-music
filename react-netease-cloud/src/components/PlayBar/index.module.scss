@@ -91,6 +91,7 @@
             line-height: 25px;
 
             .songName {
+              max-width: 400px;
               height: 25px;
               color: rgb(232, 232, 232);
               margin: 0px 10px;
@@ -102,9 +103,17 @@
             }
 
             .songAuthor {
-              max-width: 150px;
+              max-width: 200px;
               height: 25px;
               color: rgb(155, 155, 155);
+
+              .songAuthor-item {
+                cursor: pointer;
+
+                &:hover {
+                  text-decoration: underline;
+                }
+              }
             }
           }
 
