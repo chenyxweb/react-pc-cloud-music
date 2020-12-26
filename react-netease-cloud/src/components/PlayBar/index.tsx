@@ -1,6 +1,6 @@
 // 音乐播放条
 import { CaretRightOutlined, CloseOutlined, DeleteOutlined, DownloadOutlined, RedoOutlined } from '@ant-design/icons'
-import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react'
+import React, { FC, Fragment, memo, useCallback, useEffect, useRef, useState } from 'react'
 import { Empty, message, Slider, Tooltip } from 'antd'
 import MyTransition from 'components/MyTransition'
 import { connect } from 'react-redux'
@@ -491,17 +491,17 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
               <div className='songAuthor ellipsis-1'>
                 {(currentSongInfo?.ar || []).map((item: any, index: number) => {
                   return index === 0 ? (
-                    <span className='songAuthor-item' onClick={() => handleClickAuthorName(item)}>
+                    <span className='songAuthor-item' onClick={() => handleClickAuthorName(item)} key={index}>
                       {item.name}
                     </span>
                   ) : (
-                    <>
+                    <Fragment key={index}>
                       {' '}
                       /{' '}
                       <span className='songAuthor-item' onClick={() => handleClickAuthorName(item)}>
                         {item.name}
                       </span>
-                    </>
+                    </Fragment>
                   )
                 })}
               </div>
@@ -660,6 +660,11 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
           </div>
         </div>
       </MyTransition>
+
+      {/* 歌词轮播 */}
+      {isPlay && lyricArr[activeLyricIndex]?.content ? (
+        <div className={styles['lyric-show-box']}>{lyricArr[activeLyricIndex]?.content}</div>
+      ) : null}
 
       {/* 背景图 左边 */}
       <div className={styles['bg-l']}></div>
