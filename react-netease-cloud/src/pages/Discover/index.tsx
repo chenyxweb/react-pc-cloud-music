@@ -69,7 +69,7 @@ const Discover: FC<IProps> = props => {
       <Route path='/' component={Recommend} exact></Route>
       <Route path='/discover' component={Recommend} exact></Route>
       {/* 排行榜 */}
-      <Route path='/discover/toplist' component={Toplist}></Route>
+      <Route path='/discover/toplist/:id' component={Toplist}></Route>
       {/* 歌单列表 */}
       <Route path='/discover/playlist' component={Playlist}></Route>
       {/* 主播电台 */}

@@ -11,6 +11,7 @@ import { ICombineState } from 'store'
 import { change_current_song_info } from 'store/currentSongInfo/actions'
 import { change_is_play } from 'store/playBarState/actions'
 import { add_song_list_item, replace_song_list } from 'store/songList/actions'
+import constants from 'utils/constants'
 
 import styles from './index.module.scss'
 
@@ -30,7 +31,7 @@ const RecTopList: FC<IProps & ICombineState> = props => {
   // 获取飙升榜
   useEffect(() => {
     http
-      .getPlaylistDetail({ id: 19723756 })
+      .getPlaylistDetail({ id: constants.topListIds.S })
       .then(res => {
         if (res.data.code === 200) {
           setList1(res.data.playlist || [])
@@ -42,7 +43,7 @@ const RecTopList: FC<IProps & ICombineState> = props => {
   // 获取新歌榜
   useEffect(() => {
     http
-      .getPlaylistDetail({ id: 3779629 })
+      .getPlaylistDetail({ id: constants.topListIds.N })
       .then(res => {
         if (res.data.code === 200) {
           setList2(res.data.playlist || [])
@@ -51,10 +52,10 @@ const RecTopList: FC<IProps & ICombineState> = props => {
       .catch(() => {})
   }, [])
 
-  // 获取原创歌曲榜
+  // 获取热歌榜
   useEffect(() => {
     http
-      .getPlaylistDetail({ id: 3778678 })
+      .getPlaylistDetail({ id: constants.topListIds.H })
       .then(res => {
         if (res.data.code === 200) {
           setList3(res.data.playlist || [])
@@ -64,7 +65,8 @@ const RecTopList: FC<IProps & ICombineState> = props => {
   }, [])
 
   // 跳转到排行榜页面
-  const ToTopList = (id?: number) => props.history.push(id ? `/discover/toplist?id=${id}` : '/discover/toplist')
+  const ToTopList = (id?: number) =>
+    props.history.push(id ? `/discover/toplist/${id}` : `/discover/toplist/${constants.topListIds.S}`)
 
   // 添加歌曲到播放列表
   const addToSongList = (item: any, event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
