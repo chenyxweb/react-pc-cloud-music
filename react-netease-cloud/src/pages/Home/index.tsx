@@ -1,6 +1,6 @@
 import React, { FC, lazy, useEffect, useState } from 'react'
-import { Route, RouteComponentProps } from 'react-router-dom'
 import { SearchOutlined } from '@ant-design/icons'
+import { renderRoutes, RouteConfigComponentProps } from 'react-router-config'
 
 import constants from 'utils/constants'
 import styles from './index.module.scss'
@@ -12,17 +12,10 @@ import utils from 'utils/utils'
 // 按需加载
 const MyFooter = lazy(() => import('components/MyFooter'))
 const PlayBar = lazy(() => import('components/PlayBar'))
-const Discover = lazy(() => import('pages/Discover'))
-const Download = lazy(() => import('pages/Download'))
-const Friend = lazy(() => import('pages/Friend'))
-const Mall = lazy(() => import('pages/Mall'))
-const Musician = lazy(() => import('pages/Musician'))
-const My = lazy(() => import('pages/My'))
-const Test = lazy(() => import('pages/Test'))
 
 interface IProps {}
 
-const Home: FC<IProps & RouteComponentProps> = props => {
+const Home: FC<IProps & RouteConfigComponentProps> = props => {
   const pathname = props.location.pathname
 
   const [inputValue, setInputValue] = useState('') // input的值
@@ -234,7 +227,7 @@ const Home: FC<IProps & RouteComponentProps> = props => {
               <div className='content-wrapper'>创作者中心</div>
             </div>
             <div className='login'>
-              <span>登录</span>
+              <span onClick={() => props.history.push('/login')}>登录</span>
             </div>
           </div>
         </div>
@@ -251,14 +244,16 @@ const Home: FC<IProps & RouteComponentProps> = props => {
       {/* 路由 */}
 
       <div className={styles.routeWrapper}>
-        <Route path='/' component={Discover} exact></Route>
+        {/* <Route path='/' component={Discover} exact></Route>
         <Route path='/discover' component={Discover}></Route>
         <Route path='/my' component={My}></Route>
         <Route path='/friend' component={Friend}></Route>
         <Route path='/mall' component={Mall}></Route>
         <Route path='/musician' component={Musician}></Route>
         <Route path='/download' component={Download}></Route>
-        <Route path='/test' component={Test}></Route>
+        <Route path='/test' component={Test}></Route> */}
+
+        {renderRoutes(props.route?.routes)}
       </div>
 
       {/* Footer */}

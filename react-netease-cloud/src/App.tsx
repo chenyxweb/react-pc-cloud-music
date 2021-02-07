@@ -1,10 +1,10 @@
-import React, { Suspense, lazy } from 'react'
-import { HashRouter as Router, Route } from 'react-router-dom'
+import React, { Suspense } from 'react'
+import { HashRouter as Router } from 'react-router-dom'
 import LoadingPage from 'components/LoadingPage'
 import { BackTop } from 'antd'
 import BeforeEach from 'components/BeforeEach'
-
-const Home = lazy(() => import('./pages/Home'))
+import { renderRoutes, matchRoutes } from 'react-router-config'
+import routes from 'config/routes'
 
 const App = () => {
   return (
@@ -13,7 +13,10 @@ const App = () => {
         <Router>
           {/* 路由守卫 */}
           <BeforeEach>
-            <Route path='/' component={Home}></Route>
+            {/* <Route path='/' component={Home}></Route> */}
+
+            {/* 渲染根路由 */}
+            {renderRoutes(routes)}
           </BeforeEach>
         </Router>
       </Suspense>
@@ -29,5 +32,7 @@ const App = () => {
     </div>
   )
 }
+
+console.log('matchRoutes方法测试', matchRoutes(routes, '/test'))
 
 export default App

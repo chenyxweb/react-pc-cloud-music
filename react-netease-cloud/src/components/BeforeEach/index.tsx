@@ -32,9 +32,10 @@ interface IProps {}
 
 const BeforeEach: FC<IProps & RouteComponentProps> = props => {
   useEffect(() => {
+    console.log(props)
     // 滚动到顶部
     document.querySelector('#root > .app')?.scrollTo(0, 0)
-  }, [props.location.pathname])
+  }, [props.location.pathname, props])
   return props.children as ReactElement
 }
 

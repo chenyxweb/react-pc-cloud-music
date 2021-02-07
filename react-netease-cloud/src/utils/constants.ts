@@ -19,7 +19,7 @@ const topListIds = {
 
 // sub-menu
 const subMenu = [
-  { name: '推荐', path: '/discover' },
+  { name: '推荐', path: '/' },
   { name: '排行榜', path: `/discover/toplist/${topListIds.S}` },
   { name: '歌单', path: '/discover/playlist' },
   { name: '主播电台', path: '/discover/djradio' },
