@@ -1,4 +1,23 @@
 # 更新日志
+### 4.0.3 | 2021.1.28
+- 修复云盘接口中文音乐信息乱码的问题 [#1108](https://github.com/Binaryify/NeteaseCloudMusicApi/issues/1108)
+
+### 4.0.2 | 2021.1.18
+- 修复未绑定手机号对歌单添加或删除歌曲无响应的问题 [#1099](https://github.com/Binaryify/NeteaseCloudMusicApi/issues/1099)
+
+### 4.0.1 | 2021.1.09
+- 新增歌单详情动态接口 [#1088](https://github.com/Binaryify/NeteaseCloudMusicApi/issues/1088)
+
+### 4.0.0 | 2021.1.03
+- 新增云盘上传接口,新增二维码登录相关接口和相关demo(http://localhost:3000/qrlogin.html, http://localhost:3000/cloud.html),更新 d.ts
+
+- 升级部分接口加密方法("linuxapi" 都替换到了"api")
+
+- 更新 `login/status` 接口(返回字段和之前不一样)
+
+### 3.47.5 | 2020.12.20
+- 更新appver [#1060](https://github.com/Binaryify/NeteaseCloudMusicApi/issues/1060)
+
 ### 3.47.4 | 2020.12.03
 - 修复收藏的专栏接口无法调用的问题 [#1042](https://github.com/Binaryify/NeteaseCloudMusicApi/issues/1042)
 

@@ -14,6 +14,7 @@
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
     "@types/react-redux": "^7.1.12",
+    "@types/react-router-config": "^5.0.2",
     "@types/react-router-dom": "^5.1.6",
     "@types/react-transition-group": "^4.4.0",
     "@types/redux-logger": "^3.0.8",
@@ -25,6 +26,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-redux": "^7.2.2",
+    "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "react-transition-group": "^4.4.1",
@@ -36,7 +38,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "dev": "cross-env REACT_APP_MODE=dev REACT_APP_JS_NAME=.js PORT=3000 react-app-rewired start",
+    "start": "cross-env REACT_APP_MODE=dev REACT_APP_JS_NAME=.js PORT=3000 react-app-rewired start",
     "build": "cross-env REACT_APP_MODE=build REACT_APP_JS_NAME=.min.js GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=10000 react-app-rewired build",
     "build:WBJ": "cross-env REACT_APP_MODE=build_wbj REACT_APP_JS_NAME=.min.js GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=10000 react-app-rewired build"
   },

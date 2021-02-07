@@ -11,6 +11,7 @@ const App = () => {
     <div className='app'>
       <Suspense fallback={<LoadingPage text='努力加载中...' />}>
         <Router>
+          {/* 路由守卫 */}
           <BeforeEach>
             <Route path='/' component={Home}></Route>
           </BeforeEach>
@@ -30,5 +31,3 @@ const App = () => {
 }
 
 export default App
-
-

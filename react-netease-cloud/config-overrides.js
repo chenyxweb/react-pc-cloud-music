@@ -58,15 +58,15 @@ module.exports = {
         ? {
             // 库名 : 变量名
             react: 'React',
-            'react-dom': 'ReactDOM',
-            'react-router-dom': 'ReactRouterDOM',
+            antd: 'antd',
             axios: 'axios',
             dayjs: 'dayjs',
             redux: 'Redux',
+            'react-dom': 'ReactDOM',
+            'react-router-dom': 'ReactRouterDOM',
             'react-redux': 'ReactRedux',
             'react-transition-group': 'ReactTransitionGroup',
             'redux-thunk': 'ReduxThunk',
-            antd: 'antd',
           }
         : {}
     )

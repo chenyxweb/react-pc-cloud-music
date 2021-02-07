@@ -924,6 +924,14 @@ const audioRef = useRef<HTMLAudioElement>(null)
 
 
 
+### 13 路由集中管理
+
+https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
+
+
+
+
+
 ## 坑
 
 - 删除歌曲冒泡导致点击了歌曲列表项  , 需要清除冒泡 (***), 习惯性清除冒泡
