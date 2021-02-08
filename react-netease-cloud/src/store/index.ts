@@ -13,10 +13,11 @@ import { songListReducer } from './songList/reducer'
 import { currentSongInfoReducer } from './currentSongInfo/reducer'
 import constants from 'utils/constants'
 import { playBarStateReducer } from './playBarState/reducer'
+import { userInfoReducer } from './userInfo/reducer'
 
 export interface IAction {
   type: string
-  payload: any
+  payload?: any
 }
 
 // store 的数据类型
@@ -35,11 +36,13 @@ const configStore = () => {
     songList: songListReducer,
     currentSongInfo: currentSongInfoReducer,
     playBarState: playBarStateReducer,
+    userInfo: userInfoReducer,
   })
 
   // 拿本地存储
   const songList = JSON.parse(localStorage.getItem(constants.SONG_LIST) || '[]')
   const currentSongInfo = JSON.parse(localStorage.getItem(constants.CURRENT_SONG_INFO) || '{}')
+  const userInfo = JSON.parse(localStorage.getItem(constants.USER_INFO) || '{}')
 
   // 创建store
   // 参数1 : reducer
@@ -51,6 +54,7 @@ const configStore = () => {
       songList: songList.length > 0 ? songList : initialData.songList,
       currentSongInfo: currentSongInfo.name ? currentSongInfo : initialData.currentSongInfo,
       playBarState: { isPlay: false },
+      userInfo: userInfo,
     },
     composeWithDevTools(middlewares)
   )
@@ -58,10 +62,11 @@ const configStore = () => {
   // 监听store的改变
   store.subscribe(() => {
     // console.log('store当前状态:', store.getState())
-    const { songList, currentSongInfo } = store.getState()
+    const { songList, currentSongInfo, userInfo } = store.getState()
     // 保存到本地
     localStorage.setItem(constants.SONG_LIST, JSON.stringify(songList))
     localStorage.setItem(constants.CURRENT_SONG_INFO, JSON.stringify(currentSongInfo))
+    localStorage.setItem(constants.USER_INFO, JSON.stringify(userInfo))
   })
 
   // 返回store

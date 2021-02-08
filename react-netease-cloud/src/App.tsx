@@ -1,12 +1,12 @@
-import React, { Suspense } from 'react'
+import React, { FC, Suspense } from 'react'
 import { HashRouter as Router } from 'react-router-dom'
 import LoadingPage from 'components/LoadingPage'
 import { BackTop } from 'antd'
 import BeforeEach from 'components/BeforeEach'
-import { renderRoutes, matchRoutes } from 'react-router-config'
+import { renderRoutes } from 'react-router-config'
 import routes from 'config/routes'
 
-const App = () => {
+const App: FC = () => {
   return (
     <div className='app'>
       <Suspense fallback={<LoadingPage text='努力加载中...' />}>
@@ -32,7 +32,5 @@ const App = () => {
     </div>
   )
 }
-
-console.log('matchRoutes方法测试', matchRoutes(routes, '/test'))
 
 export default App

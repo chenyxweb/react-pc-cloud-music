@@ -1,18 +1,28 @@
 # react-netease-cloud
 
-## 相关
+使用react实现的仿网易云项目
+
+
+## 技术栈
+```
+1. react + redux + react-redux + react-router-dom + react-router-config + antd + axios
+2. 使用TypeScript
+3. 全部使用函数组件 + react-hooks
+```
+
+## 相关参考
 
 官方网站 : https://music.163.com/#
 
-参考网站 : [www.wanguancs.top](http://www.wanguancs.top/)
+参考nodeJS api地址 : https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi
 
-参考api地址 : https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi
-
-掘金接口地址 : http://123.57.176.198:3000/
+参考接口地址 : http://123.57.176.198:3000/
 
 本地服务接口地址 : http://localhost:2333/
 
-## 技术点
+参考网站 : [www.wanguancs.top](http://www.wanguancs.top/)
+
+## 功能实现
 
 ### 1 轮播背景实现
 
@@ -627,20 +637,21 @@ export const songListReducer = (state: any[] = [], action: IAction) => {
 // actions creator  指挥者(要干什么)
 
 import http from 'service/http'
+import { IAction } from 'store'
 import { change_current_song_info } from 'store/currentSongInfo/actions'
 import { ADD_SONG_LIST_ITEM, DEL_SONG_LIST_ITEM, CLEAR_SONG_LIST, REPLACE_SONG_LIST } from './actionTypes'
 
 // 添加一首歌
-export const add_song_list_item = (listItem: any) => ({ type: ADD_SONG_LIST_ITEM, payload: listItem })
+export const add_song_list_item = (listItem: any): IAction => ({ type: ADD_SONG_LIST_ITEM, payload: listItem })
 
 // 删除一首歌
-export const del_song_list_item = (songId: number) => ({ type: DEL_SONG_LIST_ITEM, payload: songId })
+export const del_song_list_item = (songId: number): IAction => ({ type: DEL_SONG_LIST_ITEM, payload: songId })
 
 // 清空播放列表
-export const clear_song_list = () => ({ type: CLEAR_SONG_LIST })
+export const clear_song_list = (): IAction => ({ type: CLEAR_SONG_LIST })
 
 // 替换播放列表
-export const replace_song_list = (list: any[]) => ({ type: REPLACE_SONG_LIST, payload: list })
+export const replace_song_list = (list: any[]): IAction => ({ type: REPLACE_SONG_LIST, payload: list })
 
 /**
  * 根据歌单id获取歌单列表,并替换原来的列表;
@@ -924,7 +935,7 @@ const audioRef = useRef<HTMLAudioElement>(null)
 
 
 
-### 13 react路由集中管理
+### 13 react路由集中管理和权限控制
 
 https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 
@@ -970,7 +981,10 @@ const routes: RouteConfig[] = [
   {
     path: '/login',
     component: Login,
+    meta: { requiresAuth: false },
   },
+
+  { path: '/test', component: Test, meta: { requiresAuth: true } }, // 可以新增属性,用于权限控制等功能
 
   // 将其他路由放在前面, 可以防止 '/' 直接匹配Home组件的问题,
   // 未使用react-router-config时, 需要配合Switch组件实现
@@ -978,6 +992,7 @@ const routes: RouteConfig[] = [
   {
     path: '/',
     component: Home,
+    meta: { requiresAuth: false },
     // routes : 嵌套子路由
     routes: [
       // 发现
@@ -985,9 +1000,10 @@ const routes: RouteConfig[] = [
         path: '/',
         exact: true,
         component: Discover,
+        meta: { requiresAuth: false },
         routes: [
           // 推荐
-          { path: '/', exact: true, component: Recommend },
+          { path: '/', exact: true, component: Recommend, meta: { requiresAuth: false } },
         ],
       },
       {
@@ -996,36 +1012,35 @@ const routes: RouteConfig[] = [
         routes: [
           // { path: '/discover', exact: true, component: Recommend },
           // 排行榜
-          { path: '/discover/toplist/:id', component: Toplist },
+          { path: '/discover/toplist/:id', component: Toplist, meta: { requiresAuth: false } },
           // 歌单列表
-          { path: '/discover/playlist', component: Playlist },
+          { path: '/discover/playlist', component: Playlist, meta: { requiresAuth: false } },
           // 主播电台
-          { path: '/discover/djradio', component: Djradio },
+          { path: '/discover/djradio', component: Djradio, meta: { requiresAuth: false } },
           // 歌手列表
-          { path: '/discover/artist', component: Artist },
+          { path: '/discover/artist', component: Artist, meta: { requiresAuth: false } },
           // 新碟上架 - 专辑列表
-          { path: '/discover/album', component: Album },
+          { path: '/discover/album', component: Album, meta: { requiresAuth: false } },
           // 歌单详情
-          { path: '/discover/playlist-detail', component: PlaylistDetail },
+          { path: '/discover/playlist-detail', component: PlaylistDetail, meta: { requiresAuth: false } },
           // 专辑详情
-          { path: '/discover/album-detail', component: AlbumDetail },
+          { path: '/discover/album-detail', component: AlbumDetail, meta: { requiresAuth: false } },
           // 歌手详情
-          { path: '/discover/artist-detail', component: ArtistDetail },
+          { path: '/discover/artist-detail', component: ArtistDetail, meta: { requiresAuth: false } },
           // 歌曲详情页
-          { path: '/discover/song', component: Song },
+          { path: '/discover/song', component: Song, meta: { requiresAuth: false } },
         ],
       },
       // 我的音乐
-      { path: '/my', component: My },
+      { path: '/my', component: My, meta: { requiresAuth: false } },
       // 朋友
-      { path: '/friend', component: Friend },
+      { path: '/friend', component: Friend, meta: { requiresAuth: false } },
       // 商城
-      { path: '/mall', component: Mall },
+      { path: '/mall', component: Mall, meta: { requiresAuth: false } },
       // 音乐人
-      { path: '/musician', component: Musician },
+      { path: '/musician', component: Musician, meta: { requiresAuth: false } },
       // 下载客户端
-      { path: '/download', component: Download },
-      { path: '/test', component: Test, auth: true }, // 可以新增属性,用于权限控制等功能
+      { path: '/download', component: Download, meta: { requiresAuth: false } },
     ],
   },
 ]
@@ -1089,11 +1104,229 @@ export default Home
 
 
 
+#### 配合BeforeEach组件实现路由拦截效果
+
+```tsx
+// components/BeforeEach/index.tsx
+
+// 切换页面后回到顶部
+// 前置路由守卫
+import routes from 'config/routes'
+import { matchRoutes } from 'react-router-config'
+
+import React from 'react'
+import { FC, ReactElement, useEffect } from 'react'
+import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+
+interface IProps {
+  userInfo: any
+}
+
+const BeforeEach: FC<IProps & RouteComponentProps> = props => {
+  const {
+    children,
+    location: { pathname },
+    userInfo,
+  } = props
+
+  // 滚动到顶部
+  useEffect(() => {
+    // console.log(props)
+    document.querySelector('#root > .app')?.scrollTo(0, 0)
+  }, [pathname])
+
+  //
+  // 获取要访问页面的路由信息
+  const route = matchRoutes(routes, pathname).find(item => item.route.path === pathname)
+
+  console.log('所有匹配到的路由: ', matchRoutes(routes, pathname))
+  console.log('根据pathname匹配到的路由: ', route)
+
+  // 访问login,和needAuth为false或空的页面放行
+  if (route?.route?.path === '/login' || !route?.route?.meta?.requiresAuth) {
+    return children as ReactElement
+  }
+
+  // // 访问needAuth为true的页面,判断是否登录,然后用户对应角色是否有该页面访问权限
+  if (route?.route?.meta?.requiresAuth) {
+    if (!userInfo.token) {
+      return <Redirect to={`/login?from=${route.route.path}`}></Redirect>
+    } else {
+      return children as ReactElement
+    }
+  }
+
+  return null
+}
+
+BeforeEach.defaultProps = {}
+
+// map store
+const mapStateToProps = (state: any) => {
+  return {
+    userInfo: state.userInfo,
+  }
+}
+
+export default withRouter(connect(mapStateToProps)(BeforeEach))
+
+
+```
+
+
+
 ### 14 首页图片懒加载问题 TODO
+
+
+
+### 15 页面逻辑
+
+#### 登录页大致逻辑
+
+```tsx
+import { Button } from 'antd'
+import React, { FC } from 'react'
+import { connect, DispatchProp } from 'react-redux'
+import { update_user_info } from 'store/userInfo/actions'
+import qs from 'qs'
+import styles from './index.module.scss'
+import { withRouter } from 'react-router-dom'
+import { RouteConfigComponentProps } from 'react-router-config'
+
+interface IProps {}
+
+const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
+  // 登录
+  const handleLogin = () => {
+    // 模拟接口响应数据
+    const userInfo = {
+      username: 'admin',
+      avatar: '',
+      token: 'AHASDFSJFASNF_13123SDAF',
+      authRoutes: [],
+    }
+
+    // 用户信息存store,存localStorage
+    props.dispatch(update_user_info(userInfo))
+    localStorage.setItem('USER_INFO', JSON.stringify(userInfo))
+
+    // 获取from页面
+    const search = props.location.search || ''
+    const queryObj = qs.parse(search.split('?')[1]) || {}
+
+    if (queryObj.from) {
+      // 去from页面
+      props.history.replace(queryObj.from as string)
+    } else {
+      // 去首页
+      props.history.replace('/')
+    }
+  }
+
+  return (
+    <div className={styles.Login}>
+      Login
+      <Button onClick={handleLogin}>登录</Button>
+    </div>
+  )
+}
+
+Login.defaultProps = {}
+
+export default withRouter(connect()(Login))
+
+```
+
+
+
+### 16 项目配置文件
+
+```js
+// config-overrides.js
+
+const { override, fixBabelImports, addWebpackExternals } = require('customize-cra')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+
+//生产环境去除console.
+const dropConsole = () => config => {
+  if (process.env.NODE_ENV === 'production') {
+    if (config.optimization.minimizer) {
+      config.optimization.minimizer.forEach(minimizer => {
+        if (minimizer.constructor.name === 'TerserPlugin') {
+          minimizer.options.terserOptions.compress.drop_console = true
+        }
+      })
+    }
+  }
+
+  return config
+}
+
+// production 配置
+const prodConfig = () => config => {
+  if (config.mode === 'development') {
+    console.log('development')
+  } else if (config.mode === 'production') {
+    console.log('production')
+    // 打包gzip配置
+    config.plugins.push(
+      new CompressionWebpackPlugin({
+        test: /\.js$|\.css$/,
+        threshold: 10 * 1024, // 10k以上开启gzip
+      })
+    )
+  }
+
+  return config
+}
+
+// 加快编译速度
+const compileSpeed = () => config => {
+  config.plugins = config.plugins.filter(plugin => !(plugin.options && plugin.options.eslintPath))
+  return config
+}
+
+module.exports = {
+  webpack: override(
+    // antd 按需加载
+    // fixBabelImports('antd', {
+    //   libraryName: 'antd',
+    //   style: 'css',
+    // }),
+
+    dropConsole(), // 去除console.
+    prodConfig(), // production 配置
+    compileSpeed(), // 加快编译速度
+
+    // cdn
+    addWebpackExternals(
+      process.env.NODE_ENV === 'production'
+        ? {
+            // 库名 : 变量名
+            react: 'React',
+            antd: 'antd',
+            axios: 'axios',
+            dayjs: 'dayjs',
+            redux: 'Redux',
+            'react-dom': 'ReactDOM',
+            'react-router-dom': 'ReactRouterDOM',
+            'react-redux': 'ReactRedux',
+            'react-transition-group': 'ReactTransitionGroup',
+            'redux-thunk': 'ReduxThunk',
+          }
+        : {}
+    )
+  ),
+}
+
+```
+
+
 
 
 
 ## 坑
 
-- 删除歌曲冒泡导致点击了歌曲列表项  , 需要清除冒泡 (***), 习惯性清除冒泡
+- 删除歌曲冒泡导致点击了歌曲列表项  , 需要清除冒泡 (***), 习惯性要清除冒泡
 

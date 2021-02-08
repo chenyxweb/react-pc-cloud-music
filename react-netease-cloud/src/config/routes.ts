@@ -29,7 +29,10 @@ const routes: RouteConfig[] = [
   {
     path: '/login',
     component: Login,
+    meta: { requiresAuth: false },
   },
+
+  { path: '/test', component: Test, meta: { requiresAuth: true } }, // 可以新增属性,用于权限控制等功能
 
   // 将其他路由放在前面, 可以防止 '/' 直接匹配Home组件的问题,
   // 未使用react-router-config时, 需要配合Switch组件实现
@@ -37,6 +40,7 @@ const routes: RouteConfig[] = [
   {
     path: '/',
     component: Home,
+    meta: { requiresAuth: false },
     // routes : 嵌套子路由
     routes: [
       // 发现
@@ -44,9 +48,10 @@ const routes: RouteConfig[] = [
         path: '/',
         exact: true,
         component: Discover,
+        meta: { requiresAuth: false },
         routes: [
           // 推荐
-          { path: '/', exact: true, component: Recommend },
+          { path: '/', exact: true, component: Recommend, meta: { requiresAuth: false } },
         ],
       },
       {
@@ -55,36 +60,35 @@ const routes: RouteConfig[] = [
         routes: [
           // { path: '/discover', exact: true, component: Recommend },
           // 排行榜
-          { path: '/discover/toplist/:id', component: Toplist },
+          { path: '/discover/toplist/:id', component: Toplist, meta: { requiresAuth: false } },
           // 歌单列表
-          { path: '/discover/playlist', component: Playlist },
+          { path: '/discover/playlist', component: Playlist, meta: { requiresAuth: false } },
           // 主播电台
-          { path: '/discover/djradio', component: Djradio },
+          { path: '/discover/djradio', component: Djradio, meta: { requiresAuth: false } },
           // 歌手列表
-          { path: '/discover/artist', component: Artist },
+          { path: '/discover/artist', component: Artist, meta: { requiresAuth: false } },
           // 新碟上架 - 专辑列表
-          { path: '/discover/album', component: Album },
+          { path: '/discover/album', component: Album, meta: { requiresAuth: false } },
           // 歌单详情
-          { path: '/discover/playlist-detail', component: PlaylistDetail },
+          { path: '/discover/playlist-detail', component: PlaylistDetail, meta: { requiresAuth: false } },
           // 专辑详情
-          { path: '/discover/album-detail', component: AlbumDetail },
+          { path: '/discover/album-detail', component: AlbumDetail, meta: { requiresAuth: false } },
           // 歌手详情
-          { path: '/discover/artist-detail', component: ArtistDetail },
+          { path: '/discover/artist-detail', component: ArtistDetail, meta: { requiresAuth: false } },
           // 歌曲详情页
-          { path: '/discover/song', component: Song },
+          { path: '/discover/song', component: Song, meta: { requiresAuth: false } },
         ],
       },
       // 我的音乐
-      { path: '/my', component: My },
+      { path: '/my', component: My, meta: { requiresAuth: false } },
       // 朋友
-      { path: '/friend', component: Friend },
+      { path: '/friend', component: Friend, meta: { requiresAuth: false } },
       // 商城
-      { path: '/mall', component: Mall },
+      { path: '/mall', component: Mall, meta: { requiresAuth: false } },
       // 音乐人
-      { path: '/musician', component: Musician },
+      { path: '/musician', component: Musician, meta: { requiresAuth: false } },
       // 下载客户端
-      { path: '/download', component: Download },
-      { path: '/test', component: Test, auth: true }, // 可以新增属性,用于权限控制等功能
+      { path: '/download', component: Download, meta: { requiresAuth: false } },
     ],
   },
 ]

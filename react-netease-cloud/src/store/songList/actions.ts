@@ -1,20 +1,21 @@
 // actions creator  指挥者(要干什么)
 
 import http from 'service/http'
+import { IAction } from 'store'
 import { change_current_song_info } from 'store/currentSongInfo/actions'
 import { ADD_SONG_LIST_ITEM, DEL_SONG_LIST_ITEM, CLEAR_SONG_LIST, REPLACE_SONG_LIST } from './actionTypes'
 
 // 添加一首歌
-export const add_song_list_item = (listItem: any) => ({ type: ADD_SONG_LIST_ITEM, payload: listItem })
+export const add_song_list_item = (listItem: any): IAction => ({ type: ADD_SONG_LIST_ITEM, payload: listItem })
 
 // 删除一首歌
-export const del_song_list_item = (songId: number) => ({ type: DEL_SONG_LIST_ITEM, payload: songId })
+export const del_song_list_item = (songId: number): IAction => ({ type: DEL_SONG_LIST_ITEM, payload: songId })
 
 // 清空播放列表
-export const clear_song_list = () => ({ type: CLEAR_SONG_LIST })
+export const clear_song_list = (): IAction => ({ type: CLEAR_SONG_LIST })
 
 // 替换播放列表
-export const replace_song_list = (list: any[]) => ({ type: REPLACE_SONG_LIST, payload: list })
+export const replace_song_list = (list: any[]): IAction => ({ type: REPLACE_SONG_LIST, payload: list })
 
 /**
  * 根据歌单id获取歌单列表,并替换原来的列表;

@@ -27,15 +27,13 @@ const subMenu = [
   { name: '新碟上架', path: '/discover/album' },
 ]
 
-const SONG_LIST = 'songList'
-const CURRENT_SONG_INFO = 'currentSongInfo'
-
 // 合并
 const constants = {
   topMenu,
   subMenu,
-  SONG_LIST,
-  CURRENT_SONG_INFO,
+  SONG_LIST: 'songList',
+  CURRENT_SONG_INFO: 'currentSongInfo',
+  USER_INFO: 'user_info',
   topListIds,
 }
 
