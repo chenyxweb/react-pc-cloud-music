@@ -5,6 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import http from 'service/http'
 import { chunk } from 'lodash-es'
+import LazyLoad from 'react-lazyload'
 
 import styles from './index.module.scss'
 
@@ -67,7 +68,9 @@ const NewDisk: FC<IProps> = props => {
                           // 每一页
                           <div className='swiper-item' key={ite.id}>
                             <div className='img'>
-                              <img src={ite.picUrl} title={ite.name} alt='' onClick={() => toAlbumDetail(ite.id)} />
+                              <LazyLoad height={100} overflow scrollContainer='#root > .app'>
+                                <img src={ite.picUrl} title={ite.name} alt='' onClick={() => toAlbumDetail(ite.id)} />
+                              </LazyLoad>
                             </div>
                             {/* 歌名 */}
                             <p className='song-name ellipsis-1' onClick={() => toAlbumDetail(ite.id)}>

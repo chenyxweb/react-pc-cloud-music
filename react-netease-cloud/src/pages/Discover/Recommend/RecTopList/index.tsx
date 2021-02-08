@@ -3,6 +3,7 @@
 import { FolderAddOutlined, PlayCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { message } from 'antd'
 import React, { FC, memo, useEffect, useState } from 'react'
+import LazyLoad from 'react-lazyload'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { Dispatch } from 'redux'
@@ -153,7 +154,9 @@ const RecTopList: FC<IProps & ICombineState> = props => {
         <div className={styles.up}>
           {/* logo */}
           <div className='logo'>
-            <img src={list1.coverImgUrl} alt='' title={list1.name} onClick={() => ToTopList(list1.id)} />
+            <LazyLoad height={80}>
+              <img src={list1.coverImgUrl} alt='' title={list1.name} onClick={() => ToTopList(list1.id)} />
+            </LazyLoad>
             <div className='text'>
               <div className='name' onClick={() => ToTopList(list1.id)}>
                 {list1.name}
@@ -196,7 +199,9 @@ const RecTopList: FC<IProps & ICombineState> = props => {
         {/* 新歌榜 2 */}
         <div className={styles.new}>
           <div className='logo'>
-            <img src={list2.coverImgUrl} alt='' title={list2.name} onClick={() => ToTopList(list2.id)} />
+            <LazyLoad height={80}>
+              <img src={list2.coverImgUrl} alt='' title={list2.name} onClick={() => ToTopList(list2.id)} />
+            </LazyLoad>
             <div className='text'>
               <div className='name' onClick={() => ToTopList(list2.id)}>
                 {list2.name}
@@ -239,7 +244,9 @@ const RecTopList: FC<IProps & ICombineState> = props => {
         {/* 热歌榜 3 */}
         <div className={styles.origin}>
           <div className='logo'>
-            <img src={list3.coverImgUrl} alt='' title={list3.name} onClick={() => ToTopList(list3.id)} />
+            <LazyLoad height={80}>
+              <img src={list3.coverImgUrl} alt='' title={list3.name} onClick={() => ToTopList(list3.id)} />
+            </LazyLoad>
             <div className='text'>
               <div className='name' onClick={() => ToTopList(list3.id)}>
                 {list3.name}

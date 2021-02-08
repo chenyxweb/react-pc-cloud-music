@@ -1,6 +1,7 @@
 // 发现音乐 - 推荐 - 热门歌手列表
 
 import React, { FC, memo, useEffect, useState } from 'react'
+import LazyLoad from 'react-lazyload'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import http from 'service/http'
 
@@ -38,7 +39,9 @@ const RecArtistList: FC<IProps> = props => {
         {list.map(item => {
           return (
             <div className='list-item' key={item.id} onClick={() => handleListItemClick(item.id)}>
-              <img src={item.img1v1Url} alt='' />
+              <LazyLoad height={62} overflow scrollContainer='#root > .app'>
+                <img src={item.img1v1Url} alt='' />
+              </LazyLoad>
               <div className='desc'>
                 <div className='name'>{item.name}</div>
                 <div className='type'>热门歌手</div>
