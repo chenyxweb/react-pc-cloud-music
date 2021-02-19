@@ -1,5 +1,6 @@
 const { override, fixBabelImports, addWebpackExternals } = require('customize-cra')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const WebpackBar = require('webpackbar')
 
 //生产环境去除console.
 const dropConsole = () => config => {
@@ -34,23 +35,26 @@ const prodConfig = () => config => {
   return config
 }
 
-// 加快编译速度
-const compileSpeed = () => config => {
-  config.plugins = config.plugins.filter(plugin => !(plugin.options && plugin.options.eslintPath))
+// 添加 webpack 进度条
+const addWebpackBar = options => config => {
+  config.plugins.push(new WebpackBar(options))
+
   return config
 }
 
 module.exports = {
   webpack: override(
     // antd 按需加载
-    // fixBabelImports('antd', {
-    //   libraryName: 'antd',
-    //   style: 'css',
-    // }),
+    fixBabelImports('antd', {
+      libraryName: 'antd',
+      style: 'css',
+    }),
 
-    dropConsole(), // 去除console.
+    dropConsole(), // 生产环境去除console
+
     prodConfig(), // production 配置
-    compileSpeed(), // 加快编译速度
+
+    addWebpackBar({ profile: true }), // 添加 webpack bar
 
     // cdn
     addWebpackExternals(
@@ -58,15 +62,12 @@ module.exports = {
         ? {
             // 库名 : 变量名
             react: 'React',
-            antd: 'antd',
             axios: 'axios',
-            dayjs: 'dayjs',
             redux: 'Redux',
             'react-dom': 'ReactDOM',
             'react-router-dom': 'ReactRouterDOM',
             'react-redux': 'ReactRedux',
             'react-transition-group': 'ReactTransitionGroup',
-            'redux-thunk': 'ReduxThunk',
           }
         : {}
     )

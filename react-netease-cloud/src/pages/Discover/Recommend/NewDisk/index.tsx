@@ -22,6 +22,8 @@ const NewDisk: FC<IProps> = props => {
         if (res.data.code === 200) {
           // 每5项push成一项数组
           const list = res.data.albums || []
+          // 取出前十项
+
           // console.log('list', chunk(list, 5))
           setList(chunk(list, 5))
         }
@@ -68,8 +70,14 @@ const NewDisk: FC<IProps> = props => {
                           // 每一页
                           <div className='swiper-item' key={ite.id}>
                             <div className='img'>
-                              <LazyLoad height={100} overflow scrollContainer='#root > .app'>
-                                <img src={ite.picUrl} title={ite.name} alt='' onClick={() => toAlbumDetail(ite.id)} />
+                              {/* react-lazyload 图片懒加载 */}
+                              <LazyLoad height={100}>
+                                <img
+                                  src={ite.picUrl + '?param=100y100'}
+                                  title={ite.name}
+                                  alt=''
+                                  onClick={() => toAlbumDetail(ite.id)}
+                                />
                               </LazyLoad>
                             </div>
                             {/* 歌名 */}

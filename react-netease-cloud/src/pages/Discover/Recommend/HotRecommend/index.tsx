@@ -95,7 +95,8 @@ const HotRecommend: FC<IProps & Pick<ICombineState, 'playBarState'> & RouteCompo
             <div className={styles.recommendListItem} key={item.id} title={item.name}>
               <div className='img-wrapper'>
                 <img
-                  src={item.picUrl}
+                  // ?param=140y140 降低图片分辨率
+                  src={item.picUrl + '?param=140y140'}
                   alt=''
                   onClick={() => props.history.push(`/discover/playlist-detail?id=${item.id}`)}
                 />
@@ -126,4 +127,4 @@ const mapStateToProps = (state: ICombineState) => {
   }
 }
 
-export default memo(connect(mapStateToProps)(withRouter(HotRecommend)))
+export default connect(mapStateToProps)(withRouter(memo(HotRecommend)))

@@ -135,6 +135,61 @@ const RecTopList: FC<IProps & ICombineState> = props => {
     id && props.history.push(`/discover/song?id=${id}`)
   }
 
+  // 渲染列表
+  const renderList = (list: any) => {
+    return (
+      <div className={styles.up}>
+        {/* logo */}
+        <div className='logo'>
+          <LazyLoad height={80}>
+            <img
+              src={list.coverImgUrl + '?param=100y100'}
+              alt=''
+              title={list.name}
+              onClick={() => ToTopList(list.id)}
+            />
+          </LazyLoad>
+          <div className='text'>
+            <div className='name' onClick={() => ToTopList(list.id)}>
+              {list.name}
+            </div>
+            <div className='btns'>
+              <PlayCircleOutlined
+                title='播放榜单'
+                className='icon'
+                onClick={() => handleClickPlayTopList(list?.tracks || [], list?.name)}
+              />
+              <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
+            </div>
+          </div>
+        </div>
+        {/* list */}
+        <div className='list'>
+          {list.tracks?.slice(0, 10).map((item: any, index: number) => {
+            return (
+              <div className='list-item' key={item.id}>
+                <div className={`list-item-num ${index <= 2 ? 'red' : ''}`}>{index + 1}</div>
+                <div className='list-item-name ellipsis-1' onClick={() => handleSongClick(item.id)}>
+                  {item.name}
+                </div>
+                <div className='list-item-btns'>
+                  <PlayCircleOutlined title='播放' className='icon' onClick={e => playCurrentSong(item, e)} />
+                  <PlusOutlined title='添加到播放列表' className='icon' onClick={e => addToSongList(item, e)} />
+                  <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
+                </div>
+              </div>
+            )
+          })}
+          <div className='list-item'>
+            <span className='look-all' onClick={() => ToTopList(list.id)}>
+              查看全部{' >'}
+            </span>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.RecTopList}>
       {/* title */}
@@ -151,140 +206,13 @@ const RecTopList: FC<IProps & ICombineState> = props => {
       {/* 榜单 */}
       <div className={styles.toplist}>
         {/* 飙升榜 1 */}
-        <div className={styles.up}>
-          {/* logo */}
-          <div className='logo'>
-            <LazyLoad height={80}>
-              <img src={list1.coverImgUrl} alt='' title={list1.name} onClick={() => ToTopList(list1.id)} />
-            </LazyLoad>
-            <div className='text'>
-              <div className='name' onClick={() => ToTopList(list1.id)}>
-                {list1.name}
-              </div>
-              <div className='btns'>
-                <PlayCircleOutlined
-                  title='播放榜单'
-                  className='icon'
-                  onClick={() => handleClickPlayTopList(list1?.tracks || [], list1?.name)}
-                />
-                <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
-              </div>
-            </div>
-          </div>
-          {/* list */}
-          <div className='list'>
-            {list1.tracks?.slice(0, 10).map((item: any, index: number) => {
-              return (
-                <div className='list-item' key={item.id}>
-                  <div className={`list-item-num ${index <= 2 ? 'red' : ''}`}>{index + 1}</div>
-                  <div className='list-item-name ellipsis-1' onClick={() => handleSongClick(item.id)}>
-                    {item.name}
-                  </div>
-                  <div className='list-item-btns'>
-                    <PlayCircleOutlined title='播放' className='icon' onClick={e => playCurrentSong(item, e)} />
-                    <PlusOutlined title='添加到播放列表' className='icon' onClick={e => addToSongList(item, e)} />
-                    <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
-                  </div>
-                </div>
-              )
-            })}
-            <div className='list-item'>
-              <span className='look-all' onClick={() => ToTopList(list1.id)}>
-                查看全部{' >'}
-              </span>
-            </div>
-          </div>
-        </div>
+        {renderList(list1)}
 
         {/* 新歌榜 2 */}
-        <div className={styles.new}>
-          <div className='logo'>
-            <LazyLoad height={80}>
-              <img src={list2.coverImgUrl} alt='' title={list2.name} onClick={() => ToTopList(list2.id)} />
-            </LazyLoad>
-            <div className='text'>
-              <div className='name' onClick={() => ToTopList(list2.id)}>
-                {list2.name}
-              </div>
-              <div className='btns'>
-                <PlayCircleOutlined
-                  className='icon'
-                  title='播放榜单'
-                  onClick={() => handleClickPlayTopList(list2?.tracks || [], list2?.name)}
-                />
-                <FolderAddOutlined className='icon' onClick={() => message.info('暂无收藏功能')} />
-              </div>
-            </div>
-          </div>
-          {/* list */}
-          <div className='list'>
-            {list2.tracks?.slice(0, 10).map((item: any, index: number) => {
-              return (
-                <div className='list-item' key={item.id}>
-                  <div className={`list-item-num ${index <= 2 ? 'red' : ''}`}>{index + 1}</div>
-                  <div className='list-item-name ellipsis-1' onClick={() => handleSongClick(item.id)}>
-                    {item.name}
-                  </div>
-                  <div className='list-item-btns'>
-                    <PlayCircleOutlined title='播放' className='icon' onClick={e => playCurrentSong(item, e)} />
-                    <PlusOutlined title='添加到播放列表' className='icon' onClick={e => addToSongList(item, e)} />
-                    <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
-                  </div>
-                </div>
-              )
-            })}
-            <div className='list-item'>
-              <span className='look-all active' onClick={() => ToTopList(list2.id)}>
-                查看全部{' >'}
-              </span>
-            </div>
-          </div>
-        </div>
+        {renderList(list2)}
 
         {/* 热歌榜 3 */}
-        <div className={styles.origin}>
-          <div className='logo'>
-            <LazyLoad height={80}>
-              <img src={list3.coverImgUrl} alt='' title={list3.name} onClick={() => ToTopList(list3.id)} />
-            </LazyLoad>
-            <div className='text'>
-              <div className='name' onClick={() => ToTopList(list3.id)}>
-                {list3.name}
-              </div>
-              <div className='btns'>
-                <PlayCircleOutlined
-                  className='icon'
-                  title='播放榜单'
-                  onClick={() => handleClickPlayTopList(list3?.tracks || [], list3?.name)}
-                />
-                <FolderAddOutlined className='icon' onClick={() => message.info('暂无收藏功能')} />
-              </div>
-            </div>
-          </div>
-          {/* list */}
-          <div className='list'>
-            {list3.tracks?.slice(0, 10).map((item: any, index: number) => {
-              return (
-                <div className='list-item' key={item.id}>
-                  <div className={`list-item-num ${index <= 2 ? 'red' : ''}`}>{index + 1}</div>
-                  <div className='list-item-name ellipsis-1' onClick={() => handleSongClick(item.id)}>
-                    {item.name}
-                  </div>
-                  <div className='list-item-btns'>
-                    <PlayCircleOutlined title='播放' className='icon' onClick={e => playCurrentSong(item, e)} />
-                    <PlusOutlined title='添加到播放列表' className='icon' onClick={e => addToSongList(item, e)} />
-                    <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
-                  </div>
-                </div>
-              )
-            })}
-            <div className='list-item'>
-              <span className='look-all' onClick={() => ToTopList(list3.id)}>
-                查看全部{' >'}
-              </span>
-            </div>
-          </div>
-        </div>
+        {renderList(list3)}
       </div>
     </div>
   )

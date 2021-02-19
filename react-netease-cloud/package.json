@@ -26,23 +26,22 @@
     "qs": "^6.9.6",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-lazyload": "^3.1.1",
+    "react-lazyload": "^3.2.0",
     "react-redux": "^7.2.2",
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
+    "react-scripts": "4.0.2",
     "react-transition-group": "^4.4.1",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "typescript": "~4.0.5",
+    "typescript": "^4.1.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
     "start": "cross-env REACT_APP_MODE=dev REACT_APP_JS_NAME=.js PORT=3000 react-app-rewired start",
-    "build": "cross-env REACT_APP_MODE=build REACT_APP_JS_NAME=.min.js GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=10000 react-app-rewired build",
-    "build:WBJ": "cross-env REACT_APP_MODE=build_wbj REACT_APP_JS_NAME=.min.js GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=10000 react-app-rewired build"
+    "build": "cross-env REACT_APP_MODE=build REACT_APP_JS_NAME=.min.js GENERATE_SOURCEMAP=false IMAGE_INLINE_SIZE_LIMIT=10000 react-app-rewired build"
   },
   "eslintConfig": {
     "extends": [
@@ -72,6 +71,7 @@
     "customize-cra": "^1.0.0",
     "http-proxy-middleware": "^1.0.6",
     "node-sass": "^4.14.1",
-    "react-app-rewired": "^2.1.6"
+    "react-app-rewired": "^2.1.6",
+    "webpackbar": "^5.0.0-3"
   }
 }

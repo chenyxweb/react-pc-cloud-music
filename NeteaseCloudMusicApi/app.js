@@ -79,7 +79,8 @@ fs.readdirSync(path.join(__dirname, 'module'))
     let question = require(path.join(__dirname, 'module', file))
 
     // 修改添加统一前缀
-    app.use('/musicApi' + route, (req, res) => {
+    // app.use('/musicApi' + route, (req, res) => {
+    app.use(route, (req, res) => {
       if (typeof req.query.cookie === 'string') {
         req.query.cookie = cookieToJson(req.query.cookie)
       }

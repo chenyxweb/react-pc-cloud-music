@@ -6,17 +6,11 @@ import { message } from 'antd'
 let BASE_URL = ''
 switch (process.env.REACT_APP_MODE) {
   case 'dev':
-    BASE_URL = 'http://localhost:2333/musicApi' // 本地启动
-    // BASE_URL = 'http://10.176.169.146:2333/musicApi' // 本地启动
+    BASE_URL = 'http://localhost:2333' // 本地启动
     break
 
   case 'build':
     BASE_URL = 'http://123.57.176.198:3000' // 参考
-    // BASE_URL = 'http://www.wbjazy.com:2333/musicApi' // WBJ
-    break
-
-  case 'build_wbj':
-    BASE_URL = 'http://www.wbjazy.com:2333/musicApi' // WBJ
     break
 
   default:

@@ -56,7 +56,7 @@ const MyCarousel: FC<IProps> = props => {
         <Carousel className='carousels' ref={carouselRef} autoplay effect='fade' beforeChange={handleBeforeChange}>
           {bannerList.map(item => (
             <img
-              src={item.imageUrl}
+              src={item.imageUrl + '?imageView&quality=89'}
               alt=''
               key={item.targetId}
               className='carousel-img'
