@@ -6,7 +6,7 @@ import { message } from 'antd'
 let BASE_URL = ''
 switch (process.env.REACT_APP_MODE) {
   case 'dev':
-    BASE_URL = 'http://localhost:2333' // 本地启动
+    BASE_URL = 'http://localhost:3000' // 本地启动
     break
 
   case 'build':
@@ -22,7 +22,8 @@ export { BASE_URL }
 // 创建实例
 export const axios = Axios.create({
   baseURL: BASE_URL,
-  // timeout: 8000,
+  timeout: 8000,
+  withCredentials: true, // 跨域请求 , 不加上就无法自动设置cookies
 })
 
 // 添加请求拦截器

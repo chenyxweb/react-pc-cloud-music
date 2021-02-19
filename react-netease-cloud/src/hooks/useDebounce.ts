@@ -17,6 +17,7 @@ interface DebounceSettings {
 const useDebounce = (value: string, delay: number, options?: DebounceSettings | undefined) => {
   const [debounceValue, setDebounceValue] = useState(value)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceFn = useCallback(
     debounce(
       (value: string) => {

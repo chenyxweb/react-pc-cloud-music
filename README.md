@@ -1328,6 +1328,30 @@ module.exports = {
 
 ### 17 大量图片加载导致页面滚动卡顿问题
 
+```tsx
+
+<img
+  // ?param=140y140 降低图片分辨率
+  src={item.picUrl + '?param=140y140'}
+  alt=''
+  onClick={() => props.history.push(`/discover/playlist-detail?id=${item.id}`)}
+/>
+
+
+```
+
+
+
+### 18 跨域请求设置cookies问题
+
+```js
+// 创建实例
+export const axios = Axios.create({
+  baseURL: BASE_URL,
+  timeout: 8000,
+  withCredentials: true, // 跨域请求 , 不加上就无法自动设置cookies  , 同时cors不能设置 * 
+})
+```
 
 
 

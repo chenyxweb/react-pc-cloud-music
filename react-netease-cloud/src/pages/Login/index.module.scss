@@ -1,0 +1,74 @@
+.Login {
+  height: 100vh;
+  position: relative;
+
+  .form {
+    position: absolute;
+    z-index: 9998;
+    width: 500px;
+    box-shadow: 0 5px 16px rgba($color: #000000, $alpha: 0.8);
+    border: none;
+    top: 50%;
+    right: 20%;
+    transform: translateY(-50%);
+    border-radius: 4px;
+    overflow: hidden;
+
+    .title {
+      background: #2d2d2d;
+      height: 39px;
+      line-height: 39px;
+      padding: 0 15px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .content {
+      // 账号登录
+      .accountLogin {
+        padding: 40px 0;
+        // 二维码图标
+        .qr_login_icon {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 52px;
+          height: 52px;
+          cursor: pointer;
+        }
+      }
+
+      // 二维码登录
+      .qrLogin {
+        position: relative;
+        height: 248px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .qr {
+          width: 140px;
+          height: 140px;
+          cursor: pointer;
+        }
+
+        :global {
+          .switch-account-login {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 15px;
+            border: 1px solid #979797;
+            cursor: pointer;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}

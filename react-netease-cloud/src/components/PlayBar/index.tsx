@@ -480,7 +480,7 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
 
         {/* 当前播放歌曲信息 */}
         <div className='currentSongInfo'>
-          <img src={currentSongInfo?.al?.picUrl} alt='' />
+          <img src={currentSongInfo?.al?.picUrl + '?param=35y35'} alt='' />
           <div className='currentSongInfoRight'>
             <div className='right-t'>
               {/* 歌名 */}
@@ -587,8 +587,10 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
         <div className={styles.songListAndLyricWrapper}>
           <div
             className={styles.songListAndLyric}
+            // //music.163.com/api/img/blur/
             style={{
-              background: `rgba(31, 31, 31, 0.9)  url('${currentSongInfo?.al?.picUrl}') no-repeat center center/986px `,
+              // background: `rgba(31, 31, 31, 0.9) url('${currentSongInfo?.al?.picUrl}?param=500y500') no-repeat center center/986px `,
+              background: `rgba(31, 31, 31, 0.9) url('//music.163.com/api/img/blur/${currentSongInfo?.al?.pic_str}') no-repeat center center/986px `,
             }}
           >
             {/* 歌曲列表容器 */}

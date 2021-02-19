@@ -4,9 +4,9 @@ import { FolderAddOutlined, PlayCircleOutlined, PlusOutlined } from '@ant-design
 import { message } from 'antd'
 import React, { FC, memo, useEffect, useState } from 'react'
 import LazyLoad from 'react-lazyload'
-import { connect } from 'react-redux'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { Dispatch } from 'redux'
+import { connect, DispatchProp } from 'react-redux'
+import { RouteConfigComponentProps } from 'react-router-config'
+import { withRouter } from 'react-router-dom'
 import http from 'service/http'
 import { ICombineState } from 'store'
 import { change_current_song_info } from 'store/currentSongInfo/actions'
@@ -16,11 +16,15 @@ import constants from 'utils/constants'
 
 import styles from './index.module.scss'
 
-interface IProps extends RouteComponentProps {
-  dispatch: Dispatch
-}
+interface IProps {}
 
-const RecTopList: FC<IProps & ICombineState> = props => {
+const RecTopList: FC<
+  //Pick : 从 store ICombineState 中提取类型
+  IProps &
+    Pick<ICombineState, 'currentSongInfo' | 'playBarState' | 'songList'> &
+    RouteConfigComponentProps &
+    DispatchProp
+> = props => {
   const [list1, setList1] = useState<any>({}) // 飙升榜
   const [list2, setList2] = useState<any>({}) // 新歌榜
   const [list3, setList3] = useState<any>({}) // 热歌榜

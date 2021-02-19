@@ -63,6 +63,15 @@ const Home: FC<IProps & RouteConfigComponentProps> = props => {
     }
   }
 
+  // 去登录页
+  const go2Login = () => {
+    // 获取当前页面
+    console.log(props)
+    console.log(window.location.href)
+    const href = encodeURIComponent(window.location.href)
+    props.history.push(`/login?from=${href}`)
+  }
+
   // 点击专辑
   const handleAlbumsItemClick = (album: any) => {
     console.log('album: ', album)
@@ -227,7 +236,7 @@ const Home: FC<IProps & RouteConfigComponentProps> = props => {
               <div className='content-wrapper'>创作者中心</div>
             </div>
             <div className='login'>
-              <span onClick={() => props.history.push('/login')}>登录</span>
+              <span onClick={go2Login}>登录</span>
             </div>
           </div>
         </div>

@@ -28,6 +28,7 @@ app.use((req, res, next) => {
     res.set({
       'Access-Control-Allow-Credentials': true,
       'Access-Control-Allow-Origin': req.headers.origin || '*',
+      // 'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'X-Requested-With,Content-Type',
       'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
       'Content-Type': 'application/json; charset=utf-8',
@@ -77,6 +78,8 @@ fs.readdirSync(path.join(__dirname, 'module'))
         : '/' + file.replace(/\.js$/i, '').replace(/_/g, '/')
     let question = require(path.join(__dirname, 'module', file))
 
+    // 修改添加统一前缀
+    // app.use('/musicApi' + route, (req, res) => {
     app.use(route, (req, res) => {
       if (typeof req.query.cookie === 'string') {
         req.query.cookie = cookieToJson(req.query.cookie)
@@ -112,7 +115,7 @@ fs.readdirSync(path.join(__dirname, 'module'))
     })
   })
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 2333
 const host = process.env.HOST || ''
 
 app.server = app.listen(port, host, () => {
