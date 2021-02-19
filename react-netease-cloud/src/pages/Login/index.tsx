@@ -41,7 +41,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
     if (!qrKey) return
 
     try {
-      http.generateQrCode({ key: qrKey, qrimg: 'base64' }).then(res => {
+      http.generateQrCode({ key: qrKey, qrimg: 'qrimg' }).then(res => {
         if (res.data.code === 200) {
           const { qrimg } = res.data.data || {}
           console.log(qrimg)
@@ -62,7 +62,6 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
         http.checkQrStatus({ key: qrKey }).then(res => {
           console.log(res)
           // TODO
-          
         })
       } catch (error) {
         message.error(error.message)
