@@ -62,7 +62,7 @@ const configStore = () => {
 
   // 监听store的改变, 效率低
   store.subscribe(() => {
-    // console.log('store当前状态:', store.getState())
+    console.log('store当前状态:', store.getState())
     const { songList, currentSongInfo, userInfo } = store.getState()
     // 保存到本地
     localStorage.setItem(constants.SONG_LIST, JSON.stringify(songList))

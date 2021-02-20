@@ -55,7 +55,7 @@ const PlayBar: FC<
   const [currentMode, setCurrentMode] = useState<CurrentModeType>('loop') // 当前播放模式
   const [voiceBarShow, setVoiceBarShow] = useState(false) // 音量调节的bar是否显示
   const [listBoxShow, setListBoxShow] = useState(false) // 歌曲列表和歌词容器的显隐
-  const [volume, setVolume] = useState(0.5) // 播放音量 0 ~ 1  刻度 0.01
+  const [volume, setVolume] = useState(0.3) // 播放音量 0 ~ 1  刻度 0.01
   const [process, setProcess] = useState(0) // 播放进度 0 ~ 1  刻度 0.01
   const [currentTime, setCurrentTime] = useState(0) // 当前播放时间戳
   const [lyricArr, setLyricArr] = useState<LyricArrType>([]) // 歌词数组
@@ -507,7 +507,8 @@ const PlayBar: FC<
                   value={process}
                   min={0}
                   max={1}
-                  step={0.001}
+                  // step={0.001}
+                  step={0.005}
                   tooltipVisible={false}
                   onChange={handleProcessSliderDrag}
                 />
