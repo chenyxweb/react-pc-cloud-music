@@ -25,6 +25,7 @@ export interface ICombineState {
   songList: any[]
   currentSongInfo: any
   playBarState: { isPlay: boolean }
+  userInfo: { isLogin: boolean; profile: any; account: any }
 }
 
 // 将创建好的中间件或者第三方的中间件，作为参数传递给 applyMiddleware
@@ -59,7 +60,7 @@ const configStore = () => {
     composeWithDevTools(middlewares)
   )
 
-  // 监听store的改变
+  // 监听store的改变, 效率低
   store.subscribe(() => {
     // console.log('store当前状态:', store.getState())
     const { songList, currentSongInfo, userInfo } = store.getState()

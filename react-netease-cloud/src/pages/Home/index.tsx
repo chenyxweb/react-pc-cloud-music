@@ -1,6 +1,16 @@
-import React, { FC, lazy, useEffect, useState } from 'react'
-import { SearchOutlined } from '@ant-design/icons'
+import React, { FC, lazy, memo, useCallback, useEffect, useState } from 'react'
+import {
+  MailOutlined,
+  PoweroffOutlined,
+  PushpinOutlined,
+  SearchOutlined,
+  SettingOutlined,
+  StarOutlined,
+  StockOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
 import { renderRoutes, RouteConfigComponentProps } from 'react-router-config'
+import { Avatar, Dropdown, Menu } from 'antd'
 
 import constants from 'utils/constants'
 import styles from './index.module.scss'
@@ -8,6 +18,9 @@ import useDebounce from 'hooks/useDebounce'
 import http from 'service/http'
 import MyTransition from 'components/MyTransition'
 import utils from 'utils/utils'
+import { update_user_info } from 'store/userInfo/actions'
+import { connect, DispatchProp } from 'react-redux'
+import { ICombineState } from 'store'
 
 // 按需加载
 const MyFooter = lazy(() => import('components/MyFooter'))
@@ -15,7 +28,7 @@ const PlayBar = lazy(() => import('components/PlayBar'))
 
 interface IProps {}
 
-const Home: FC<IProps & RouteConfigComponentProps> = props => {
+const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteConfigComponentProps> = props => {
   const pathname = props.location.pathname
 
   const [inputValue, setInputValue] = useState('') // input的值
@@ -35,7 +48,7 @@ const Home: FC<IProps & RouteConfigComponentProps> = props => {
     http
       .getSearchSuggest(debounceInputValue)
       .then(res => {
-        console.log(res)
+        // console.log(res)
         if (res.data.code === 200) {
           const { songs, artists, albums, order } = res.data?.result || {}
           setSongs(songs || [])
@@ -49,7 +62,7 @@ const Home: FC<IProps & RouteConfigComponentProps> = props => {
 
   // 点击歌曲
   const handleSongsItemClick = (song: any) => {
-    console.log('song: ', song)
+    // console.log('song: ', song)
     if (song?.id) {
       props.history.push(`/discover/song?id=${song.id}`)
     }
@@ -57,7 +70,7 @@ const Home: FC<IProps & RouteConfigComponentProps> = props => {
 
   // 点击歌手
   const handleArtistsItemClick = (artist: any) => {
-    console.log('artist: ', artist)
+    // console.log('artist: ', artist)
     if (artist?.id) {
       props.history.push(`/discover/artist?id=${artist.id}`)
     }
@@ -66,7 +79,7 @@ const Home: FC<IProps & RouteConfigComponentProps> = props => {
   // 去登录页
   const go2Login = () => {
     // 获取当前页面
-    console.log(props)
+    // console.log(props)
     console.log(window.location.href)
     const href = encodeURIComponent(window.location.href)
     props.history.push(`/login?from=${href}`)
@@ -74,7 +87,7 @@ const Home: FC<IProps & RouteConfigComponentProps> = props => {
 
   // 点击专辑
   const handleAlbumsItemClick = (album: any) => {
-    console.log('album: ', album)
+    // console.log('album: ', album)
     if (album?.id) {
       props.history.push(`/discover/album?id=${album.id}`)
     }
@@ -236,7 +249,9 @@ const Home: FC<IProps & RouteConfigComponentProps> = props => {
               <div className='content-wrapper'>创作者中心</div>
             </div>
             <div className='login'>
-              <span onClick={go2Login}>登录</span>
+              {/* 未登录展示 */}
+              {/* 登录展示 profile */}
+              {props.userInfo?.isLogin ? renderProfile() : <span onClick={go2Login}>登录</span>}
             </div>
           </div>
         </div>
@@ -244,6 +259,91 @@ const Home: FC<IProps & RouteConfigComponentProps> = props => {
       <div className='top-bar-bot' style={{ height: pathname === '/' || pathname.includes('/discover') ? 0 : 5 }}></div>
     </div>
   )
+
+  // logout
+  const logout = () => {
+    http
+      .logout()
+      .then(res => {
+        // console.log(res)
+        props.dispatch(update_user_info({ account: {}, profile: {}, isLogin: false }))
+        // 去首页
+        props.history.replace('/')
+      })
+      .catch(() => {})
+  }
+
+  // 用户profile
+  const renderProfile = useCallback(() => {
+    const { account, profile } = props.userInfo || {}
+    // console.log(profile)
+    return (
+      <div className={styles.userProfile}>
+        <Dropdown
+          overlay={
+            <Menu>
+              <Menu.Item onClick={() => props.history.push(`/user/home/${profile.userId}`)}>
+                <UserOutlined />
+                我的主页
+              </Menu.Item>
+              <Menu.Item>
+                <MailOutlined />
+                我的消息
+              </Menu.Item>
+              <Menu.Item>
+                <StockOutlined />
+                我的等级
+              </Menu.Item>
+              <Menu.Item>
+                <StarOutlined />
+                VIP会员
+              </Menu.Item>
+              <Menu.Item>
+                <SettingOutlined />
+                个人设置
+              </Menu.Item>
+              <Menu.Item>
+                <PushpinOutlined />
+                实名认证
+              </Menu.Item>
+              <Menu.Item onClick={logout}>
+                <PoweroffOutlined />
+                退出
+              </Menu.Item>
+            </Menu>
+          }
+        >
+          <Avatar src={profile?.avatarUrl + '?param=30y30'}></Avatar>
+        </Dropdown>
+      </div>
+    )
+  }, [props.userInfo])
+
+  // 判断登录状态, 获取用户数据
+  useEffect(() => {
+    // http.logout().then(res => {
+    //   console.log(res)
+    // })
+    http.getLoginStatus().then(res => {
+      if (res.data?.data?.code === 200) {
+        const { account, profile } = res.data.data || {}
+        // console.log('account: ', account)
+        // console.log('profile: ', profile)
+
+        if (profile?.userId) {
+          // 已登录
+          // 更新store中数据
+          props.dispatch(update_user_info({ account, profile, isLogin: true }))
+        } else {
+          // 未登录
+          // 删除store中用户数据
+          // 删除本地用户数据
+          props.dispatch(update_user_info({ account: {}, profile: {}, isLogin: false }))
+        }
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className={styles.Home}>
@@ -276,4 +376,12 @@ const Home: FC<IProps & RouteConfigComponentProps> = props => {
 
 Home.defaultProps = {}
 
-export default Home
+// map store
+const mapStateToProps = (state: ICombineState) => {
+  // console.log(state)
+  return {
+    userInfo: state.userInfo,
+  }
+}
+
+export default memo(connect(mapStateToProps)(Home))

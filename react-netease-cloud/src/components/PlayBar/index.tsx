@@ -14,11 +14,12 @@ import { change_current_song_info } from 'store/currentSongInfo/actions'
 import styles from './index.module.scss'
 import { change_is_play } from 'store/playBarState/actions'
 import http from 'service/http'
-import { axios } from 'service/axios'
-import FileSaver from 'file-saver'
+// import { axios } from 'service/axios'
+// import FileSaver from 'file-saver'
 import useActiveLyricIndex from 'hooks/useActiveLyricIndex'
 import useClickOutsideComponent from 'hooks/useClickOutsideComponent'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import constants from 'utils/constants'
 
 interface IProps {
   clear_song_list: () => void
@@ -39,7 +40,9 @@ export type LyricArrType = {
   content: string
 }[]
 
-const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
+const PlayBar: FC<
+  IProps & Pick<ICombineState, 'songList' | 'currentSongInfo' | 'playBarState'> & RouteComponentProps
+> = props => {
   // console.log('PlayBar-props: ', props)
 
   const { songList, currentSongInfo, playBarState } = props
@@ -63,10 +66,10 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
 
   let mouseLeaveTimeId = useRef<any>({ id: null }) // 鼠标移出的延时timeId
 
-  useEffect(() => {
-    console.log('audio: ')
-    console.dir(audioRef.current)
-  }, [])
+  // useEffect(() => {
+  //   console.log('audio: ')
+  //   console.dir(audioRef.current)
+  // }, [])
 
   // 播放和暂停
   useEffect(() => {
@@ -74,7 +77,7 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
       audioRef.current
         ?.play()
         .then(res => {
-          console.log(res)
+          // console.log(res)
         })
         .catch(err => {
           // 调用play方法报错
@@ -90,7 +93,7 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
     // 设置audio的音量
     if (audioRef.current) {
       audioRef.current.volume = volume
-      console.log('audio音量: ', audioRef.current.volume)
+      // console.log('audio音量: ', audioRef.current.volume)
     }
   }, [volume])
 
@@ -242,7 +245,7 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
 
   // 下载MP3
   const _handleDownloadMP3 = () => {
-    console.log('download')
+    // console.log('download')
     const songId = currentSongInfo.id
     if (songId) {
       // 1. 下载歌曲url
@@ -348,8 +351,10 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
   // audio 加载期间遇到错误, 播放下一首歌曲
   const handleOnError = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
     message.destroy()
-    message.info('当前歌曲无法播放,自动切换下一首')
-    handleClickNextBtn()
+    message.info('当前歌曲无法播放, 3s 后自动切换下一首')
+    setTimeout(() => {
+      handleClickNextBtn()
+    }, 3000)
   }
 
   // audio 缓冲至目前可以播放的状态  再播放, 避免无法播放调用了play方法
@@ -654,7 +659,7 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
 
       {/* 歌词轮播 */}
       {isPlay && lyricArr[activeLyricIndex]?.content ? (
-        <div className={styles['lyric-show-box']}>{lyricArr[activeLyricIndex]?.content}</div>
+        <div className={[styles['lyric-show-box'], 'ellipsis-1'].join(' ')}>{lyricArr[activeLyricIndex]?.content}</div>
       ) : null}
 
       {/* 背景图 左边 */}
@@ -694,7 +699,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     clear_song_list: () => dispatch(clear_song_list()), // 清空歌曲列表
     del_song_list_item: (songId: number) => dispatch(del_song_list_item(songId)), // 删除一首歌
-    change_current_song_info: (item: any) => dispatch(change_current_song_info(item)), // 修改当前播放歌曲信息
+    change_current_song_info: (item: any) => {
+      // localStorage.setItem(constants.CURRENT_SONG_INFO, JSON.stringify(item))
+      dispatch(change_current_song_info(item))
+    }, // 修改当前播放歌曲信息
     change_is_play: () => dispatch(change_is_play()),
   }
 }

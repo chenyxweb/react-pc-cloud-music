@@ -3,6 +3,7 @@
 import { FolderAddOutlined, PlayCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { message } from 'antd'
 import React, { FC, memo, useEffect, useState } from 'react'
+// import { Dispatch } from 'redux'
 import LazyLoad from 'react-lazyload'
 import { connect, DispatchProp } from 'react-redux'
 import { RouteConfigComponentProps } from 'react-router-config'
@@ -232,6 +233,15 @@ const mapStateToProps = (state: ICombineState) => {
     playBarState: state.playBarState,
   }
 }
+
+// const mapDispatchToProps = (dispatch: Dispatch) => {
+//   return {
+//     change_current_song_info: (item: any) => {
+//       localStorage.setItem(constants.CURRENT_SONG_INFO, JSON.stringify(item))
+//       dispatch(change_current_song_info(item))
+//     },
+//   }
+// }
 
 // dispatch 自动映射
 export default memo(connect(mapStateToProps)(withRouter(RecTopList)))

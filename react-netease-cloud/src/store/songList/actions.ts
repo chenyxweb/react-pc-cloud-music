@@ -1,5 +1,6 @@
 // actions creator  指挥者(要干什么)
 
+import { Dispatch } from 'redux'
 import http from 'service/http'
 import { IAction } from 'store'
 import { change_current_song_info } from 'store/currentSongInfo/actions'
@@ -22,8 +23,8 @@ export const replace_song_list = (list: any[]): IAction => ({ type: REPLACE_SONG
  * redux-thunk 的使用
  * @param id 歌单id
  */
-export const replace_song_list_async = (id: number, callback?: Function) => {
-  return (dispatch: any) => {
+export const replace_song_list_async = (id: number, callback?: Function): any => {
+  return (dispatch: Dispatch) => {
     // 异步操作
     http
       .getPlaylistDetail({ id })

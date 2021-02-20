@@ -1,20 +1,12 @@
 // 发现 - 推荐 - 热门推荐
-import { CustomerServiceOutlined, PlayCircleOutlined } from '@ant-design/icons'
-import { message } from 'antd'
+import PlayListItem from 'components/PlayListItem'
 import React, { FC, memo, useEffect, useState } from 'react'
-import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import http from 'service/http'
-import { ICombineState } from 'store'
-import { change_is_play } from 'store/playBarState/actions'
-import { replace_song_list_async } from 'store/songList/actions'
-import utils from 'utils/utils'
 
 import styles from './index.module.scss'
 
-interface IProps {
-  dispatch: any
-}
+interface IProps {}
 
 // 占位列表
 const tempList = Array(8)
@@ -23,7 +15,7 @@ const tempList = Array(8)
     id: index,
   }))
 
-const HotRecommend: FC<IProps & Pick<ICombineState, 'playBarState'> & RouteComponentProps> = props => {
+const HotRecommend: FC<IProps & RouteComponentProps> = props => {
   const [list, setList] = useState<any[]>(tempList) // 推荐列表
 
   // 获取热门推荐列表
@@ -37,28 +29,6 @@ const HotRecommend: FC<IProps & Pick<ICombineState, 'playBarState'> & RouteCompo
       })
       .catch(() => {})
   }, [])
-
-  /**
-   * 点击播放按钮
-   * @param id 歌单或榜单id
-   */
-  const handleClickPlay = (id: number) => {
-    // 提交异步的action 修改songList
-    props.dispatch(
-      replace_song_list_async(id, (list: any[]) => {
-        const audio = document.getElementById('audio') as HTMLAudioElement
-        if (audio) {
-          audio.currentTime = 0 // 设置audio播放时间为0
-        }
-
-        // isPlay 为false 就改成true
-        const { isPlay } = props.playBarState
-        if (!isPlay) props.dispatch(change_is_play())
-
-        message.success('开始播放 热门推荐歌单')
-      })
-    )
-  }
 
   // 点击热门推荐分类
   const handleClickTitle = (cat: string) => props.history.push(`/discover/playlist?cat=${cat}`)
@@ -91,28 +61,7 @@ const HotRecommend: FC<IProps & Pick<ICombineState, 'playBarState'> & RouteCompo
       {/* 热门推荐列表 */}
       <div className={styles.recommendList}>
         {list.map(item => {
-          return (
-            <div className={styles.recommendListItem} key={item.id} title={item.name}>
-              <div className='img-wrapper'>
-                <img
-                  // ?param=140y140 降低图片分辨率
-                  src={item.picUrl + '?param=140y140'}
-                  alt=''
-                  onClick={() => props.history.push(`/discover/playlist-detail?id=${item.id}`)}
-                />
-
-                {/* 定位元素 */}
-                <div className='play-bar'>
-                  <div className='play-num'>
-                    <CustomerServiceOutlined />
-                    <span style={{ fontSize: 12, paddingLeft: 4 }}>{utils.formatTenThousand(item.playCount)}</span>
-                  </div>
-                  <PlayCircleOutlined className='play' onClick={() => handleClickPlay(item.id)} />
-                </div>
-              </div>
-              <div className='name'>{item.name}</div>
-            </div>
-          )
+          return <PlayListItem item={item} key={item.id}></PlayListItem>
         })}
       </div>
     </div>
@@ -121,10 +70,4 @@ const HotRecommend: FC<IProps & Pick<ICombineState, 'playBarState'> & RouteCompo
 
 HotRecommend.defaultProps = {}
 
-const mapStateToProps = (state: ICombineState) => {
-  return {
-    playBarState: state.playBarState,
-  }
-}
-
-export default connect(mapStateToProps)(withRouter(memo(HotRecommend)))
+export default withRouter(memo(HotRecommend))

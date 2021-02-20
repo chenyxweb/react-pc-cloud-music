@@ -53,7 +53,12 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }>> = props => {
           {list1.map(item => {
             return (
               <div className={`list-item ${Number(match.params?.id) === item?.id ? 'active' : ''}`} key={item.id}>
-                <img className='list-item-img' src={item.coverImgUrl} alt='' title={item.description} />
+                <img
+                  className='list-item-img'
+                  src={item.coverImgUrl + '?param=40y40'}
+                  alt=''
+                  title={item.description}
+                />
                 <div className='list-item-desc'>
                   <p className='list-item-desc-t ellipsis-1'>{item.name}</p>
                   <p className='list-item-desc-b ellipsis-1'>{item.updateFrequency}</p>
@@ -69,7 +74,12 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }>> = props => {
           {list2.map(item => {
             return (
               <div className='list-item' key={item.id}>
-                <img className='list-item-img' src={item.coverImgUrl} alt='' title={item.description} />
+                <img
+                  className='list-item-img'
+                  src={item.coverImgUrl + '?param=40y40'}
+                  alt=''
+                  title={item.description}
+                />
                 <div className='list-item-desc'>
                   <p className='list-item-desc-t ellipsis-1'>{item.name}</p>
                   <p className='list-item-desc-b ellipsis-1'>{item.updateFrequency}</p>

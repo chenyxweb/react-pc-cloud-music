@@ -1,0 +1,33 @@
+.User {
+  border-left: 1px solid #d3d3d3;
+  border-right: 1px solid #d3d3d3;
+  background-color: #fff;
+  padding: 30px;
+
+  .userProfile {
+    display: flex;
+    padding-bottom: 40px;
+
+    :global {
+      .avatar {
+        width: 188px;
+        height: 188px;
+        border: 1px solid #d5d5d5;
+        padding: 2px;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      .detailInfo {
+        flex: 1;
+        padding-left: 30px;
+
+        .detailInfo-top {
+          font-size: 22px;
+        }
+      }
+    }
+  }
+}

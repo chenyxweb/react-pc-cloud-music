@@ -1,0 +1,25 @@
+.UserHome {
+  // 歌单
+  .playlist {
+    .playlistTitle {
+      border-bottom: 2px solid #c20c0c;
+      height: 35px;
+      line-height: 33px;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .playlistContent {
+      display: flex;
+      flex-wrap: wrap;
+
+      .itemWrapper {
+        padding-right: 15px;
+
+        &:nth-child(6n) {
+          padding-right: 0;
+        }
+      }
+    }
+  }
+}

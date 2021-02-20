@@ -35,14 +35,9 @@ const checkQrStatus = (params: { key: string }) => axios.get(`/login/qr/check?ti
 // 二维码登录 ---end
 
 /**
- * 获取登录状态
+ * 获取登录状态, 同时可以拿到用户信息
  */
 const getLoginStatus = () => axios.get(`/login/status?timestamp=${Date.now()}`)
-
-/**
- * 获取用户信息
- */
-const getUserInfo = () => axios.get('/')
 
 /**
  * 退出登录
@@ -56,7 +51,6 @@ const loginApi = {
   generateQrCode,
   checkQrStatus,
   getLoginStatus,
-  getUserInfo,
   logout,
 }
 
