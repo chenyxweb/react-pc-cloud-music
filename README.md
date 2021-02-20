@@ -875,7 +875,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(PlayBar)
 
 ```js
   // 下载MP3
-  let handleDownloadMP3 = () => {
+  const _handleDownloadMP3 = () => {
+    console.log('download')
     const songId = currentSongInfo.id
     if (songId) {
       // 1. 下载歌曲url
@@ -886,26 +887,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(PlayBar)
             const url = res.data?.data[0]?.url || ''
             // console.log('url: ', url)
             if (url) {
-              // 2. 根据url下载blob
-              axios
-                .get(url, { responseType: 'blob' })
-                .then(res => {
-                  if (res.status === 200) {
-                    const blob = res.data
-                    // 3. 使用file-saver下载mp3文件
-                    console.log('blob: ', blob, currentSongInfo)
-                    const name = currentSongInfo?.name || '' // 歌名
-                    const author = currentSongInfo?.ar[0]?.name // 作者
-                    FileSaver.saveAs(blob, `${name} - ${author}.mp3`)
-                  }
-                })
-                .catch(() => {})
+              // console.log('url: ', url)
+              // console.log('songId: ', songId)
+              // 打开高清歌曲页面
+              window.open(url)
             } else {
-              // 4. 如果没有获取到url, 创建a标签
-              const a = document.createElement('a')
-              a.href = `https://music.163.com/song/media/outer/url?id=${songId}.mp3`
-              a.target = '_blank'
-              a.click()
+              // 打开标清歌曲页面
+              window.open(`https://music.163.com/song/media/outer/url?id=${songId}.mp3`)
             }
           }
         })
@@ -1355,7 +1343,11 @@ export const axios = Axios.create({
 
 
 
-### 19 登录框拖拽功能
+### 19 二维码登录功能
+
+- 获取二维码key
+- 用key获取二维码
+- 轮询监听二维码状态 ( 800为二维码过期,801为等待扫码,802为待确认,803为授权登录成功(803状态码下会返回cookies) 
 
 
 

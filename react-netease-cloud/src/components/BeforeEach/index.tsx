@@ -27,26 +27,28 @@ const BeforeEach: FC<IProps & RouteComponentProps> = props => {
 
   //
   // 获取要访问页面的路由信息
-  const route = matchRoutes(routes, pathname).find(item => item.route.path === pathname)
+  // const route = matchRoutes(routes, pathname).find(item => item.route.path === pathname)
 
-  console.log('所有匹配到的路由: ', matchRoutes(routes, pathname))
-  console.log('根据pathname匹配到的路由: ', route)
+  // console.log('所有匹配到的路由: ', matchRoutes(routes, pathname))
+  // console.log('根据pathname匹配到的路由: ', route)
 
-  // 访问login,和needAuth为false或空的页面放行
-  if (route?.route?.path === '/login' || !route?.route?.meta?.requiresAuth) {
-    return children as ReactElement
-  }
+  // // 访问login,和needAuth为false或空的页面放行
+  // if (route?.route?.path === '/login' || !route?.route?.meta?.requiresAuth) {
+  //   return children as ReactElement
+  // }
 
-  // // 访问needAuth为true的页面,判断是否登录,然后用户对应角色是否有该页面访问权限
-  if (route?.route?.meta?.requiresAuth) {
-    if (!userInfo.token) {
-      return <Redirect to={`/login?from=${route.route.path}`}></Redirect>
-    } else {
-      return children as ReactElement
-    }
-  }
+  // // // 访问needAuth为true的页面,判断是否登录,然后用户对应角色是否有该页面访问权限
+  // if (route?.route?.meta?.requiresAuth) {
+  //   if (!userInfo.token) {
+  //     return <Redirect to={`/login?from=${route.route.path}`}></Redirect>
+  //   } else {
+  //     return children as ReactElement
+  //   }
+  // }
+  //
+  // return null
 
-  return null
+  return children as ReactElement
 }
 
 BeforeEach.defaultProps = {}

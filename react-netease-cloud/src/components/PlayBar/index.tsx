@@ -96,6 +96,7 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
 
   // 获取歌词
   useEffect(() => {
+    setLyricArr([])
     http
       .getLyric(currentSongInfo.id)
       .then(res => {
@@ -252,26 +253,13 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
             const url = res.data?.data[0]?.url || ''
             // console.log('url: ', url)
             if (url) {
-              // 2. 根据url下载blob
-              axios
-                .get(url, { responseType: 'blob' })
-                .then(res => {
-                  if (res.status === 200) {
-                    const blob = res.data
-                    // 3. 使用file-saver下载mp3文件
-                    console.log('blob: ', blob, currentSongInfo)
-                    const name = currentSongInfo?.name || '' // 歌名
-                    const authors = (currentSongInfo?.ar || []).map((item: any) => item.name).join(' ') // 作者
-                    FileSaver.saveAs(blob, `${authors} - ${name}.mp3`)
-                  }
-                })
-                .catch(() => {})
+              // console.log('url: ', url)
+              // console.log('songId: ', songId)
+              // 打开高清歌曲页面
+              window.open(url)
             } else {
-              // 4. 如果没有获取到url, 创建a标签
-              const a = document.createElement('a')
-              a.href = `https://music.163.com/song/media/outer/url?id=${songId}.mp3`
-              a.target = '_blank'
-              a.click()
+              // 打开标清歌曲页面
+              window.open(`https://music.163.com/song/media/outer/url?id=${songId}.mp3`)
             }
           }
         })
@@ -279,6 +267,7 @@ const PlayBar: FC<IProps & ICombineState & RouteComponentProps> = props => {
     }
   }
   // 防抖化
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleDownloadMP3 = useCallback(debounce(_handleDownloadMP3, 5000, { leading: true, trailing: false }), [
     currentSongInfo.id,
   ])

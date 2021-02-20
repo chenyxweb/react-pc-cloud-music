@@ -1,15 +1,23 @@
-// login
+// login相关
+
 import { axios } from './axios'
 
-// 手机号登录
+/**
+ * 手机号登录
+ */
 const phoneLogin = (data: any) => axios.post('/login/cellphone', data)
 
-// 邮箱登录 登录报错 TODO
-const emailLogin = (data: any) => axios.get('/login', data)
+/**
+ * 邮箱登录 接口登录报错 TODO
+ */
+const emailLogin = (data: any) => axios.post('/login', data)
 
 // 二维码登录 ---start
 // 说明: 二维码登录涉及到3个接口,调用务必带上时间戳,防止缓存***
-// 二维码key生成接口, 拿到key
+
+/**
+ * 二维码key生成接口, 拿到key
+ */
 const generateQrKey = () => axios.get(`/login/qr/key?timestamp=${Date.now()}`)
 
 /**
@@ -26,11 +34,20 @@ const generateQrCode = (params: { key: string; qrimg?: string }) =>
 const checkQrStatus = (params: { key: string }) => axios.get(`/login/qr/check?timestamp=${Date.now()}`, { params })
 // 二维码登录 ---end
 
-// 获取登录状态
+/**
+ * 获取登录状态
+ */
 const getLoginStatus = () => axios.get(`/login/status?timestamp=${Date.now()}`)
 
-// 获取用户信息
+/**
+ * 获取用户信息
+ */
 const getUserInfo = () => axios.get('/')
+
+/**
+ * 退出登录
+ */
+const logout = () => axios.get('/logout')
 
 const loginApi = {
   phoneLogin,
@@ -40,6 +57,7 @@ const loginApi = {
   checkQrStatus,
   getLoginStatus,
   getUserInfo,
+  logout,
 }
 
 export default loginApi
