@@ -1,3 +1,5 @@
+import bg_placeholder_img from 'assets/img/bg_white.png'
+
 // topBar的menu信息
 const topMenu = [
   // { name: '发现音乐', path: '/discover' },
@@ -35,6 +37,7 @@ const constants = {
   CURRENT_SONG_INFO: 'currentSongInfo',
   USER_INFO: 'user_info',
   topListIds,
+  bg_placeholder_img,
 }
 
 export default constants

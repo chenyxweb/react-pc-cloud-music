@@ -11,6 +11,7 @@ import { change_is_play } from 'store/playBarState/actions'
 import { replace_song_list_async } from 'store/songList/actions'
 import { connect, DispatchProp } from 'react-redux'
 import { ICombineState } from 'store'
+import constants from 'utils/constants'
 
 interface IProps {
   item: any
@@ -46,7 +47,11 @@ const PlayListItem: FC<
       <div className='img-wrapper'>
         <img
           // ?param=140y140 降低图片分辨率
-          src={(item.picUrl || item.coverImgUrl) + '?param=140y140'}
+          src={
+            item.picUrl || item.coverImgUrl
+              ? (item.picUrl || item.coverImgUrl) + '?param=140y140'
+              : constants.bg_placeholder_img
+          }
           alt=''
           onClick={() => props.history.push(`/discover/playlist-detail?id=${item.id}`)}
         />

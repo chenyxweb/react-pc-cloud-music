@@ -1,4 +1,82 @@
 .UserHome {
+  // recordList
+  .recordList {
+    .recordListTitle {
+      border-bottom: 2px solid #c20c0c;
+      height: 35px;
+      line-height: 33px;
+      display: flex;
+      justify-content: space-between;
+
+      :global {
+        .text {
+          font-size: 20px;
+        }
+      }
+    }
+
+    .recordListItem {
+      height: 38px;
+      line-height: 38px;
+      display: flex;
+      align-items: center;
+      transition: all 0.3s;
+
+      &:hover {
+        background-color: #e6e6e6;
+      }
+
+      .rank {
+        width: 50px;
+        text-align: right;
+        font-size: 16px;
+      }
+
+      .playBtn {
+        padding: 0 8px;
+        font-size: 18px;
+        cursor: pointer;
+        color: #999;
+        transition: all 0.3s;
+
+        &:hover {
+          color: #000;
+        }
+      }
+
+      .songInfo {
+        width: 500px;
+
+        .songName,
+        .author {
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        .author {
+          color: #aeaeae;
+        }
+      }
+
+      .count {
+        position: relative;
+        flex: 1;
+        padding-left: 8px;
+
+        .blueBar {
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          background-color: rgba($color: #4eb4f5, $alpha: 0.2);
+        }
+      }
+    }
+  }
+
   // 歌单
   .playlist {
     .playlistTitle {
