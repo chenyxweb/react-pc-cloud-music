@@ -1337,7 +1337,7 @@ module.exports = {
 export const axios = Axios.create({
   baseURL: BASE_URL,
   timeout: 8000,
-  withCredentials: true, // 跨域请求 , 不加上就无法自动设置cookies  , 同时cors不能设置 * 
+  withCredentials: true, // 跨域请求 , 不加上就无法自动设置cookies  , 同时cors不能设置 *  chrome>80 限制了
 })
 ```
 
@@ -1349,9 +1349,11 @@ export const axios = Axios.create({
 - 用key获取二维码
 - 轮询监听二维码状态 ( 800为二维码过期,801为等待扫码,802为待确认,803为授权登录成功(803状态码下会返回cookies) 
 
+## ps
 
+### 删除歌曲冒泡导致点击了歌曲列表项  , 需要清除冒泡 (***), 习惯性要清除冒泡
 
-## 坑
+### reducer是纯函数
 
-- 删除歌曲冒泡导致点击了歌曲列表项  , 需要清除冒泡 (***), 习惯性要清除冒泡
+> 一个函数的返回结果只依赖于它的参数，并且在执行过程里面没有副作用，我们就把这个函数叫做纯函数。
 

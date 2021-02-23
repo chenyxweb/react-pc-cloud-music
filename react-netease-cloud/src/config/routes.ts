@@ -13,8 +13,10 @@ const Mall = lazy(() => import('pages/Mall'))
 const Musician = lazy(() => import('pages/Musician'))
 const My = lazy(() => import('pages/My'))
 const Test = lazy(() => import('pages/Test'))
+
 const User = lazy(() => import('pages/User'))
 const UserHome = lazy(() => import('pages/User/UserHome'))
+const RecordListDetail = lazy(() => import('pages/User/RecordListDetail'))
 
 const Recommend = lazy(() => import('pages/Discover/Recommend'))
 const Toplist = lazy(() => import('pages/Discover/Toplist'))
@@ -92,7 +94,14 @@ const routes: RouteConfig[] = [
       // 下载客户端
       { path: '/download', component: Download, meta: { requiresAuth: false } },
       // 用户信息
-      { path: '/user', component: User, routes: [{ path: '/user/home/:userId', component: UserHome }] },
+      {
+        path: '/user',
+        component: User,
+        routes: [
+          { path: '/user/home/:userId', component: UserHome },
+          { path: '/user/record-list-detail/:userId', component: RecordListDetail },
+        ],
+      },
     ],
   },
 ]

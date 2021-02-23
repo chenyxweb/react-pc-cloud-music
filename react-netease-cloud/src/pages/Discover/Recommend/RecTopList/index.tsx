@@ -80,7 +80,7 @@ const RecTopList: FC<
     // 没有就添加
     if (songList.findIndex(i => i.id === item.id) === -1) {
       props.dispatch(add_song_list_item(item))
-      message.success('添加成功')
+      // message.success('添加成功')
     } else {
       message.warn('请勿重复添加')
     }

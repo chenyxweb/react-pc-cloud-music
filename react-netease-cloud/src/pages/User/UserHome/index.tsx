@@ -1,20 +1,21 @@
 // user - 主页
-import { PlayCircleOutlined } from '@ant-design/icons'
-import { Select } from 'antd'
 import PlayListItem from 'components/PlayListItem'
 import React, { FC, memo, useCallback, useEffect, useState } from 'react'
+import { connect } from 'react-redux'
 import { RouteConfigComponentProps } from 'react-router-config'
 import http from 'service/http'
+import { ICombineState } from 'store'
+import RecordList from '../components/RecordList'
 import styles from './index.module.scss'
 
 interface IProps {}
 
-const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = props => {
-  const [hasMore, setHasMore] = useState(true) // 是否有更多分页数据
+const UserHome: FC<
+  IProps & RouteConfigComponentProps<{ userId: string }> & Pick<ICombineState, 'userInfo'>
+> = props => {
+  // const [hasMore, setHasMore] = useState(true) // 是否有更多分页数据
   const [createList, setCreateList] = useState<any[]>([]) // 创建的歌单
   const [collectList, setCollectList] = useState<any[]>([]) // 收藏的歌单
-  const [recordType, setRecordType] = useState<1 | 0>(1) // 1 最近一周, 0 所有时间
-  const [recordList, setRecordList] = useState<any[]>([]) // 播放记录列表
 
   // console.log(props)
 
@@ -28,7 +29,7 @@ const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = pro
       .then(res => {
         if (res.data.code === 200) {
           const { more, playlist } = res.data || {}
-          setHasMore(more ?? true)
+          // setHasMore(more ?? true)
 
           const createList: any[] = []
           const collectList: any[] = []
@@ -44,28 +45,27 @@ const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = pro
           }
 
           setCreateList(createList)
-          console.log('createList: ', createList)
           setCollectList(collectList)
-          console.log('collectList: ', collectList)
         }
       })
       .catch(() => {})
   }, [props.match.params?.userId])
 
-  // 获取用户 播放记录
-  useEffect(() => {
-    const uid = Number(props.match.params?.userId)
-    if (!uid) return
+  // 渲染profile
+  const renderProfile = () => {
+    return (
+      <div className={styles.userProfile}>
+        <div className='avatar'>
+          <img src={props.userInfo?.profile?.avatarUrl + '?param=182y182'} alt='' />
+        </div>
+        <div className='detailInfo'>
+          <div className='detailInfo-top'>{props.userInfo?.profile?.nickname}</div>
 
-    http.getUserRecord({ uid, type: recordType }).then(res => {
-      console.log(res)
-      if (res.data.code === 200) {
-        const { weekData, allData } = res.data || {}
-        const list = recordType === 1 ? weekData : allData
-        setRecordList(list?.slice(0, 10) || [])
-      }
-    })
-  }, [props.match.params?.userId, recordType])
+          <div className='detailInfo-bot'></div>
+        </div>
+      </div>
+    )
+  }
 
   // 渲染歌单
   const renderPlayList = useCallback((list: any[]) => {
@@ -85,54 +85,14 @@ const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = pro
     )
   }, [])
 
-  // 渲染听歌排行
-  const renderRecordList = useCallback(
-    (list: any[]) => {
-      return (
-        <div className={styles.recordList}>
-          <div className={styles.recordListTitle}>
-            <span className='text'>听歌排行</span>
-            <Select value={recordType} bordered={false} onChange={value => setRecordType(value)}>
-              <Select.Option value={1}>最近一周</Select.Option>
-              <Select.Option value={0}>所有时间</Select.Option>
-            </Select>
-          </div>
-          <div className={styles.recordListWrapper}>
-            <div className={styles.recordListItem}>
-              {/* 排名序号 */}
-              <div className={styles.rank}>1. </div>
-
-              {/* 播放按钮 */}
-              <PlayCircleOutlined className={styles.playBtn} style={{ marginLeft: 15 }} />
-
-              {/* 歌曲信息 */}
-              <div className={styles.songInfo}>
-                <strong className={styles.songName}>爱情废材</strong>
-                <span> - </span>
-                <span className={styles.author}>
-                  周杰伦
-                </span>
-              </div>
-
-              {/* 播放次数 */}
-              <div className={styles.count}>
-                83次
-                {/* 蓝条 */}
-                <div className={styles.blueBar} style={{ width: '80%' }}></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    [recordType]
-  )
-
   // console.log(props)
   return (
     <div className={styles.UserHome}>
+      {/* 渲染profile */}
+      {renderProfile()}
+
       {/* 听歌排行 */}
-      {renderRecordList(recordList)}
+      <RecordList showMoreBtn></RecordList>
 
       {/* 我创建的歌单 */}
       {renderPlayList(createList)}
@@ -145,4 +105,11 @@ const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = pro
 
 UserHome.defaultProps = {}
 
-export default memo(UserHome)
+// map store
+const mapStateToProps = (state: ICombineState) => {
+  return {
+    userInfo: state.userInfo,
+  }
+}
+
+export default memo(connect(mapStateToProps)(UserHome))

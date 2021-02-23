@@ -584,8 +584,7 @@ const PlayBar: FC<
             className={styles.songListAndLyric}
             // //music.163.com/api/img/blur/
             style={{
-              // background: `rgba(31, 31, 31, 0.9) url('${currentSongInfo?.al?.picUrl}?param=500y500') no-repeat center center/986px `,
-              background: `rgba(31, 31, 31, 0.9) url('//music.163.com/api/img/blur/${currentSongInfo?.al?.pic_str}') no-repeat center center/986px `,
+              background: `rgba(31, 31, 31, 0.8) url('//music.163.com/api/img/blur/${currentSongInfo?.al?.pic_str}') no-repeat center center/986px `,
             }}
           >
             {/* 歌曲列表容器 */}

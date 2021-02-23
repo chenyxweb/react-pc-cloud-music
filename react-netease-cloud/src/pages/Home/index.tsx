@@ -10,7 +10,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 import { renderRoutes, RouteConfigComponentProps } from 'react-router-config'
-import { Avatar, Dropdown, Menu } from 'antd'
+import { Avatar, Dropdown, Menu, message } from 'antd'
 
 import constants from 'utils/constants'
 import styles from './index.module.scss'
@@ -261,17 +261,21 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
   )
 
   // logout
-  const logout = () => {
+  const logout = useCallback(() => {
     http
       .logout()
       .then(res => {
-        // console.log(res)
-        props.dispatch(update_user_info({ account: {}, profile: {}, isLogin: false }))
-        // 去首页
-        props.history.replace('/')
+        console.log(res)
+        if (res.data.code === 200) {
+          props.dispatch(update_user_info({ account: {}, profile: {}, isLogin: false }))
+          // 去首页
+          props.history.replace('/')
+        } else {
+          message.error('系统错误')
+        }
       })
       .catch(() => {})
-  }
+  }, [props])
 
   // 用户profile
   const renderProfile = useCallback(() => {
@@ -317,7 +321,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
         </Dropdown>
       </div>
     )
-  }, [props.userInfo])
+  }, [logout, props.history, props.userInfo])
 
   // 判断登录状态, 获取用户数据
   useEffect(() => {

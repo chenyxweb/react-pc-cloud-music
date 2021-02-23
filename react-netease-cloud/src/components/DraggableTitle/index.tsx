@@ -50,6 +50,7 @@ const DraggableTitle: FC<IProps> = props => {
         document.removeEventListener('mousemove', handleMousemove)
       })
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

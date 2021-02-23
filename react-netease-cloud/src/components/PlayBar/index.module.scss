@@ -371,7 +371,7 @@
           .songList-content {
             flex: 1;
             overflow: auto;
-            background-color: rgba($color: #121212, $alpha: 0.9);
+            background-color: rgba($color: #121212, $alpha: 0.8);
 
             .songList-item {
               cursor: pointer;
@@ -430,7 +430,7 @@
 
               &:hover,
               &.active {
-                background-color: rgba($color: #000000, $alpha: 0.8);
+                background-color: rgba($color: #000000, $alpha: 0.4);
 
                 .songList-item-name,
                 .songList-item-author,
@@ -496,7 +496,7 @@
           .lyric-content {
             flex: 1;
             overflow: auto;
-            background-color: rgba($color: #121212, $alpha: 0.9);
+            background-color: rgba($color: #121212, $alpha: 0.8);
 
             .lyric-item {
               padding: 0 15px;
