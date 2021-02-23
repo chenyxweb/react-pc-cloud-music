@@ -6,8 +6,8 @@ import { message } from 'antd'
 let BASE_URL = ''
 switch (process.env.REACT_APP_MODE) {
   case 'dev':
-    // BASE_URL = 'http://localhost:3000' // 本地启动
-    BASE_URL = 'http://10.176.169.39:3000' // 本地启动
+    BASE_URL = 'http://localhost:3000' // 本地启动
+    // BASE_URL = 'http://10.176.169.39:3000' // 本地启动
     break
 
   case 'build':

@@ -1,6 +1,7 @@
 .Login {
   height: 100vh;
   position: relative;
+  overflow: hidden;
 
   .form {
     position: absolute;
@@ -8,20 +9,10 @@
     width: 500px;
     box-shadow: 0 5px 16px rgba($color: #000000, $alpha: 0.8);
     border: none;
-    top: 50%;
-    right: 20%;
-    transform: translateY(-50%);
+    top: calc(50vh - 150px);
+    left: calc(50vw - 250px);
     border-radius: 4px;
     overflow: hidden;
-
-    .title {
-      background: #2d2d2d;
-      height: 39px;
-      line-height: 39px;
-      padding: 0 15px;
-      color: #fff;
-      font-size: 14px;
-    }
 
     .content {
       height: 260px;
@@ -29,7 +20,7 @@
       // 账号登录
       .accountLogin {
         height: 100%;
-        padding: 40px 0;
+        padding: 40px 15px;
 
         // 二维码图标
         .qr_login_icon {

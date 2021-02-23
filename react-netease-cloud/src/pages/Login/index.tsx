@@ -10,6 +10,7 @@ import qr_login_icon from 'assets/img/qr_login_icon.png'
 import md5 from 'md5'
 import http from 'service/http'
 import { ReloadOutlined } from '@ant-design/icons'
+import DraggableTitle from 'components/DraggableTitle'
 
 interface IProps {}
 
@@ -19,6 +20,8 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
   const [qrImg, setQrImg] = useState('') // 二维码图片
   const [qrCodeStatus, setQrCodeStatus] = useState<number>() // 800为二维码过期, 801为等待扫码, 802为待确认, 803为授权登录成功
   const [refreshTS, setRefreshTS] = useState<number>() // 点击刷新二维码的时间戳
+
+  const [position, setPosition] = useState<any>() // 登录框位置
 
   const formRef = useRef<FormInstance>(null) // 表单ref
 
@@ -59,27 +62,30 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
   }, [qrKey])
 
   // 登录成功后处理
-  const handleLoginSuccess = useCallback(() => {
-    // // 用户信息存store,存localStorage
-    // props.dispatch(update_user_info(userInfo))
-    // localStorage.setItem('USER_INFO', JSON.stringify(userInfo))
+  const handleLoginSuccess = useCallback(
+    (cookie: string) => {
+      // // 用户信息存store,存localStorage
+      // props.dispatch(update_user_info(userInfo))
+      // localStorage.setItem('USER_INFO', JSON.stringify(userInfo))
 
-    message.success('登录成功')
+      message.success('登录成功')
 
-    // 登录成功之后回跳from页面
-    const search = props.location.search || ''
+      // 登录成功之后回跳from页面
+      const search = props.location.search || ''
 
-    const queryObj = qs.parse(search.split('?')[1]) || {}
+      const queryObj = qs.parse(search.split('?')[1]) || {}
 
-    if (queryObj.from) {
-      // 去from页面
-      // props.history.replace(decodeURIComponent(queryObj.from as string))
-      window.location.href = decodeURIComponent(queryObj.from as string)
-    } else {
-      // 去首页
-      props.history.replace('/')
-    }
-  }, [props.history, props.location.search])
+      if (queryObj.from) {
+        // 去from页面
+        // props.history.replace(decodeURIComponent(queryObj.from as string))
+        window.location.href = decodeURIComponent(queryObj.from as string)
+      } else {
+        // 去首页
+        props.history.replace('/')
+      }
+    },
+    [props.history, props.location.search]
+  )
 
   // 轮询获取二维码状态
   useEffect(() => {
@@ -102,7 +108,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
             // 二维码过期,点击刷新二维码
           } else if (code === 803) {
             // 登录成功, cookie 自动存储, 跳到from页面
-            handleLoginSuccess()
+            handleLoginSuccess(cookie)
           } else if (code === 802) {
             // 扫码完成, 但未确认授权
           }
@@ -127,7 +133,8 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
         console.log(res)
         // 登录成功
         if (res.data.code === 200) {
-          handleLoginSuccess()
+          const { cookie } = res.data
+          handleLoginSuccess(cookie)
         } else {
           message.error(res.data?.message || '系统异常')
         }
@@ -181,11 +188,15 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
 
   // 刷新二维码
   const refreshQR = () => {
-    console.log('哈哈哈')
     // 重置status
     setQrCodeStatus(801)
     // setRefreshTS
     setRefreshTS(Date.now())
+  }
+
+  // 拖拽
+  const handleOnDragging = (p: any) => {
+    setPosition(p)
   }
 
   const layout = {
@@ -199,8 +210,11 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
 
   return (
     <div className={styles.Login}>
-      <div className={styles.form}>
-        <div className={styles.title}>{loginType === 'account' ? '账号登录' : '二维码登录'}</div>
+      <div className={styles.form} style={{ left: position?.x, top: position?.y }}>
+        <DraggableTitle
+          onDragging={handleOnDragging}
+          text={loginType === 'account' ? '账号登录' : '二维码登录'}
+        ></DraggableTitle>
         <div className={styles.content}>
           {/* 账号登录 */}
           {loginType === 'account' ? (
