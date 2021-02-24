@@ -64,5 +64,171 @@
     background-color: #fff;
     width: 740px;
     border-right: 1px solid #d3d3d3;
+    padding: 30px 15px 15px 30px;
+
+    .topListInfo {
+      display: flex;
+      padding-bottom: 30px;
+
+      :global {
+        .logo {
+          width: 158px;
+          height: 158px;
+          padding: 4px;
+          border: 1px solid #ccc;
+        }
+
+        .content {
+          padding-left: 15px;
+          flex: 1;
+
+          > p {
+            color: #666;
+            padding-bottom: 15px;
+          }
+
+          .btns {
+            .btn {
+              margin-right: 8px;
+            }
+          }
+        }
+      }
+    }
+
+    .topListWrapper {
+      .topListTitle {
+        display: flex;
+        justify-content: space-between;
+
+        height: 35px;
+        line-height: 35px;
+        border-bottom: 2px solid #c20c0c;
+
+        :global {
+          h3 {
+            font-size: 20px;
+          }
+          .songCount {
+            flex: 1;
+            padding-left: 15px;
+          }
+        }
+      }
+
+      .topListItemWrapper {
+        border-bottom: 1px solid #ccc;
+        border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        min-height: 400px;
+
+        .topListItem {
+          display: flex;
+          height: 32px;
+          line-height: 32px;
+          align-items: center;
+
+          &:hover {
+            .title {
+              :global {
+                .plus-icon {
+                  display: block;
+                }
+              }
+            }
+          }
+
+          // 前三
+          &.top {
+            height: 70px;
+          }
+
+          .rank {
+            width: 60px;
+            text-align: center;
+          }
+
+          .title {
+            width: 330px;
+            display: flex;
+            align-items: center;
+            position: relative;
+
+            :global {
+              img {
+                height: 50px;
+                width: 50px;
+                margin-left: 8px;
+                margin-right: 4px;
+              }
+
+              .icon {
+                font-size: 16px;
+                margin-right: 8px;
+                cursor: pointer;
+                color: #aaa;
+                margin-left: 8px;
+              }
+
+              .song-name {
+                font-weight: bold;
+                width: 180px;
+              }
+
+              .plus-icon {
+                position: absolute;
+                font-size: 16px;
+                right: 10px;
+                cursor: pointer;
+                color: #aaa;
+                display: none;
+              }
+
+              .icon,
+              .plus-icon {
+                transition: all 0.3s;
+
+                &:hover {
+                  color: #333;
+                }
+              }
+            }
+          }
+
+          .time {
+            flex: 1;
+            padding-left: 8px;
+          }
+
+          .author {
+            width: 210px;
+            padding-left: 8px;
+          }
+        }
+
+        .dark {
+          background-color: rgb(247, 247, 247);
+        }
+
+        :global {
+          .list-title {
+            height: 35px;
+            line-height: 35px;
+            background-color: rgb(251, 249, 249);
+            border-bottom: 1px solid #ccc;
+            box-shadow: 0 0px 6px 0px rgba($color: #000000, $alpha: 0.2);
+
+            > div {
+              border-left: 1px solid #ccc;
+              padding-left: 8px;
+
+              &:first-child {
+                border-left: none;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

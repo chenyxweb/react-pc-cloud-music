@@ -10,7 +10,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 import { renderRoutes, RouteConfigComponentProps } from 'react-router-config'
-import { Avatar, Dropdown, Menu, message } from 'antd'
+import { Avatar, Dropdown, Menu, message, Modal } from 'antd'
 
 import constants from 'utils/constants'
 import styles from './index.module.scss'
@@ -262,19 +262,26 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
 
   // logout
   const logout = useCallback(() => {
-    http
-      .logout()
-      .then(res => {
-        console.log(res)
-        if (res.data.code === 200) {
-          props.dispatch(update_user_info({ account: {}, profile: {}, isLogin: false }))
-          // 去首页
-          props.history.replace('/')
-        } else {
-          message.error('系统错误')
-        }
-      })
-      .catch(() => {})
+    Modal.confirm({
+      title: '确定退出么?',
+      okText: '确定',
+      cancelText: '取消',
+      onOk: () => {
+        http
+          .logout()
+          .then(res => {
+            console.log(res)
+            if (res.data.code === 200) {
+              props.dispatch(update_user_info({ account: {}, profile: {}, isLogin: false }))
+              // 去首页
+              props.history.replace('/')
+            } else {
+              message.error('系统错误')
+            }
+          })
+          .catch(() => {})
+      },
+    })
   }, [props])
 
   // 用户profile
@@ -284,6 +291,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
     return (
       <div className={styles.userProfile}>
         <Dropdown
+          // trigger={['click']}
           overlay={
             <Menu>
               <Menu.Item onClick={() => props.history.push(`/user/home/${profile.userId}`)}>

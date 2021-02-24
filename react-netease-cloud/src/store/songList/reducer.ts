@@ -1,6 +1,6 @@
 // reducer 执行者(怎么干)
 
-import { message } from 'antd'
+// import { message } from 'antd'
 import { IAction } from 'store'
 import { ADD_SONG_LIST_ITEM, DEL_SONG_LIST_ITEM, CLEAR_SONG_LIST, REPLACE_SONG_LIST } from './actionTypes'
 
@@ -12,9 +12,9 @@ export const songListReducer = (state: any[] = [], action: IAction) => {
       const has = list.some(item => item.id === action.payload?.id)
       if (!has) {
         list = [...list, action.payload]
-        message.success('添加成功')
+        // message.success('添加成功')
       } else {
-        message.warn('请勿重复添加')
+        // message.warn('请勿重复添加')
       }
 
       return list

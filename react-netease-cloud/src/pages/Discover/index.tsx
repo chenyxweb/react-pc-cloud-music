@@ -23,6 +23,16 @@ const Discover: FC<IProps> = props => {
     }
   }
 
+  // 点击subMenu
+  const handleClickSubMenu = (item: { path: string; name: string }) => {
+    if (item.path === '/discover/toplist') {
+      // 默认到 飙升榜 19723756
+      props.history.push('/discover/toplist/19723756')
+    } else {
+      props.history.push(item.path)
+    }
+  }
+
   return (
     <div className={styles.Discover}>
       {/* 小menu */}
@@ -33,7 +43,7 @@ const Discover: FC<IProps> = props => {
               <div
                 className={['sub-menu-item', calcActive(item, index) ? 'active' : ''].join(' ')}
                 key={index}
-                onClick={() => props.history.push(item.path)}
+                onClick={() => handleClickSubMenu(item)}
               >
                 {item.name}
               </div>
