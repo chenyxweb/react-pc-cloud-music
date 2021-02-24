@@ -44,16 +44,16 @@ const RecordListItem: FC<IProps & DispatchProp & RouteConfigComponentProps> = pr
 
   // 点击歌名
   const handleClickSongName = (item: any) => {
-    // /discover/song?id=1810021934
+    // /discover/song/1810021934
     const songId = item?.song?.id
-    songId && history.push(`/discover/song?id=${songId}`)
+    songId && history.push(`/discover/song/${songId}`)
   }
 
   // 点击歌手
   const handleClickAuthor = (item: any) => {
-    // /discover/artist?id=7395
+    // /discover/artist/7395
     const authorId = item?.song?.ar[0]?.id
-    authorId && history.push(`/discover/artist?id=${authorId}`)
+    authorId && history.push(`/discover/artist-detail/${authorId}`)
   }
 
   return (

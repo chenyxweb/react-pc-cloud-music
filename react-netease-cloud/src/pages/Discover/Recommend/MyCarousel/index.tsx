@@ -43,7 +43,7 @@ const MyCarousel: FC<IProps> = props => {
   }
 
   // 歌曲详情页
-  const goSong = (id: number) => props.history.push(`/discover/song?id=${id}`)
+  const goSong = (id: number) => props.history.push(`/discover/song/${id}`)
 
   return (
     <div

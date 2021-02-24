@@ -35,10 +35,10 @@ const NewDisk: FC<IProps> = props => {
   const ToAlbum = () => props.history.push('/discover/album')
 
   // 去专辑详情页
-  const toAlbumDetail = (id: number) => props.history.push(`/discover/album-detail?id=${id}`)
+  const toAlbumDetail = (id: number) => props.history.push(`/discover/album-detail/${id}`)
 
   // 去歌手详情页
-  const toArtistDetail = (id: number) => props.history.push(`/discover/artist-detail?id=${id}`)
+  const toArtistDetail = (id: number) => props.history.push(`/discover/artist-detail/${id}`)
 
   return (
     <div className={styles.NewDisk}>

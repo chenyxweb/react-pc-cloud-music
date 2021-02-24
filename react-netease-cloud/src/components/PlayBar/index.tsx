@@ -443,12 +443,12 @@ const PlayBar: FC<
 
   // 点击歌曲名
   const handleClickSongName = () => {
-    currentSongInfo.id && props.history.push(`/discover/song?id=${currentSongInfo.id}`)
+    currentSongInfo.id && props.history.push(`/discover/song/${currentSongInfo.id}`)
   }
 
   // 点击歌手
   const handleClickAuthorName = (item: any) => {
-    item.id && props.history.push(`/discover/artist?id=${item.id}`)
+    item.id && props.history.push(`/discover/artist-detail/${item.id}`)
   }
 
   return (

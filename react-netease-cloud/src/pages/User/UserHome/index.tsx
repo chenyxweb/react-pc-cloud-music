@@ -6,6 +6,7 @@ import { RouteConfigComponentProps } from 'react-router-config'
 import http from 'service/http'
 import { ICombineState } from 'store'
 import RecordList from '../components/RecordList'
+import LazyLoad from 'react-lazyload'
 import styles from './index.module.scss'
 
 interface IProps {}
@@ -25,7 +26,7 @@ const UserHome: FC<
     if (!uid) return
 
     http
-      .getUserSongList({ uid, limit: 100 })
+      .getUserSongList({ uid, limit: 1000 })
       .then(res => {
         if (res.data.code === 200) {
           const { more, playlist } = res.data || {}
@@ -68,15 +69,19 @@ const UserHome: FC<
   }
 
   // 渲染歌单
-  const renderPlayList = useCallback((list: any[]) => {
+  const renderPlayList = useCallback((list: any[], title: string) => {
     return (
       <div className={styles.playlist}>
-        <div className={styles.playlistTitle}>我创建的歌单（{list.length}）</div>
+        <div className={styles.playlistTitle}>
+          {title}（{list.length}）
+        </div>
         <div className={styles.playlistContent}>
           {list.map(item => {
             return (
               <div className={styles.itemWrapper} key={item.id}>
-                <PlayListItem item={item}></PlayListItem>
+                <LazyLoad height={140} once overflow>
+                  <PlayListItem item={item}></PlayListItem>
+                </LazyLoad>
               </div>
             )
           })}
@@ -95,10 +100,10 @@ const UserHome: FC<
       <RecordList showMoreBtn></RecordList>
 
       {/* 我创建的歌单 */}
-      {renderPlayList(createList)}
+      {renderPlayList(createList, '我创建的歌单')}
 
       {/* 我收藏的歌单 */}
-      {renderPlayList(collectList)}
+      {renderPlayList(collectList, '我收藏的歌单')}
     </div>
   )
 }

@@ -15,6 +15,7 @@ body,
 
 .app {
   overflow: auto;
+  position: relative;
 
   // /*修改滚动条样式*/
   &::-webkit-scrollbar {

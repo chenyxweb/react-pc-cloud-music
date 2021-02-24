@@ -25,7 +25,7 @@ const RecArtistList: FC<IProps> = props => {
 
   // 点击歌手项
   const handleListItemClick = (id: number) => {
-    id && props.history.push(`/discover/artist?id=${id}`)
+    id && props.history.push(`/discover/artist-detail/${id}`)
   }
 
   return (

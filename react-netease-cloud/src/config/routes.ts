@@ -78,9 +78,9 @@ const routes: RouteConfig[] = [
           // 专辑详情
           { path: '/discover/album-detail', component: AlbumDetail, meta: { requiresAuth: false } },
           // 歌手详情
-          { path: '/discover/artist-detail', component: ArtistDetail, meta: { requiresAuth: false } },
+          { path: '/discover/artist-detail/:id', component: ArtistDetail, meta: { requiresAuth: false } },
           // 歌曲详情页
-          { path: '/discover/song', component: Song, meta: { requiresAuth: false } },
+          { path: '/discover/song/:id', component: Song, meta: { requiresAuth: false } },
         ],
       },
       // 我的音乐

@@ -137,7 +137,7 @@ const RecTopList: FC<
   // 点击歌曲
   const handleSongClick = (id: number) => {
     console.log(id)
-    id && props.history.push(`/discover/song?id=${id}`)
+    id && props.history.push(`/discover/song/${id}`)
   }
 
   // 渲染列表

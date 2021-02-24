@@ -53,7 +53,7 @@ const PlayListItem: FC<
               : constants.bg_placeholder_img
           }
           alt=''
-          onClick={() => props.history.push(`/discover/playlist-detail?id=${item.id}`)}
+          onClick={() => props.history.push(`/discover/playlist-detail/${item.id}`)}
         />
 
         {/* 定位元素 */}

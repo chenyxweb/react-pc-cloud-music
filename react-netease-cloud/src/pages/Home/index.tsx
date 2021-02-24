@@ -64,7 +64,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
   const handleSongsItemClick = (song: any) => {
     // console.log('song: ', song)
     if (song?.id) {
-      props.history.push(`/discover/song?id=${song.id}`)
+      props.history.push(`/discover/song/${song.id}`)
     }
   }
 
@@ -72,7 +72,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
   const handleArtistsItemClick = (artist: any) => {
     // console.log('artist: ', artist)
     if (artist?.id) {
-      props.history.push(`/discover/artist?id=${artist.id}`)
+      props.history.push(`/discover/artist-detail/${artist.id}`)
     }
   }
 
@@ -89,7 +89,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
   const handleAlbumsItemClick = (album: any) => {
     // console.log('album: ', album)
     if (album?.id) {
-      props.history.push(`/discover/album?id=${album.id}`)
+      props.history.push(`/discover/album/${album.id}`)
     }
   }
 
