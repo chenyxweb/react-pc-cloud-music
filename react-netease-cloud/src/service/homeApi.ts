@@ -46,6 +46,23 @@ const getArtistList = (params: {
 }) => axios.get('/artist/list', { params })
 
 /**
+ * 获取歌单分类
+ */
+const getPlaylistCateList = () => axios.get('/playlist/catlist')
+
+/**
+ * 歌单 ( 网友精选碟 )
+ * 获取某分类所有歌单
+ *
+ * order: 可选值为 'new' 和 'hot', 分别对应最新和最热 , 默认为 'hot'
+ * cat: 分类信息 默认全部
+ * limit: 单页数量 默认为 50
+ * offset: 偏移数量，用于分页 , 如 :( 页数 -1)*30, 其中 30 为 limit 的值 , 默认为 0
+ */
+const getTopPlayList = (params: { cat?: string; order?: 'new' | 'hot'; limit?: number; offset?: number }) =>
+  axios.get('/top/playlist', { params })
+
+/**
  * 获取歌单详情
  */
 const getPlaylistDetail = (params: {
@@ -75,6 +92,8 @@ const homeApi = {
   newDisk, // 新碟上架
   getLyric, // 获取歌词
   getArtistList, // 获取歌手列表
+  getPlaylistCateList, // 获取歌单分类
+  getTopPlayList, //
   getPlaylistDetail, // 获取歌单详情
   getTopList, // 获取排行榜
   getSongUrl, // 获取音乐url

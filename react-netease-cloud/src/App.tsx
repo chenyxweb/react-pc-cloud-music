@@ -32,6 +32,5 @@ const App: FC = () => {
     </div>
   )
 }
-// 123123123123
 
 export default App
