@@ -7,7 +7,6 @@ import { renderRoutes } from 'react-router-config'
 import routes from 'config/routes'
 
 const App: FC = () => {
-  // 123123123
   return (
     <div className="app">
       <Suspense fallback={<LoadingPage text="努力加载中..." />}>

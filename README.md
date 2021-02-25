@@ -1349,6 +1349,19 @@ export const axios = Axios.create({
 - 用key获取二维码
 - 轮询监听二维码状态 ( 800为二维码过期,801为等待扫码,802为待确认,803为授权登录成功(803状态码下会返回cookies) 
 
+
+
+### 20 配置提交前格式化代码
+
+- 安装
+
+```bash
+yarn add prettier --dev
+npx mrm lint-staged // 会安装husky lint-staged 自动生成配置
+```
+
+- 配置.prettierrc.js
+
 ## ps
 
 ### 删除歌曲冒泡导致点击了歌曲列表项  , 需要清除冒泡 (***), 习惯性要清除冒泡
