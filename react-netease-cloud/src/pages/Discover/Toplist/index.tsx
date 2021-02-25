@@ -21,7 +21,7 @@ const listInit = Array(4)
 
 interface IProps {}
 
-const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> = props => {
+const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> = (props) => {
   // console.log(props)
   const { match, history } = props
   const [list1, setList1] = useState<any[]>(listInit) // 云音乐特色榜
@@ -33,7 +33,7 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
   useEffect(() => {
     http
       .getTopList()
-      .then(res => {
+      .then((res) => {
         // console.log(res)
         if (res.data.code === 200) {
           const list = res.data.list || []
@@ -64,7 +64,7 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
     setSpinning(true)
     http
       .getPlaylistDetail({ id: Number(id) })
-      .then(res => {
+      .then((res) => {
         setSpinning(false)
 
         // console.log(res)
@@ -100,7 +100,7 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
 
   // renderList
   const renderList = (list: any[]) => {
-    return list.map(item => {
+    return list.map((item) => {
       return (
         <div
           className={`list-item ${Number(match.params?.id) === item?.id ? 'active' : ''}`}
@@ -108,11 +108,11 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
           onClick={() => handleClickItem(item.id)}
         >
           <LazyLoad height={40} overflow>
-            <img className='list-item-img' src={item.coverImgUrl + '?param=40y40'} alt='' title={item.description} />
+            <img className="list-item-img" src={item.coverImgUrl + '?param=40y40'} alt="" title={item.description} />
           </LazyLoad>
-          <div className='list-item-desc'>
-            <p className='list-item-desc-t ellipsis-1'>{item.name}</p>
-            <p className='list-item-desc-b ellipsis-1'>{item.updateFrequency}</p>
+          <div className="list-item-desc">
+            <p className="list-item-desc-t ellipsis-1">{item.name}</p>
+            <p className="list-item-desc-b ellipsis-1">{item.updateFrequency}</p>
           </div>
         </div>
       )
@@ -130,10 +130,10 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
           >
             <div className={styles.rank}>{index + 1}</div>
             <div className={styles.title}>
-              {index <= 2 ? <img src={item?.al?.picUrl + '?param=50y50'} alt='' /> : null}
-              <PlayCircleOutlined title='播放当前歌曲' className='icon' onClick={() => handlePlay(item)} />
-              <span className='song-name ellipsis-1'>{item?.name}</span>
-              <PlusOutlined title='添加到歌单' className='plus-icon' onClick={() => handleAdd(item)}></PlusOutlined>
+              {index <= 2 ? <img src={item?.al?.picUrl + '?param=50y50'} alt="" /> : null}
+              <PlayCircleOutlined title="播放当前歌曲" className="icon" onClick={() => handlePlay(item)} />
+              <span className="song-name ellipsis-1">{item?.name}</span>
+              <PlusOutlined title="添加到歌单" className="plus-icon" onClick={() => handleAdd(item)}></PlusOutlined>
             </div>
             <div className={styles.time}>{item?.dt ? dayjs(item?.dt).format('mm:ss') : ''}</div>
             <div className={[styles.author, 'ellipsis-1'].join(' ')}>{item?.ar?.[0]?.name || ''}</div>
@@ -165,28 +165,28 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
       <div className={styles.ToplistList}>
         {/* 云音乐特色榜 */}
         <h3>云音乐特色榜</h3>
-        <div className='list1'>{renderList(list1)}</div>
+        <div className="list1">{renderList(list1)}</div>
 
         {/* 全球媒体榜 */}
         <h3>全球媒体榜</h3>
-        <div className='list2'>{renderList(list2)}</div>
+        <div className="list2">{renderList(list2)}</div>
       </div>
       <div className={styles.ToplistContent}>
         {/* 歌单信息展示 */}
         <div className={styles.topListInfo}>
           <img
-            className='logo'
+            className="logo"
             src={playlist?.coverImgUrl ? `${playlist?.coverImgUrl}?param=158y158` : constants.bg_placeholder_img}
-            alt=''
+            alt=""
           />
-          <div className='content'>
+          <div className="content">
             <h1>{playlist?.name}</h1>
             <p>
               <FieldTimeOutlined /> 最近更新：
               {playlist?.updateTime ? dayjs(playlist?.updateTime).format('MM月DD日') : ''}
             </p>
-            <div className='btns'>
-              <Button className='btn' type='primary' onClick={playTopList}>
+            <div className="btns">
+              <Button className="btn" type="primary" onClick={playTopList}>
                 <PlayCircleOutlined />
                 播放榜单
               </Button>
@@ -194,7 +194,7 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
                 <PlusOutlined />
                 添加到播放列表
               </Button> */}
-              <Button className='btn' disabled>
+              <Button className="btn" disabled>
                 收藏
               </Button>
             </div>
@@ -205,8 +205,8 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
         <div className={styles.topListWrapper}>
           <div className={styles.topListTitle}>
             <h3>歌曲列表</h3>
-            <span className='songCount'>{playlist?.tracks?.length}首歌</span>
-            <div className='playCount'>
+            <span className="songCount">{playlist?.tracks?.length}首歌</span>
+            <div className="playCount">
               播放：<strong style={{ color: '#c20c0c' }}>{playlist?.playCount}</strong>次
             </div>
           </div>

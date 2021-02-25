@@ -14,7 +14,7 @@ import DraggableTitle from 'components/DraggableTitle'
 
 interface IProps {}
 
-const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
+const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = (props) => {
   const [loginType, setLoginType] = useState<'qrCode' | 'account'>('account') // 二维码 | 账号登录
   const [qrKey, setQrKey] = useState('') // 二维码key
   const [qrImg, setQrImg] = useState('') // 二维码图片
@@ -30,7 +30,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
     if (loginType === 'account') return
 
     try {
-      http.generateQrKey().then(res => {
+      http.generateQrKey().then((res) => {
         if (res.data.code === 200) {
           const { unikey } = res.data.data || {}
           console.log('验证码key: ', unikey)
@@ -47,7 +47,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
     if (!qrKey) return
 
     try {
-      http.generateQrCode({ key: qrKey, qrimg: 'qrimg' }).then(res => {
+      http.generateQrCode({ key: qrKey, qrimg: 'qrimg' }).then((res) => {
         if (res.data.code === 200) {
           const { qrimg } = res.data.data || {}
           console.log(qrimg)
@@ -93,7 +93,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
 
     const timeId = setInterval(() => {
       try {
-        http.checkQrStatus({ key: qrKey }).then(res => {
+        http.checkQrStatus({ key: qrKey }).then((res) => {
           console.log(res.data?.message)
           // 解释 : 800为二维码过期, 801为等待扫码, 802为待确认, 803为授权登录成功(803状态码下会返回cookies)
           const { code, cookie, message } = res.data || {}
@@ -129,7 +129,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
     console.log('手机号登录', data)
     http
       .phoneLogin(data)
-      .then(res => {
+      .then((res) => {
         console.log(res)
         // 登录成功
         if (res.data.code === 200) {
@@ -139,7 +139,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
           message.error(res.data?.message || '系统异常')
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
       })
   }
@@ -222,21 +222,21 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
               <Form
                 ref={formRef}
                 {...layout}
-                name='basic'
+                name="basic"
                 initialValues={{ remember: true }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
               >
-                <Form.Item label='账号' name='username' rules={[{ required: true, message: '请输入用户名!' }]}>
-                  <Input placeholder='请输入手机号' />
+                <Form.Item label="账号" name="username" rules={[{ required: true, message: '请输入用户名!' }]}>
+                  <Input placeholder="请输入手机号" />
                 </Form.Item>
 
-                <Form.Item label='密码' name='password' rules={[{ required: true, message: '请输入密码!' }]}>
-                  <Input.Password placeholder='请输入密码' />
+                <Form.Item label="密码" name="password" rules={[{ required: true, message: '请输入密码!' }]}>
+                  <Input.Password placeholder="请输入密码" />
                 </Form.Item>
 
                 <Form.Item {...tailLayout}>
-                  <Button type='primary' htmlType='submit'>
+                  <Button type="primary" htmlType="submit">
                     登录
                   </Button>
                   <Button onClick={resetForm} style={{ marginLeft: 45 }}>
@@ -249,8 +249,8 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
               <img
                 className={styles.qr_login_icon}
                 onClick={() => setLoginType('qrCode')}
-                title='二维码登录'
-                alt=''
+                title="二维码登录"
+                alt=""
                 src={qr_login_icon}
               />
             </div>
@@ -264,7 +264,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
                 {qrCodeStatus === 800 ? (
                   <div className={styles.outdate}>
                     <span style={{ fontWeight: 700 }}>二维码已失效</span>
-                    <Button size='small' style={{ width: 100 }} onClick={refreshQR}>
+                    <Button size="small" style={{ width: 100 }} onClick={refreshQR}>
                       <ReloadOutlined />
                       点击刷新
                     </Button>
@@ -272,20 +272,20 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
                 ) : null}
 
                 {/* 验证码 */}
-                {qrImg ? <img className={styles.qr} src={qrImg} alt='' /> : null}
+                {qrImg ? <img className={styles.qr} src={qrImg} alt="" /> : null}
               </div>
               <div className={styles.tips}>
                 使用{' '}
                 <a
-                  href='https://music.163.com/#/download'
-                  target='_blank
-                '
+                  href="https://music.163.com/#/download"
+                  target="_blank
+                "
                 >
                   网易云音乐APP
                 </a>{' '}
                 扫码登录
               </div>
-              <div className='switch-account-login' onClick={() => setLoginType('account')}>
+              <div className="switch-account-login" onClick={() => setLoginType('account')}>
                 账号登录
               </div>
             </div>

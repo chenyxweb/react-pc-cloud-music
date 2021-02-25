@@ -28,7 +28,7 @@ const PlayBar = lazy(() => import('components/PlayBar'))
 
 interface IProps {}
 
-const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteConfigComponentProps> = props => {
+const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteConfigComponentProps> = (props) => {
   const pathname = props.location.pathname
 
   const [inputValue, setInputValue] = useState('') // input的值
@@ -47,7 +47,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
     if (!debounceInputValue.trim()) return
     http
       .getSearchSuggest(debounceInputValue)
-      .then(res => {
+      .then((res) => {
         // console.log(res)
         if (res.data.code === 200) {
           const { songs, artists, albums, order } = res.data?.result || {}
@@ -95,14 +95,14 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
 
   // 渲染topBar元素
   const renderTopBar = () => (
-    <div className='top-bar'>
-      <div className='top-bar-top'>
-        <div className='container'>
+    <div className="top-bar">
+      <div className="top-bar-top">
+        <div className="container">
           {/* logo */}
-          <div className='logo' onClick={() => props.history.replace('/')}></div>
+          <div className="logo" onClick={() => props.history.replace('/')}></div>
 
           {/* menu */}
-          <ul className='menu'>
+          <ul className="menu">
             {constants.topMenu.map((item, index) => {
               return (
                 <li
@@ -126,45 +126,45 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
           </ul>
 
           {/* 搜索 */}
-          <div className='search'>
-            <div className='input-wrapper'>
-              <div className='input-outer'>
-                <SearchOutlined className='icon' />
+          <div className="search">
+            <div className="input-wrapper">
+              <div className="input-outer">
+                <SearchOutlined className="icon" />
                 <input
                   onFocus={() => setShowSearchSuggest(true)}
                   onBlur={() => setShowSearchSuggest(false)}
                   value={inputValue}
-                  onChange={e => setInputValue(e.currentTarget.value.trim())}
-                  type='text'
-                  className='input'
-                  placeholder='音乐/视频/电台/用户'
+                  onChange={(e) => setInputValue(e.currentTarget.value.trim())}
+                  type="text"
+                  className="input"
+                  placeholder="音乐/视频/电台/用户"
                 />
 
                 {/* 定位搜索建议列表 */}
-                <MyTransition in={showSearchSuggest} mode='fade' timeout={300}>
-                  <div className='search-suggest-wrapper'>
+                <MyTransition in={showSearchSuggest} mode="fade" timeout={300}>
+                  <div className="search-suggest-wrapper">
                     {order.length ? (
-                      <div className='search-suggest-box' style={{ display: 'block' }}>
+                      <div className="search-suggest-box" style={{ display: 'block' }}>
                         {/* 搜xx相关用户 */}
-                        <div className='search-user'>
+                        <div className="search-user">
                           <span>
                             搜“{debounceInputValue}”相关用户{' ＞'}
                           </span>
                         </div>
                         {/* 单曲,歌手,专辑 */}
-                        {order.map(item => {
+                        {order.map((item) => {
                           //  --------------------------- 单曲 ------------------------------------------
                           if (item === 'songs') {
                             return (
-                              <div className='search-item search-song' key={item}>
-                                <div className='search-item-left'>
-                                  <div className='icon'></div>
-                                  <div className='search-item-name'>单曲</div>
+                              <div className="search-item search-song" key={item}>
+                                <div className="search-item-left">
+                                  <div className="icon"></div>
+                                  <div className="search-item-name">单曲</div>
                                 </div>
-                                <div className='search-item-right'>
-                                  {songs.map(i => (
+                                <div className="search-item-right">
+                                  {songs.map((i) => (
                                     <div
-                                      className='right-item ellipsis-1'
+                                      className="right-item ellipsis-1"
                                       key={i.id}
                                       dangerouslySetInnerHTML={{
                                         __html: utils.replaceTargetStr(
@@ -184,15 +184,15 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
                           // --------------------------- 歌手 ------------------------------------------
                           if (item === 'artists') {
                             return (
-                              <div className='search-item search-artist' key={item}>
-                                <div className='search-item-left'>
-                                  <div className='icon'></div>
-                                  <div className='search-item-name'>歌手</div>
+                              <div className="search-item search-artist" key={item}>
+                                <div className="search-item-left">
+                                  <div className="icon"></div>
+                                  <div className="search-item-name">歌手</div>
                                 </div>
-                                <div className='search-item-right'>
-                                  {artists.map(i => (
+                                <div className="search-item-right">
+                                  {artists.map((i) => (
                                     <div
-                                      className='right-item ellipsis-1'
+                                      className="right-item ellipsis-1"
                                       key={i.id}
                                       dangerouslySetInnerHTML={{
                                         __html: utils.replaceTargetStr(
@@ -212,15 +212,15 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
                           // --------------------------- 专辑 ------------------------------------------
                           if (item === 'albums') {
                             return (
-                              <div className='search-item search-album' key={item}>
-                                <div className='search-item-left'>
-                                  <div className='icon'></div>
-                                  <div className='search-item-name'>专辑</div>
+                              <div className="search-item search-album" key={item}>
+                                <div className="search-item-left">
+                                  <div className="icon"></div>
+                                  <div className="search-item-name">专辑</div>
                                 </div>
-                                <div className='search-item-right'>
-                                  {albums.map(i => (
+                                <div className="search-item-right">
+                                  {albums.map((i) => (
                                     <div
-                                      className='right-item ellipsis-1'
+                                      className="right-item ellipsis-1"
                                       key={i.id}
                                       dangerouslySetInnerHTML={{
                                         __html: utils.replaceTargetStr(
@@ -245,10 +245,10 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
                 </MyTransition>
               </div>
             </div>
-            <div className='center'>
-              <div className='content-wrapper'>创作者中心</div>
+            <div className="center">
+              <div className="content-wrapper">创作者中心</div>
             </div>
-            <div className='login'>
+            <div className="login">
               {/* 未登录展示 */}
               {/* 登录展示 profile */}
               {props.userInfo?.isLogin ? renderProfile() : <span onClick={go2Login}>登录</span>}
@@ -256,7 +256,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
           </div>
         </div>
       </div>
-      <div className='top-bar-bot' style={{ height: pathname === '/' || pathname.includes('/discover') ? 0 : 5 }}></div>
+      <div className="top-bar-bot" style={{ height: pathname === '/' || pathname.includes('/discover') ? 0 : 5 }}></div>
     </div>
   )
 
@@ -269,7 +269,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
       onOk: () => {
         http
           .logout()
-          .then(res => {
+          .then((res) => {
             console.log(res)
             if (res.data.code === 200) {
               props.dispatch(update_user_info({ account: {}, profile: {}, isLogin: false }))
@@ -336,7 +336,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
     // http.logout().then(res => {
     //   console.log(res)
     // })
-    http.getLoginStatus().then(res => {
+    http.getLoginStatus().then((res) => {
       if (res.data?.data?.code === 200) {
         const { account, profile } = res.data.data || {}
         // console.log('account: ', account)

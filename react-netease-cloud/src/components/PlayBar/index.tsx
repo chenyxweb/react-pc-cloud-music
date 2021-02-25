@@ -42,7 +42,7 @@ export type LyricArrType = {
 
 const PlayBar: FC<
   IProps & Pick<ICombineState, 'songList' | 'currentSongInfo' | 'playBarState'> & RouteComponentProps
-> = props => {
+> = (props) => {
   // console.log('PlayBar-props: ', props)
 
   const { songList, currentSongInfo, playBarState } = props
@@ -76,10 +76,10 @@ const PlayBar: FC<
     if (isPlay) {
       audioRef.current
         ?.play()
-        .then(res => {
+        .then((res) => {
           // console.log(res)
         })
-        .catch(err => {
+        .catch((err) => {
           // 调用play方法报错
           message.error(err.message)
         })
@@ -102,7 +102,7 @@ const PlayBar: FC<
     setLyricArr([])
     http
       .getLyric(currentSongInfo.id)
-      .then(res => {
+      .then((res) => {
         if (res.data.code === 200) {
           const lyricString = res.data.lrc?.lyric || ''
           const lyricArr = utils.parseLyric(lyricString)
@@ -197,8 +197,8 @@ const PlayBar: FC<
 
   // 切换播放模式
   const switchCurrentMode = () => {
-    setCurrentMode(prevState => {
-      let index = mode.findIndex(item => item === prevState)
+    setCurrentMode((prevState) => {
+      let index = mode.findIndex((item) => item === prevState)
       index++
       return mode[index % 3] as CurrentModeType
     })
@@ -251,7 +251,7 @@ const PlayBar: FC<
       // 1. 下载歌曲url
       http
         .getSongUrl(songId)
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 200) {
             const url = res.data?.data[0]?.url || ''
             // console.log('url: ', url)
@@ -312,7 +312,7 @@ const PlayBar: FC<
       handleRePlay()
     } else if (songList.length > 1) {
       // 如果songList.length>1, 排除当前项, 随机取一项
-      const item = sample(songList.filter(i => i.id !== currentSongInfo.id))
+      const item = sample(songList.filter((i) => i.id !== currentSongInfo.id))
       // dispatch 修改store
       props.change_current_song_info(item)
       // 播放
@@ -379,7 +379,7 @@ const PlayBar: FC<
   // 播放上一首
   const playPrevSong = () => {
     if (songList.length > 1) {
-      const currentSongIndex = songList.findIndex(item => item.id === currentSongInfo.id)
+      const currentSongIndex = songList.findIndex((item) => item.id === currentSongInfo.id)
 
       // 当前歌曲时第一项时, 设置当前播放为最后一项
       if (currentSongIndex === 0) {
@@ -399,7 +399,7 @@ const PlayBar: FC<
   const playNextSong = () => {
     if (songList.length > 1) {
       // 列表中有其他歌曲
-      const currentSongIndex = songList.findIndex(item => item.id === currentSongInfo.id)
+      const currentSongIndex = songList.findIndex((item) => item.id === currentSongInfo.id)
 
       if (currentSongIndex === songList.length - 1) {
         // 当前歌曲是最后一项, 设置当前播放为第一项
@@ -462,37 +462,37 @@ const PlayBar: FC<
       {/* playBar主体 */}
       <div className={[styles.container, 'w980'].join(' ')}>
         {/* 上一首 暂停/播放 下一首 */}
-        <div className='playBtns'>
-          <div className='prev' title='上一首(Ctrl+←)' onClick={handleClickPrevBtn}></div>
+        <div className="playBtns">
+          <div className="prev" title="上一首(Ctrl+←)" onClick={handleClickPrevBtn}></div>
           <div
             className={isPlay ? 'play' : 'stop'}
             title={isPlay ? '暂停(P)' : '播放(P)'}
             onClick={() => props.change_is_play()}
           ></div>
-          <div className='next' title='下一首(Ctrl+→)' onClick={handleClickNextBtn}></div>
+          <div className="next" title="下一首(Ctrl+→)" onClick={handleClickNextBtn}></div>
         </div>
 
         {/* 当前播放歌曲信息 */}
-        <div className='currentSongInfo'>
-          <img src={currentSongInfo?.al?.picUrl + '?param=35y35'} alt='' />
-          <div className='currentSongInfoRight'>
-            <div className='right-t'>
+        <div className="currentSongInfo">
+          <img src={currentSongInfo?.al?.picUrl + '?param=35y35'} alt="" />
+          <div className="currentSongInfoRight">
+            <div className="right-t">
               {/* 歌名 */}
-              <div className='songName ellipsis-1' onClick={handleClickSongName}>
+              <div className="songName ellipsis-1" onClick={handleClickSongName}>
                 {currentSongInfo.name}
               </div>
               {/* 歌手名 */}
-              <div className='songAuthor ellipsis-1'>
+              <div className="songAuthor ellipsis-1">
                 {(currentSongInfo?.ar || []).map((item: any, index: number) => {
                   return index === 0 ? (
-                    <span className='songAuthor-item' onClick={() => handleClickAuthorName(item)} key={index}>
+                    <span className="songAuthor-item" onClick={() => handleClickAuthorName(item)} key={index}>
                       {item.name}
                     </span>
                   ) : (
                     <Fragment key={index}>
                       {' '}
                       /{' '}
-                      <span className='songAuthor-item' onClick={() => handleClickAuthorName(item)}>
+                      <span className="songAuthor-item" onClick={() => handleClickAuthorName(item)}>
                         {item.name}
                       </span>
                     </Fragment>
@@ -501,8 +501,8 @@ const PlayBar: FC<
               </div>
             </div>
             {/* 播放进度条 */}
-            <div className='right-b'>
-              <div className='process-bar'>
+            <div className="right-b">
+              <div className="process-bar">
                 <Slider
                   value={process}
                   min={0}
@@ -513,33 +513,33 @@ const PlayBar: FC<
                   onChange={handleProcessSliderDrag}
                 />
               </div>
-              <div className='time'>
+              <div className="time">
                 {/* 歌曲已播放时长 */}
-                <span className='play-time'>{dayjs(process * currentSongInfo.dt).format('mm:ss')} </span>
+                <span className="play-time">{dayjs(process * currentSongInfo.dt).format('mm:ss')} </span>
                 {/* 歌曲总时长 */}
-                <span className='total-time'>/ {dayjs(currentSongInfo.dt).format('mm:ss')}</span>
+                <span className="total-time">/ {dayjs(currentSongInfo.dt).format('mm:ss')}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* 下载和重播 */}
-        <div className='leftBtns'>
-          <Tooltip title='下载音乐'>
-            <DownloadOutlined className='icon' onClick={handleDownloadMP3} />
+        <div className="leftBtns">
+          <Tooltip title="下载音乐">
+            <DownloadOutlined className="icon" onClick={handleDownloadMP3} />
           </Tooltip>
 
-          <Tooltip title='重新播放'>
-            <RedoOutlined className='icon' onClick={handleRePlay} />
+          <Tooltip title="重新播放">
+            <RedoOutlined className="icon" onClick={handleRePlay} />
           </Tooltip>
         </div>
 
         {/* 声音, 循环模式, 歌曲列表和歌词 */}
-        <div className='rightBtns'>
-          <div className='btn voice' onClick={() => setVoiceBarShow(!voiceBarShow)}>
+        <div className="rightBtns">
+          <div className="btn voice" onClick={() => setVoiceBarShow(!voiceBarShow)}>
             {/* 音量大小bar 定位  */}
-            <MyTransition mode='scale' in={voiceBarShow} timeout={300}>
-              <div className='voice-bar'>
+            <MyTransition mode="scale" in={voiceBarShow} timeout={300}>
+              <div className="voice-bar">
                 <div style={{ height: 110 }}>
                   <Slider
                     min={0}
@@ -557,28 +557,28 @@ const PlayBar: FC<
           <Tooltip title={`${currentModeTip()}(M)`}>
             <div className={`btn circle-mode ${currentMode}`} onClick={switchCurrentMode}></div>
           </Tooltip>
-          <div className='btn song-list' onClick={() => setListBoxShow(!listBoxShow)}>
+          <div className="btn song-list" onClick={() => setListBoxShow(!listBoxShow)}>
             {/* 歌曲数 */}
-            <div className='songCount'>{songList?.length || 0}</div>
+            <div className="songCount">{songList?.length || 0}</div>
           </div>
         </div>
       </div>
 
       {/* audio */}
       <audio
-        id='audio'
+        id="audio"
         ref={audioRef}
         onTimeUpdate={handleOnTimeUpdate} // 播放时间更新时触发
         onEnded={handleOnEnded} // 播放结束时触发
         // autoPlay
         onError={handleOnError} // 当在元素加载期间发生错误时运行脚本, 此时播放下一首歌
-        preload='auto'
+        preload="auto"
         onCanPlay={handleOncanplay} // 缓冲至目前可以播放的状态
         src={`https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`}
       ></audio>
 
       {/* 播放列表和歌词box */}
-      <MyTransition mode='scale' in={listBoxShow} timeout={300}>
+      <MyTransition mode="scale" in={listBoxShow} timeout={300}>
         <div className={styles.songListAndLyricWrapper}>
           <div
             className={styles.songListAndLyric}
@@ -588,16 +588,16 @@ const PlayBar: FC<
             }}
           >
             {/* 歌曲列表容器 */}
-            <div className='songList'>
-              <div className='songList-title'>
-                <div className='songList-title-l'>播放列表({songList?.length || 0})</div>
-                <div className='songList-title-r' title='清除播放列表' onClick={handleClearSongList}>
-                  <DeleteOutlined className='icon' /> 清除
+            <div className="songList">
+              <div className="songList-title">
+                <div className="songList-title-l">播放列表({songList?.length || 0})</div>
+                <div className="songList-title-r" title="清除播放列表" onClick={handleClearSongList}>
+                  <DeleteOutlined className="icon" /> 清除
                 </div>
               </div>
               {/* 列表 */}
-              <div className='songList-content custom-scroll-bar'>
-                {songList.map(item => {
+              <div className="songList-content custom-scroll-bar">
+                {songList.map((item) => {
                   return (
                     /* 列表项 */
                     <div
@@ -606,19 +606,19 @@ const PlayBar: FC<
                       onClick={() => handleClickListItem(item)}
                     >
                       {/* 红色三角形 */}
-                      <div className='redIcon'>
-                        <CaretRightOutlined className='icon' />
+                      <div className="redIcon">
+                        <CaretRightOutlined className="icon" />
                       </div>
                       {/* 歌名 */}
-                      <div className='songList-item-name ellipsis-1'>{item.name}</div>
+                      <div className="songList-item-name ellipsis-1">{item.name}</div>
                       {/* 按钮 */}
-                      <div className='btns'>
-                        <DeleteOutlined title='删除' className='icon' onClick={e => delSongListItem(item.id, e)} />
+                      <div className="btns">
+                        <DeleteOutlined title="删除" className="icon" onClick={(e) => delSongListItem(item.id, e)} />
                       </div>
                       {/* 歌手 */}
-                      <div className='songList-item-author ellipsis-1'>{utils.getArtistStr(item.ar)}</div>
+                      <div className="songList-item-author ellipsis-1">{utils.getArtistStr(item.ar)}</div>
                       {/* 歌时长 */}
-                      <div className='songList-item-time'>{dayjs(item.dt).format('mm:ss')}</div>
+                      <div className="songList-item-time">{dayjs(item.dt).format('mm:ss')}</div>
                     </div>
                   )
                 })}
@@ -626,12 +626,12 @@ const PlayBar: FC<
             </div>
 
             {/* 歌词容器 */}
-            <div className='lyric'>
-              <div className='lyric-title'>
+            <div className="lyric">
+              <div className="lyric-title">
                 {currentSongInfo.name}
-                <CloseOutlined title='关闭' onClick={() => setListBoxShow(false)} className='icon' />
+                <CloseOutlined title="关闭" onClick={() => setListBoxShow(false)} className="icon" />
               </div>
-              <div className='lyric-content custom-scroll-bar'>
+              <div className="lyric-content custom-scroll-bar">
                 {/* 渲染歌词列表 */}
                 {lyricArr.length
                   ? lyricArr.map((item, index) => {
@@ -648,7 +648,7 @@ const PlayBar: FC<
                 {/* 空状态 */}
                 {lyricArr.length === 0 ? (
                   <div style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <Empty style={{ color: 'white' }} description='暂无歌词信息' image={Empty.PRESENTED_IMAGE_SIMPLE} />
+                    <Empty style={{ color: 'white' }} description="暂无歌词信息" image={Empty.PRESENTED_IMAGE_SIMPLE} />
                   </div>
                 ) : null}
               </div>

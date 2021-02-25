@@ -8,8 +8,8 @@ import routes from 'config/routes'
 
 const App: FC = () => {
   return (
-    <div className='app'>
-      <Suspense fallback={<LoadingPage text='努力加载中...' />}>
+    <div className="app">
+      <Suspense fallback={<LoadingPage text="努力加载中..." />}>
         <Router>
           {/* 路由守卫 */}
           <BeforeEach>
@@ -27,7 +27,7 @@ const App: FC = () => {
         style={{ bottom: 100 }}
         target={() => document.querySelector('.app') as HTMLElement}
       >
-        <div className='back-to-top'>UP</div>
+        <div className="back-to-top">UP</div>
       </BackTop>
     </div>
   )

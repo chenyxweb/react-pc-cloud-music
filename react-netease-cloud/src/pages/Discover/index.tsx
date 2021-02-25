@@ -8,7 +8,7 @@ import { renderRoutes, RouteConfigComponentProps } from 'react-router-config'
 
 interface IProps extends RouteConfigComponentProps {}
 
-const Discover: FC<IProps> = props => {
+const Discover: FC<IProps> = (props) => {
   const {
     location: { pathname },
   } = props
@@ -36,8 +36,8 @@ const Discover: FC<IProps> = props => {
   return (
     <div className={styles.Discover}>
       {/* 小menu */}
-      <div className='sub-menu'>
-        <div className='container'>
+      <div className="sub-menu">
+        <div className="container">
           {constants.subMenu.map((item, index) => {
             return (
               <div

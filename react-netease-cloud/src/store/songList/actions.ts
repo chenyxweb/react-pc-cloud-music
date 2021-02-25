@@ -28,7 +28,7 @@ export const replace_song_list_async = (id: number, callback?: Function): any =>
     // 异步操作
     http
       .getPlaylistDetail({ id })
-      .then(res => {
+      .then((res) => {
         if (res.data.code === 200) {
           const list = res.data.playlist?.tracks || []
           // ...

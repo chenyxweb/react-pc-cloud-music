@@ -15,14 +15,14 @@ const tempList = Array(8)
     id: index,
   }))
 
-const HotRecommend: FC<IProps & RouteComponentProps> = props => {
+const HotRecommend: FC<IProps & RouteComponentProps> = (props) => {
   const [list, setList] = useState<any[]>(tempList) // 推荐列表
 
   // 获取热门推荐列表
   useEffect(() => {
     http
       .recommendPlaylist(8)
-      .then(res => {
+      .then((res) => {
         if (res.data.code === 200) {
           setList(res.data.result || [])
         }
@@ -38,18 +38,18 @@ const HotRecommend: FC<IProps & RouteComponentProps> = props => {
       {/* title */}
       <div className={styles.title}>
         <div className={styles.left}>
-          <div className='key' onClick={() => handleClickTitle('')}>
+          <div className="key" onClick={() => handleClickTitle('')}>
             热门推荐
           </div>
-          <div className='list'>
+          <div className="list">
             <span onClick={() => handleClickTitle('华语')}>华语</span>
-            <span className='line'>|</span>
+            <span className="line">|</span>
             <span onClick={() => handleClickTitle('流行')}>流行</span>
-            <span className='line'>|</span>
+            <span className="line">|</span>
             <span onClick={() => handleClickTitle('摇滚')}>摇滚</span>
-            <span className='line'>|</span>
+            <span className="line">|</span>
             <span onClick={() => handleClickTitle('民谣')}>民谣</span>
-            <span className='line'>|</span>
+            <span className="line">|</span>
             <span onClick={() => handleClickTitle('电子')}>电子</span>
           </div>
         </div>
@@ -60,7 +60,7 @@ const HotRecommend: FC<IProps & RouteComponentProps> = props => {
 
       {/* 热门推荐列表 */}
       <div className={styles.recommendList}>
-        {list.map(item => {
+        {list.map((item) => {
           return <PlayListItem item={item} key={item.id}></PlayListItem>
         })}
       </div>

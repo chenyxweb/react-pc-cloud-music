@@ -6,7 +6,7 @@ import styles from './index.module.scss'
 
 interface IProps {}
 
-const RecordListDetail: FC<IProps> = props => {
+const RecordListDetail: FC<IProps> = (props) => {
   return (
     <div className={styles.RecordListDetail}>
       {/* 听歌排行 */}

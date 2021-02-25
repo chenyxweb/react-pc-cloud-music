@@ -6,7 +6,7 @@ import styles from './index.module.scss'
 
 interface IProps {}
 
-const User: FC<IProps & RouteConfigComponentProps> = props => {
+const User: FC<IProps & RouteConfigComponentProps> = (props) => {
   // console.log(props)
 
   return (

@@ -17,9 +17,9 @@ interface IProps {
   item: any
 }
 
-const PlayListItem: FC<
-  IProps & DispatchProp & RouteConfigComponentProps & Pick<ICombineState, 'playBarState'>
-> = props => {
+const PlayListItem: FC<IProps & DispatchProp & RouteConfigComponentProps & Pick<ICombineState, 'playBarState'>> = (
+  props
+) => {
   const { item } = props
 
   /**
@@ -44,7 +44,7 @@ const PlayListItem: FC<
 
   return (
     <div className={styles.PlayListItem} title={item.name}>
-      <div className='img-wrapper'>
+      <div className="img-wrapper">
         <img
           // ?param=140y140 降低图片分辨率
           src={
@@ -52,20 +52,20 @@ const PlayListItem: FC<
               ? (item.picUrl || item.coverImgUrl) + '?param=140y140'
               : constants.bg_placeholder_img
           }
-          alt=''
+          alt=""
           onClick={() => props.history.push(`/discover/playlist-detail/${item.id}`)}
         />
 
         {/* 定位元素 */}
-        <div className='play-bar'>
-          <div className='play-num'>
+        <div className="play-bar">
+          <div className="play-num">
             <CustomerServiceOutlined />
             <span style={{ fontSize: 12, paddingLeft: 4 }}>{utils.formatTenThousand(item.playCount)}</span>
           </div>
-          <PlayCircleOutlined className='play' onClick={() => handleClickPlay(item.id)} />
+          <PlayCircleOutlined className="play" onClick={() => handleClickPlay(item.id)} />
         </div>
       </div>
-      <div className='name'>{item.name}</div>
+      <div className="name">{item.name}</div>
     </div>
   )
 }

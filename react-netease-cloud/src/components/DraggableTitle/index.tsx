@@ -9,7 +9,7 @@ interface IProps {
   onDragging?: (p: { x: number; y: number }) => void // 拖拽ing
 }
 
-const DraggableTitle: FC<IProps> = props => {
+const DraggableTitle: FC<IProps> = (props) => {
   const { text, onDragging } = props
   const divRef = useRef<HTMLDivElement>(null)
 
@@ -30,7 +30,7 @@ const DraggableTitle: FC<IProps> = props => {
       }
 
       // 鼠标按下事件
-      divEle.addEventListener('mousedown', e => {
+      divEle.addEventListener('mousedown', (e) => {
         const { left, top } = divEle.getBoundingClientRect()
 
         // 求差
@@ -50,7 +50,7 @@ const DraggableTitle: FC<IProps> = props => {
         document.removeEventListener('mousemove', handleMousemove)
       })
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

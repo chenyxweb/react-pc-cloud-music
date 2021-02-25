@@ -3,10 +3,10 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const WebpackBar = require('webpackbar')
 
 //生产环境去除console.
-const dropConsole = () => config => {
+const dropConsole = () => (config) => {
   if (process.env.NODE_ENV === 'production') {
     if (config.optimization.minimizer) {
-      config.optimization.minimizer.forEach(minimizer => {
+      config.optimization.minimizer.forEach((minimizer) => {
         if (minimizer.constructor.name === 'TerserPlugin') {
           minimizer.options.terserOptions.compress.drop_console = true
         }
@@ -18,7 +18,7 @@ const dropConsole = () => config => {
 }
 
 // production 配置
-const prodConfig = () => config => {
+const prodConfig = () => (config) => {
   if (config.mode === 'development') {
     console.log('development')
   } else if (config.mode === 'production') {
@@ -36,7 +36,7 @@ const prodConfig = () => config => {
 }
 
 // 添加 webpack 进度条
-const addWebpackBar = options => config => {
+const addWebpackBar = (options) => (config) => {
   config.plugins.push(new WebpackBar(options))
 
   return config

@@ -29,11 +29,11 @@ export const axios = Axios.create({
 
 // 添加请求拦截器
 axios.interceptors.request.use(
-  config => {
+  (config) => {
     // 在发送请求之前做些什么
     return config
   },
-  error => {
+  (error) => {
     return Promise.reject(error)
   }
 )

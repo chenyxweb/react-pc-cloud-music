@@ -10,7 +10,7 @@ interface IProps {
   mode?: 'scale' | 'fade'
 }
 
-const MyTransition: FC<IProps & CSSTransitionProps> = props => {
+const MyTransition: FC<IProps & CSSTransitionProps> = (props) => {
   const { mode, children, ...restProps } = props
   return (
     <CSSTransition classNames={`transition-${mode}`} {...restProps}>

@@ -17,7 +17,7 @@ const Test: FC<IProps> = () => {
   return (
     <div>
       Test
-      <Input value={input} onChange={event => setInput(event.target.value)}></Input>
+      <Input value={input} onChange={(event) => setInput(event.target.value)}></Input>
       <div>{throttleValue}</div>
     </div>
   )

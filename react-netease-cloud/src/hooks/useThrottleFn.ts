@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react'
 
 const useThrottleFn = (dependence: string, delay: number, callback: Function) => {
   const throttleFn = useRef({
-    fn: throttle(callback => {
+    fn: throttle((callback) => {
       callback && callback()
     }, delay),
   })

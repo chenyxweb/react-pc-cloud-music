@@ -15,7 +15,7 @@ interface IProps {
   showMoreBtn?: boolean // 是否展示查看更多按钮
 }
 
-const RecordList: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = props => {
+const RecordList: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = (props) => {
   const { showMoreBtn, showAll } = props
 
   const [recordList, setRecordList] = useState<any[]>(recordListInit) // 播放记录列表
@@ -28,8 +28,8 @@ const RecordList: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = p
     if (!uid) return
 
     setFetching(true)
-    
-    http.getUserRecord({ uid, type: recordType }).then(res => {
+
+    http.getUserRecord({ uid, type: recordType }).then((res) => {
       if (res.data.code === 200) {
         const { weekData, allData } = res.data || {}
         const list = recordType === 1 ? weekData : allData
@@ -55,8 +55,8 @@ const RecordList: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = p
   return (
     <div className={styles.RecordList}>
       <div className={styles.recordListTitle}>
-        <span className='text'>听歌排行</span>
-        <Select value={recordType} bordered={false} onChange={value => setRecordType(value)}>
+        <span className="text">听歌排行</span>
+        <Select value={recordType} bordered={false} onChange={(value) => setRecordType(value)}>
           <Select.Option value={1}>最近一周</Select.Option>
           <Select.Option value={0}>所有时间</Select.Option>
         </Select>

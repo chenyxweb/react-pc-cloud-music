@@ -3,8 +3,8 @@
 import routes from 'config/routes'
 import { matchRoutes } from 'react-router-config'
 
-import React from 'react'
-import { FC, ReactElement, useEffect } from 'react'
+import React, { FC, ReactElement, useEffect } from 'react'
+
 import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -12,7 +12,7 @@ interface IProps {
   userInfo: any
 }
 
-const BeforeEach: FC<IProps & RouteComponentProps> = props => {
+const BeforeEach: FC<IProps & RouteComponentProps> = (props) => {
   const {
     children,
     location: { pathname },

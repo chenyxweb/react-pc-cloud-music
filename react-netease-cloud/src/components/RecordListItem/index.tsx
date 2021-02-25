@@ -17,7 +17,7 @@ interface IProps {
   style?: CSSProperties
 }
 
-const RecordListItem: FC<IProps & DispatchProp & RouteConfigComponentProps> = props => {
+const RecordListItem: FC<IProps & DispatchProp & RouteConfigComponentProps> = (props) => {
   const { style, item, index, history } = props
 
   // 点击播放按钮
@@ -63,7 +63,7 @@ const RecordListItem: FC<IProps & DispatchProp & RouteConfigComponentProps> = pr
 
       {/* 播放按钮 */}
       <PlayCircleOutlined
-        title='播放当前歌曲'
+        title="播放当前歌曲"
         className={styles.playBtn}
         style={{ marginLeft: 15 }}
         onClick={handleClickPlayBtn}
@@ -81,7 +81,7 @@ const RecordListItem: FC<IProps & DispatchProp & RouteConfigComponentProps> = pr
 
         {/* 添加到播放列表按钮 */}
         <PlusOutlined
-          title='添加歌曲到歌单'
+          title="添加歌曲到歌单"
           className={[styles.playBtn, styles.plusBtn].join(' ')}
           style={{ marginLeft: 15 }}
           onClick={handleClickPlusBtn}

@@ -9,7 +9,7 @@ export const songListReducer = (state: any[] = [], action: IAction) => {
     case ADD_SONG_LIST_ITEM: // 添加一首歌 --> 点击页面+号, 点击播放歌曲
       // 判断是否有这首歌
       let list = [...state]
-      const has = list.some(item => item.id === action.payload?.id)
+      const has = list.some((item) => item.id === action.payload?.id)
       if (!has) {
         list = [...list, action.payload]
         // message.success('添加成功')
@@ -20,7 +20,7 @@ export const songListReducer = (state: any[] = [], action: IAction) => {
       return list
 
     case DEL_SONG_LIST_ITEM:
-      return state.filter(item => item.id !== action.payload)
+      return state.filter((item) => item.id !== action.payload)
 
     case CLEAR_SONG_LIST: // 清空播放列表 --> 点击清空按钮
       return []

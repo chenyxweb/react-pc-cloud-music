@@ -8,7 +8,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 interface IProps extends RouteComponentProps {}
 
-const MyCarousel: FC<IProps> = props => {
+const MyCarousel: FC<IProps> = (props) => {
   const [bannerList, setBannerList] = useState<Array<any>>([]) // 轮播图列表
   const carouselRef = useRef<any>() // 获取轮播图ref
   const [currentIndex, setCurrentIndex] = useState<number>(0) // 轮播图当前轮播图片索引
@@ -17,7 +17,7 @@ const MyCarousel: FC<IProps> = props => {
   useEffect(() => {
     http
       .banner()
-      .then(res => {
+      .then((res) => {
         // console.log(res)
         if (res.data.code === 200) {
           setBannerList(res.data.banners || [])
@@ -52,30 +52,30 @@ const MyCarousel: FC<IProps> = props => {
         backgroundImage: `url(${bannerList[currentIndex]?.imageUrl}?imageView&blur=40x20)`,
       }}
     >
-      <div className='wrapper w980'>
-        <Carousel className='carousels' ref={carouselRef} autoplay effect='fade' beforeChange={handleBeforeChange}>
-          {bannerList.map(item => (
+      <div className="wrapper w980">
+        <Carousel className="carousels" ref={carouselRef} autoplay effect="fade" beforeChange={handleBeforeChange}>
+          {bannerList.map((item) => (
             <img
               src={item.imageUrl + '?imageView&quality=89'}
-              alt=''
+              alt=""
               key={item.targetId}
-              className='carousel-img'
+              className="carousel-img"
               onClick={() => goSong(item.targetId)}
             />
           ))}
         </Carousel>
 
         {/* 左箭头 */}
-        <div className='arrow-l' onClick={switchToPerv}>
+        <div className="arrow-l" onClick={switchToPerv}>
           <LeftOutlined style={{ color: '#ddd', fontSize: 36 }} />
         </div>
 
         {/* 右箭头 */}
-        <div className='arrow-r' onClick={switchToNext}>
+        <div className="arrow-r" onClick={switchToNext}>
           <RightOutlined style={{ color: '#ddd', fontSize: 36 }} />
         </div>
 
-        <div className='img' onClick={() => props.history.push('/download')}></div>
+        <div className="img" onClick={() => props.history.push('/download')}></div>
       </div>
     </div>
   )

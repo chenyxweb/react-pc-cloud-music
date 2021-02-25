@@ -11,9 +11,9 @@ import styles from './index.module.scss'
 
 interface IProps {}
 
-const UserHome: FC<
-  IProps & RouteConfigComponentProps<{ userId: string }> & Pick<ICombineState, 'userInfo'>
-> = props => {
+const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }> & Pick<ICombineState, 'userInfo'>> = (
+  props
+) => {
   // const [hasMore, setHasMore] = useState(true) // 是否有更多分页数据
   const [createList, setCreateList] = useState<any[]>([]) // 创建的歌单
   const [collectList, setCollectList] = useState<any[]>([]) // 收藏的歌单
@@ -27,7 +27,7 @@ const UserHome: FC<
 
     http
       .getUserSongList({ uid, limit: 1000 })
-      .then(res => {
+      .then((res) => {
         if (res.data.code === 200) {
           const { more, playlist } = res.data || {}
           // setHasMore(more ?? true)
@@ -56,13 +56,13 @@ const UserHome: FC<
   const renderProfile = () => {
     return (
       <div className={styles.userProfile}>
-        <div className='avatar'>
-          <img src={props.userInfo?.profile?.avatarUrl + '?param=182y182'} alt='' />
+        <div className="avatar">
+          <img src={props.userInfo?.profile?.avatarUrl + '?param=182y182'} alt="" />
         </div>
-        <div className='detailInfo'>
-          <div className='detailInfo-top'>{props.userInfo?.profile?.nickname}</div>
+        <div className="detailInfo">
+          <div className="detailInfo-top">{props.userInfo?.profile?.nickname}</div>
 
-          <div className='detailInfo-bot'></div>
+          <div className="detailInfo-bot"></div>
         </div>
       </div>
     )
@@ -76,7 +76,7 @@ const UserHome: FC<
           {title}（{list.length}）
         </div>
         <div className={styles.playlistContent}>
-          {list.map(item => {
+          {list.map((item) => {
             return (
               <div className={styles.itemWrapper} key={item.id}>
                 <LazyLoad height={140} once overflow>

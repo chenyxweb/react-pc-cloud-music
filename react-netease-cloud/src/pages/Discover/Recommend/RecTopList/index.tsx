@@ -25,7 +25,7 @@ const RecTopList: FC<
     Pick<ICombineState, 'currentSongInfo' | 'playBarState' | 'songList'> &
     RouteConfigComponentProps &
     DispatchProp
-> = props => {
+> = (props) => {
   const [list1, setList1] = useState<any>({}) // 飙升榜
   const [list2, setList2] = useState<any>({}) // 新歌榜
   const [list3, setList3] = useState<any>({}) // 热歌榜
@@ -38,7 +38,7 @@ const RecTopList: FC<
   useEffect(() => {
     http
       .getPlaylistDetail({ id: constants.topListIds.S })
-      .then(res => {
+      .then((res) => {
         if (res.data.code === 200) {
           setList1(res.data.playlist || [])
         }
@@ -50,7 +50,7 @@ const RecTopList: FC<
   useEffect(() => {
     http
       .getPlaylistDetail({ id: constants.topListIds.N })
-      .then(res => {
+      .then((res) => {
         if (res.data.code === 200) {
           setList2(res.data.playlist || [])
         }
@@ -62,7 +62,7 @@ const RecTopList: FC<
   useEffect(() => {
     http
       .getPlaylistDetail({ id: constants.topListIds.H })
-      .then(res => {
+      .then((res) => {
         if (res.data.code === 200) {
           setList3(res.data.playlist || [])
         }
@@ -78,7 +78,7 @@ const RecTopList: FC<
   const addToSongList = (item: any, event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
     event.stopPropagation()
     // 没有就添加
-    if (songList.findIndex(i => i.id === item.id) === -1) {
+    if (songList.findIndex((i) => i.id === item.id) === -1) {
       props.dispatch(add_song_list_item(item))
       // message.success('添加成功')
     } else {
@@ -92,7 +92,7 @@ const RecTopList: FC<
     // console.log(item)
     const audioElement = document.getElementById('audio') as HTMLAudioElement
 
-    if (songList.findIndex(i => i.id === item.id) === -1) {
+    if (songList.findIndex((i) => i.id === item.id) === -1) {
       // 如果没有当前点击的歌曲
 
       // 1. 添加歌曲到列表
@@ -145,48 +145,48 @@ const RecTopList: FC<
     return (
       <div className={styles.up}>
         {/* logo */}
-        <div className='logo'>
+        <div className="logo">
           <LazyLoad height={80}>
             <img
               src={list.coverImgUrl + '?param=100y100'}
-              alt=''
+              alt=""
               title={list.name}
               onClick={() => ToTopList(list.id)}
             />
           </LazyLoad>
-          <div className='text'>
-            <div className='name' onClick={() => ToTopList(list.id)}>
+          <div className="text">
+            <div className="name" onClick={() => ToTopList(list.id)}>
               {list.name}
             </div>
-            <div className='btns'>
+            <div className="btns">
               <PlayCircleOutlined
-                title='播放榜单'
-                className='icon'
+                title="播放榜单"
+                className="icon"
                 onClick={() => handleClickPlayTopList(list?.tracks || [], list?.name)}
               />
-              <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
+              <FolderAddOutlined title="收藏" className="icon" onClick={() => message.info('暂无收藏功能')} />
             </div>
           </div>
         </div>
         {/* list */}
-        <div className='list'>
+        <div className="list">
           {list.tracks?.slice(0, 10).map((item: any, index: number) => {
             return (
-              <div className='list-item' key={item.id}>
+              <div className="list-item" key={item.id}>
                 <div className={`list-item-num ${index <= 2 ? 'red' : ''}`}>{index + 1}</div>
-                <div className='list-item-name ellipsis-1' onClick={() => handleSongClick(item.id)}>
+                <div className="list-item-name ellipsis-1" onClick={() => handleSongClick(item.id)}>
                   {item.name}
                 </div>
-                <div className='list-item-btns'>
-                  <PlayCircleOutlined title='播放' className='icon' onClick={e => playCurrentSong(item, e)} />
-                  <PlusOutlined title='添加到播放列表' className='icon' onClick={e => addToSongList(item, e)} />
-                  <FolderAddOutlined title='收藏' className='icon' onClick={() => message.info('暂无收藏功能')} />
+                <div className="list-item-btns">
+                  <PlayCircleOutlined title="播放" className="icon" onClick={(e) => playCurrentSong(item, e)} />
+                  <PlusOutlined title="添加到播放列表" className="icon" onClick={(e) => addToSongList(item, e)} />
+                  <FolderAddOutlined title="收藏" className="icon" onClick={() => message.info('暂无收藏功能')} />
                 </div>
               </div>
             )
           })}
-          <div className='list-item'>
-            <span className='look-all' onClick={() => ToTopList(list.id)}>
+          <div className="list-item">
+            <span className="look-all" onClick={() => ToTopList(list.id)}>
               查看全部{' >'}
             </span>
           </div>
@@ -200,7 +200,7 @@ const RecTopList: FC<
       {/* title */}
       <div className={styles.title}>
         <div className={styles.left}>
-          <div className='key' onClick={() => ToTopList()}>
+          <div className="key" onClick={() => ToTopList()}>
             榜单
           </div>
         </div>

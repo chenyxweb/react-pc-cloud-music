@@ -9,13 +9,13 @@ import styles from './index.module.scss'
 
 interface IProps extends RouteComponentProps {}
 
-const RecArtistList: FC<IProps> = props => {
+const RecArtistList: FC<IProps> = (props) => {
   const [list, setList] = useState<any[]>([]) // 歌手列表
   // 获取热门歌手列表
   useEffect(() => {
     http
       .getArtistList({ limit: 10 })
-      .then(res => {
+      .then((res) => {
         if (res.data.code === 200) {
           setList(res.data.artists || [])
         }
@@ -30,21 +30,21 @@ const RecArtistList: FC<IProps> = props => {
 
   return (
     <div className={styles.RecArtistList}>
-      <div className='title'>
+      <div className="title">
         <span>热门歌手</span>
         <span onClick={() => props.history.push('/discover/artist/signed/')}>查看全部{' >'}</span>
       </div>
       {/* 列表 */}
-      <div className='list'>
-        {list.map(item => {
+      <div className="list">
+        {list.map((item) => {
           return (
-            <div className='list-item' key={item.id} onClick={() => handleListItemClick(item.id)}>
+            <div className="list-item" key={item.id} onClick={() => handleListItemClick(item.id)}>
               <LazyLoad height={62} overflow>
-                <img src={item.img1v1Url + '?param=62y62'} alt='' />
+                <img src={item.img1v1Url + '?param=62y62'} alt="" />
               </LazyLoad>
-              <div className='desc'>
-                <div className='name'>{item.name}</div>
-                <div className='type'>热门歌手</div>
+              <div className="desc">
+                <div className="name">{item.name}</div>
+                <div className="type">热门歌手</div>
               </div>
             </div>
           )

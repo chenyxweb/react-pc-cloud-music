@@ -23,7 +23,7 @@ const useActiveLyricIndex = (currentTime: number, totalTime: number, lyricArr: L
   // 节流 方法二
   // 保持每次更新节流函数不变
   const throttleFnRef = useRef({
-    fn: throttle(callback => {
+    fn: throttle((callback) => {
       callback && callback()
     }, 500),
   })
@@ -32,7 +32,7 @@ const useActiveLyricIndex = (currentTime: number, totalTime: number, lyricArr: L
     throttleFnRef.current.fn(() => {
       if (!lyricArr.length) return
 
-      const tempIndex = lyricArr.findIndex(item => item.totalTime >= currentTime * 1000)
+      const tempIndex = lyricArr.findIndex((item) => item.totalTime >= currentTime * 1000)
 
       // 如果找到的index>0 或者找到的index和原来的index不相等 就设置新的index
       if (tempIndex > 0 && tempIndex - 1 !== index) {

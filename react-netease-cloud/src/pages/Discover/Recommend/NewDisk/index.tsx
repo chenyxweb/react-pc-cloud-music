@@ -11,14 +11,14 @@ import styles from './index.module.scss'
 
 interface IProps extends RouteComponentProps {}
 
-const NewDisk: FC<IProps> = props => {
+const NewDisk: FC<IProps> = (props) => {
   const [list, setList] = useState<Array<Array<any>>>([[], [], []]) // 专辑列表
   const carouselRef = useRef<any>()
 
   useEffect(() => {
     http
       .newDisk()
-      .then(res => {
+      .then((res) => {
         if (res.data.code === 200) {
           // 每5项push成一项数组
           const list = res.data.albums || []
@@ -45,7 +45,7 @@ const NewDisk: FC<IProps> = props => {
       {/* title */}
       <div className={styles.title}>
         <div className={styles.left}>
-          <div className='key' onClick={ToAlbum}>
+          <div className="key" onClick={ToAlbum}>
             新碟上架
           </div>
         </div>
@@ -56,36 +56,36 @@ const NewDisk: FC<IProps> = props => {
 
       {/* disk */}
       <div className={styles.disk}>
-        <div className='wrapper'>
-          <div className='swiper'>
-            <Carousel className='antd-carousel' autoplay easing='ease-in-out' dots={false} ref={carouselRef}>
+        <div className="wrapper">
+          <div className="swiper">
+            <Carousel className="antd-carousel" autoplay easing="ease-in-out" dots={false} ref={carouselRef}>
               {/* TODO */}
               {list.map((item, index) => {
                 return (
                   // 页数
-                  <div className='carousel-item' key={index}>
-                    <div className='swiper-wrapper'>
+                  <div className="carousel-item" key={index}>
+                    <div className="swiper-wrapper">
                       {item.map((ite, ind) => {
                         return (
                           // 每一页
-                          <div className='swiper-item' key={ite.id}>
-                            <div className='img'>
+                          <div className="swiper-item" key={ite.id}>
+                            <div className="img">
                               {/* react-lazyload 图片懒加载 */}
                               <LazyLoad height={100}>
                                 <img
                                   src={ite.picUrl + '?param=100y100'}
                                   title={ite.name}
-                                  alt=''
+                                  alt=""
                                   onClick={() => toAlbumDetail(ite.id)}
                                 />
                               </LazyLoad>
                             </div>
                             {/* 歌名 */}
-                            <p className='song-name ellipsis-1' onClick={() => toAlbumDetail(ite.id)}>
+                            <p className="song-name ellipsis-1" onClick={() => toAlbumDetail(ite.id)}>
                               {ite.name}
                             </p>
                             {/* 歌手 */}
-                            <p className='author'>
+                            <p className="author">
                               <span onClick={() => toArtistDetail(ite.artists[0].id)}>{ite.artists[0]?.name}</span>{' '}
                               {ite.artists?.length >= 2 ? '/' : ''}{' '}
                               {ite.artists[1]?.name ? (
@@ -105,8 +105,8 @@ const NewDisk: FC<IProps> = props => {
             </Carousel>
 
             {/* 左右箭头 */}
-            <LeftOutlined className='arrow-left' onClick={() => carouselRef.current?.prev()} />
-            <RightOutlined className='arrow-right' onClick={() => carouselRef.current?.next()} />
+            <LeftOutlined className="arrow-left" onClick={() => carouselRef.current?.prev()} />
+            <RightOutlined className="arrow-right" onClick={() => carouselRef.current?.next()} />
           </div>
         </div>
       </div>
