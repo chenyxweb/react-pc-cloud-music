@@ -1362,6 +1362,52 @@ npx mrm lint-staged // 会安装husky lint-staged 自动生成配置
 
 - 配置.prettierrc.js
 
+
+
+### 21 sass mixin 生成scrollBar样式
+
+```scss
+@mixin scrollBar($w) {
+  // /*修改滚动条样式*/
+  &::-webkit-scrollbar {
+    width: $w; // 横向滚动条宽度
+    height: $w; // 纵向滚动条高度
+    background-clip: padding-box;
+  }
+  // 轨道
+  &::-webkit-scrollbar-track {
+    background: rgb(239, 239, 239);
+    border-radius: $w;
+  }
+  // 条条
+  &::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+    border-radius: $w;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgb(160, 154, 154);
+  }
+}
+
+```
+
+```
+@import './styles/mixin.scss';
+
+.app {
+  overflow: auto;
+  position: relative;
+
+  @include scrollBar(6px);
+}
+
+.ant-cascader-menu {
+  @include scrollBar(3px);
+}
+```
+
+
+
 ## ps
 
 ### 删除歌曲冒泡导致点击了歌曲列表项  , 需要清除冒泡 (***), 习惯性要清除冒泡

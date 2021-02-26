@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react'
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { connect, DispatchProp } from 'react-redux'
 import { update_user_info } from 'store/userInfo/actions'
 import qs from 'qs'
@@ -24,6 +24,8 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = (props) => 
   const [position, setPosition] = useState<any>() // 登录框位置
 
   const formRef = useRef<FormInstance>(null) // 表单ref
+
+  console.log('login')
 
   // 获取验证码key
   useEffect(() => {
@@ -195,9 +197,9 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = (props) => 
   }
 
   // 拖拽
-  const handleOnDragging = (p: any) => {
+  const handleOnDragging = useCallback((p: any) => {
     setPosition(p)
-  }
+  }, [])
 
   const layout = {
     labelCol: { span: 8 },

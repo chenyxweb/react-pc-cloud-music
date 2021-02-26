@@ -1,0 +1,22 @@
+// /*修改滚动条样式*/
+@mixin scrollBar($w) {
+  &::-webkit-scrollbar {
+    width: $w; // 横向滚动条宽度
+    height: $w; // 纵向滚动条高度
+    background-clip: padding-box;
+  }
+  // 轨道
+  &::-webkit-scrollbar-track {
+    background: rgb(239, 239, 239);
+    border-radius: $w;
+  }
+  // 条条
+  &::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+    border-radius: $w;
+  }
+  // hover的颜色
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgb(160, 154, 154);
+  }
+}

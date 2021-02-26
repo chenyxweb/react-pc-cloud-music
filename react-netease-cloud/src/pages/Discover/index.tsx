@@ -28,6 +28,8 @@ const Discover: FC<IProps> = (props) => {
     if (item.path === '/discover/toplist') {
       // 默认到 飙升榜 19723756
       props.history.push('/discover/toplist/19723756')
+    } else if (item.path === '/discover/playlist') {
+      props.history.push('/discover/playlist?cat=')
     } else {
       props.history.push(item.path)
     }

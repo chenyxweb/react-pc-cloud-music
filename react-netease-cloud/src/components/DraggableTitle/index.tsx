@@ -1,5 +1,5 @@
 // 可拖拽的标题
-import React, { FC, useEffect, useRef } from 'react'
+import React, { FC, memo, useEffect, useRef } from 'react'
 import styles from './index.module.scss'
 
 interface IProps {
@@ -20,35 +20,46 @@ const DraggableTitle: FC<IProps> = (props) => {
     console.log(divRef.current?.getBoundingClientRect())
     const divEle = divRef.current
 
-    if (divEle) {
-      const handleMousemove = (e: MouseEvent) => {
-        if (d.current) {
-          const x = e.clientX - d.current.dX
-          const y = e.clientY - d.current.dY
-          onDragging && onDragging({ x, y })
-        }
+    const handleMousedown = (e: MouseEvent) => {
+      if (!divEle) return
+      const { left, top } = divEle.getBoundingClientRect()
+
+      // 求差
+      const dX = e.clientX - left
+      const dY = e.clientY - top
+
+      // 保存差值
+      d.current.dX = dX
+      d.current.dY = dY
+
+      // 移动事件
+      document.addEventListener('mousemove', handleMousemove)
+    }
+
+    const handleMousemove = (e: MouseEvent) => {
+      if (d.current) {
+        const x = e.clientX - d.current.dX
+        const y = e.clientY - d.current.dY
+        onDragging && onDragging({ x, y })
       }
+    }
 
+    const handleMouseup = () => {
+      // 取消mousemove事件
+      document.removeEventListener('mousemove', handleMousemove)
+    }
+
+    if (divEle) {
       // 鼠标按下事件
-      divEle.addEventListener('mousedown', (e) => {
-        const { left, top } = divEle.getBoundingClientRect()
+      divEle.addEventListener('mousedown', handleMousedown)
 
-        // 求差
-        const dX = e.clientX - left
-        const dY = e.clientY - top
+      divEle.addEventListener('mouseup', handleMouseup)
+    }
 
-        // 保存差值
-        d.current.dX = dX
-        d.current.dY = dY
-
-        // 移动事件
-        document.addEventListener('mousemove', handleMousemove)
-      })
-
-      divEle.addEventListener('mouseup', () => {
-        // 取消mousemove事件
-        document.removeEventListener('mousemove', handleMousemove)
-      })
+    return () => {
+      document.removeEventListener('mousemove', handleMousemove)
+      divEle && divEle.removeEventListener('mousedown', handleMousedown)
+      divEle && divEle.removeEventListener('mouseup', handleMouseup)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -64,4 +75,4 @@ DraggableTitle.defaultProps = {
   text: '标题',
 }
 
-export default DraggableTitle
+export default memo(DraggableTitle)

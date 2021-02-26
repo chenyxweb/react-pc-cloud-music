@@ -21,6 +21,7 @@ import utils from 'utils/utils'
 import { update_user_info } from 'store/userInfo/actions'
 import { connect, DispatchProp } from 'react-redux'
 import { ICombineState } from 'store'
+import { stop_is_play } from 'store/playBarState/actions'
 
 // 按需加载
 const MyFooter = lazy(() => import('components/MyFooter'))
@@ -78,9 +79,12 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
 
   // 去登录页
   const go2Login = () => {
+    // 暂停歌曲播放
+    props.dispatch(stop_is_play())
+
     // 获取当前页面
     // console.log(props)
-    console.log(window.location.href)
+    // console.log(window.location.href)
     const href = encodeURIComponent(window.location.href)
     props.history.push(`/login?from=${href}`)
   }

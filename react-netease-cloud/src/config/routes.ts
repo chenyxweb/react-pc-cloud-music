@@ -66,7 +66,7 @@ const routes: RouteConfig[] = [
           // 排行榜
           { path: '/discover/toplist/:id', component: Toplist, meta: { requiresAuth: false } },
           // 歌单列表
-          { path: '/discover/playlist/:cat', component: Playlist, meta: { requiresAuth: false } },
+          { path: '/discover/playlist', component: Playlist, meta: { requiresAuth: false } },
           // 主播电台
           { path: '/discover/djradio', component: Djradio, meta: { requiresAuth: false } },
           // 歌手列表
