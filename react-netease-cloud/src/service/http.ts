@@ -7,9 +7,9 @@ import userApi from './userApi'
 // 根据页面划分api
 
 const http = {
-  ...homeApi,
-  ...loginApi,
-  ...userApi,
+  homeApi,
+  loginApi,
+  userApi,
 }
 
 export default http

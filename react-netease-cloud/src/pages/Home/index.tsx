@@ -45,7 +45,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
   useEffect(() => {
     // console.log(debounceInputValue)
     if (!debounceInputValue.trim()) return
-    http
+    http.homeApi
       .getSearchSuggest(debounceInputValue)
       .then((res) => {
         // console.log(res)
@@ -267,7 +267,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
       okText: '确定',
       cancelText: '取消',
       onOk: () => {
-        http
+        http.loginApi
           .logout()
           .then((res) => {
             console.log(res)
@@ -336,7 +336,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
     // http.logout().then(res => {
     //   console.log(res)
     // })
-    http.getLoginStatus().then((res) => {
+    http.loginApi.getLoginStatus().then((res) => {
       if (res.data?.data?.code === 200) {
         const { account, profile } = res.data.data || {}
         // console.log('account: ', account)

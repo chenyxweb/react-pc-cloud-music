@@ -100,7 +100,7 @@ const PlayBar: FC<
   // 获取歌词
   useEffect(() => {
     setLyricArr([])
-    http
+    http.homeApi
       .getLyric(currentSongInfo.id)
       .then((res) => {
         if (res.data.code === 200) {
@@ -249,7 +249,7 @@ const PlayBar: FC<
     const songId = currentSongInfo.id
     if (songId) {
       // 1. 下载歌曲url
-      http
+      http.homeApi
         .getSongUrl(songId)
         .then((res) => {
           if (res.data.code === 200) {

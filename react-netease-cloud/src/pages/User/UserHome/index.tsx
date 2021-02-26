@@ -25,7 +25,7 @@ const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }> & Pick
     const uid = Number(props.match.params?.userId)
     if (!uid) return
 
-    http
+    http.userApi
       .getUserSongList({ uid, limit: 1000 })
       .then((res) => {
         if (res.data.code === 200) {

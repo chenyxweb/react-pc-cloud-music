@@ -29,7 +29,7 @@ const RecordList: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = (
 
     setFetching(true)
 
-    http.getUserRecord({ uid, type: recordType }).then((res) => {
+    http.userApi.getUserRecord({ uid, type: recordType }).then((res) => {
       if (res.data.code === 200) {
         const { weekData, allData } = res.data || {}
         const list = recordType === 1 ? weekData : allData

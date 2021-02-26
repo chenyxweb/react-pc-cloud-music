@@ -36,7 +36,7 @@ const RecTopList: FC<
 
   // 获取飙升榜
   useEffect(() => {
-    http
+    http.homeApi
       .getPlaylistDetail({ id: constants.topListIds.S })
       .then((res) => {
         if (res.data.code === 200) {
@@ -48,7 +48,7 @@ const RecTopList: FC<
 
   // 获取新歌榜
   useEffect(() => {
-    http
+    http.homeApi
       .getPlaylistDetail({ id: constants.topListIds.N })
       .then((res) => {
         if (res.data.code === 200) {
@@ -60,7 +60,7 @@ const RecTopList: FC<
 
   // 获取热歌榜
   useEffect(() => {
-    http
+    http.homeApi
       .getPlaylistDetail({ id: constants.topListIds.H })
       .then((res) => {
         if (res.data.code === 200) {

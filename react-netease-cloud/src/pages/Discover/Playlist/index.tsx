@@ -30,7 +30,7 @@ const Playlist: FC<IProps> = () => {
 
   // 获取歌单分类
   useEffect(() => {
-    http
+    http.homeApi
       .getPlaylistCateList()
       .then((res) => {
         if (res.data.code === 200) {
@@ -49,7 +49,7 @@ const Playlist: FC<IProps> = () => {
 
   // 获取某类歌单列表
   useEffect(() => {
-    http
+    http.homeApi
       .getTopPlayList({ cat, order, limit: pageCount, offset: (pageNum - 1) * pageCount })
       .then((res) => {
         // console.log(res)

@@ -20,7 +20,7 @@ const HotRecommend: FC<IProps & RouteComponentProps> = (props) => {
 
   // 获取热门推荐列表
   useEffect(() => {
-    http
+    http.homeApi
       .recommendPlaylist(8)
       .then((res) => {
         if (res.data.code === 200) {

@@ -16,7 +16,7 @@ const NewDisk: FC<IProps> = (props) => {
   const carouselRef = useRef<any>()
 
   useEffect(() => {
-    http
+    http.homeApi
       .newDisk()
       .then((res) => {
         if (res.data.code === 200) {

@@ -26,7 +26,7 @@ export const replace_song_list = (list: any[]): IAction => ({ type: REPLACE_SONG
 export const replace_song_list_async = (id: number, callback?: Function): any => {
   return (dispatch: Dispatch) => {
     // 异步操作
-    http
+    http.homeApi
       .getPlaylistDetail({ id })
       .then((res) => {
         if (res.data.code === 200) {

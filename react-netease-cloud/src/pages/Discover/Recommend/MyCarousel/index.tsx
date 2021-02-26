@@ -15,7 +15,7 @@ const MyCarousel: FC<IProps> = (props) => {
 
   // 获取轮播图数据
   useEffect(() => {
-    http
+    http.homeApi
       .banner()
       .then((res) => {
         // console.log(res)

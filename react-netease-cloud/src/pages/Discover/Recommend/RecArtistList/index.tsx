@@ -13,7 +13,7 @@ const RecArtistList: FC<IProps> = (props) => {
   const [list, setList] = useState<any[]>([]) // 歌手列表
   // 获取热门歌手列表
   useEffect(() => {
-    http
+    http.homeApi
       .getArtistList({ limit: 10 })
       .then((res) => {
         if (res.data.code === 200) {

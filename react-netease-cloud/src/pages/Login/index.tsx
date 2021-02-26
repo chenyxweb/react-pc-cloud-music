@@ -30,7 +30,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = (props) => 
     if (loginType === 'account') return
 
     try {
-      http.generateQrKey().then((res) => {
+      http.loginApi.generateQrKey().then((res) => {
         if (res.data.code === 200) {
           const { unikey } = res.data.data || {}
           console.log('验证码key: ', unikey)
@@ -47,7 +47,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = (props) => 
     if (!qrKey) return
 
     try {
-      http.generateQrCode({ key: qrKey, qrimg: 'qrimg' }).then((res) => {
+      http.loginApi.generateQrCode({ key: qrKey, qrimg: 'qrimg' }).then((res) => {
         if (res.data.code === 200) {
           const { qrimg } = res.data.data || {}
           console.log(qrimg)
@@ -93,7 +93,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = (props) => 
 
     const timeId = setInterval(() => {
       try {
-        http.checkQrStatus({ key: qrKey }).then((res) => {
+        http.loginApi.checkQrStatus({ key: qrKey }).then((res) => {
           console.log(res.data?.message)
           // 解释 : 800为二维码过期, 801为等待扫码, 802为待确认, 803为授权登录成功(803状态码下会返回cookies)
           const { code, cookie, message } = res.data || {}
@@ -127,7 +127,7 @@ const Login: FC<IProps & DispatchProp & RouteConfigComponentProps> = (props) => 
   // 手机号登录
   const handlePhoneLogin = (data: { phone: string; md5_password: string }) => {
     console.log('手机号登录', data)
-    http
+    http.loginApi
       .phoneLogin(data)
       .then((res) => {
         console.log(res)

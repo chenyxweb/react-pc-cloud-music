@@ -31,7 +31,7 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
 
   // 获取排行榜
   useEffect(() => {
-    http
+    http.homeApi
       .getTopList()
       .then((res) => {
         // console.log(res)
@@ -62,7 +62,7 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
     if (!id) return
 
     setSpinning(true)
-    http
+    http.homeApi
       .getPlaylistDetail({ id: Number(id) })
       .then((res) => {
         setSpinning(false)
