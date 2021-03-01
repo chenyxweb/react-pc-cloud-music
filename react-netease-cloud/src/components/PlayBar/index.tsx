@@ -12,20 +12,18 @@ import { debounce, sample } from 'lodash-es'
 import { clear_song_list, del_song_list_item } from 'store/songList/actions'
 import { change_current_song_info } from 'store/currentSongInfo/actions'
 import styles from './index.module.scss'
-import { change_is_play } from 'store/playBarState/actions'
+import { change_is_play, start_is_play } from 'store/playBarState/actions'
 import http from 'service/http'
-// import { axios } from 'service/axios'
-// import FileSaver from 'file-saver'
 import useActiveLyricIndex from 'hooks/useActiveLyricIndex'
 import useClickOutsideComponent from 'hooks/useClickOutsideComponent'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import constants from 'utils/constants'
 
 interface IProps {
   clear_song_list: () => void
   del_song_list_item: (songId: number) => void
   change_current_song_info: (item: any) => void
   change_is_play: () => void
+  start_is_play: () => void
 }
 
 const mode = ['loop', 'shuffle', 'one'] // 顺序播放/随机播放/单曲循环
@@ -45,10 +43,10 @@ const PlayBar: FC<
 > = (props) => {
   // console.log('PlayBar-props: ', props)
 
-  const { songList, currentSongInfo, playBarState } = props
-
+  const { songList, currentSongInfo, playBarState, start_is_play } = props
   const { isPlay } = playBarState
 
+  // state
   const [lock, setLock] = useState(true) // 是否锁住
   const [playBarShow, setPlayBarShow] = useState(false) // 是否展示
   // const [isPlay, setIsPlay] = useState(false) // 是否正在播放
@@ -60,16 +58,16 @@ const PlayBar: FC<
   const [currentTime, setCurrentTime] = useState(0) // 当前播放时间戳
   const [lyricArr, setLyricArr] = useState<LyricArrType>([]) // 歌词数组
 
-  // let mouseLeaveTimeId: NodeJS.Timeout  // x
+  // refs
   const audioRef = useRef<HTMLAudioElement>(null) //  audio标签
   const playBarRef = useRef<HTMLDivElement>(null) // 歌曲列表和歌词容器
+  const voiceRef = useRef<HTMLDivElement>(null) // 声音调节
+  const songListContentRef = useRef<HTMLDivElement>(null) // 歌曲列表容器
 
-  let mouseLeaveTimeId = useRef<any>({ id: null }) // 鼠标移出的延时timeId
-
-  // useEffect(() => {
-  //   console.log('audio: ')
-  //   console.dir(audioRef.current)
-  // }, [])
+  // timeId
+  // let mouseLeaveTimeId: NodeJS.Timeout  // x
+  let mouseLeaveTimeId = useRef<{ id: any }>({ id: null }) // 鼠标移出的延时timeId
+  let handleOnErrorTimeId = useRef<{ id: any }>({ id: null })
 
   // 播放和暂停
   useEffect(() => {
@@ -113,11 +111,105 @@ const PlayBar: FC<
       .catch(() => {})
   }, [currentSongInfo.id])
 
+  // 播放上一首
+  const playPrevSong = useCallback(() => {
+    if (songList.length > 1) {
+      const currentSongIndex = songList.findIndex((item) => item.id === currentSongInfo.id)
+
+      // 当前歌曲时第一项时, 设置当前播放为最后一项
+      if (currentSongIndex === 0) {
+        props.change_current_song_info(songList[songList.length - 1])
+        // isPlay && handleRePlay()
+      } else {
+        // 当前歌曲不是第一项, 设置当前播放为上一项
+        const nextItem = songList[currentSongIndex - 1]
+        // props.del_song_list_item(songId)
+        props.change_current_song_info(nextItem)
+        // isPlay && handleRePlay()
+      }
+    }
+  }, [currentSongInfo.id, props, songList])
+
+  // 重新播放当前歌曲
+  const handleRePlay = useCallback(() => {
+    setTimeout(() => {
+      if (audioRef.current) {
+        // audioRef.current.load()
+        audioRef.current.currentTime = 0 // 设置当前播放时间为0
+        // audioRef.current.play() // 重新播放
+        start_is_play()
+      }
+    }, 50)
+  }, [start_is_play])
+
+  // 随机播放歌曲
+  const randomPlay = useCallback(() => {
+    if (songList.length === 1) {
+      // 只有一项, 则循环这一项
+      handleRePlay()
+    } else if (songList.length > 1) {
+      // 如果songList.length>1, 排除当前项, 随机取一项
+      const item = sample(songList.filter((i) => i.id !== currentSongInfo.id))
+      // dispatch 修改store
+      props.change_current_song_info(item)
+      // 播放
+      handleRePlay()
+    } else {
+      // list为空
+      message.info('暂无随机播放歌曲')
+    }
+  }, [currentSongInfo.id, handleRePlay, props, songList])
+
+  // 点击上一首按钮
+  const handleClickPrevBtn = useCallback(() => {
+    // 单曲,循环模式 --> 播放上一首
+    if (currentMode === 'one' || currentMode === 'loop') return playPrevSong()
+    // 随机模式 --> 随机播放
+    if (currentMode === 'shuffle') return randomPlay()
+  }, [currentMode, playPrevSong, randomPlay])
+
+  // 播放下一首
+  const playNextSong = useCallback(() => {
+    if (songList.length > 1) {
+      // 列表中有其他歌曲
+      const currentSongIndex = songList.findIndex((item) => item.id === currentSongInfo.id)
+
+      if (currentSongIndex === songList.length - 1) {
+        // 当前歌曲是最后一项, 设置当前播放为第一项
+        props.change_current_song_info(songList[0])
+        isPlay && handleRePlay() // 在播放就播放
+      } else {
+        // 当前歌曲不是最后一项, 设置当前播放歌曲为下一项
+        const nextItem = songList[currentSongIndex + 1]
+        // props.del_song_list_item(songId)
+        props.change_current_song_info(nextItem)
+        isPlay && handleRePlay()
+      }
+    }
+  }, [currentSongInfo.id, handleRePlay, isPlay, props, songList])
+
+  // 点击下一首按钮
+  const handleClickNextBtn = useCallback(() => {
+    // 单曲,循环模式 --> 播放下一首
+    if (currentMode === 'one' || currentMode === 'loop') return playNextSong()
+    // 随机模式 --> 随机播放
+    if (currentMode === 'shuffle') return randomPlay()
+  }, [currentMode, playNextSong, randomPlay])
+
+  // 切换播放模式
+  const switchCurrentMode = useCallback(() => {
+    setCurrentMode((prevState) => {
+      let index = mode.findIndex((item) => item === prevState)
+      index++
+      return mode[index % 3] as CurrentModeType
+    })
+  }, [])
+
   // 上/下一曲 播放暂停快捷键
   // onkeypress  字母数字键才会触发
   // 每次更新都需要重新运行useEffect , 不然记住的是以前的数据
   useEffect(() => {
-    window.onkeyup = (e: KeyboardEvent) => {
+    const handleOnkeyup = (e: KeyboardEvent) => {
       // console.log(e)
       if (e.ctrlKey && e.code === 'ArrowRight') {
         // ctrl + → 下一首
@@ -142,22 +234,36 @@ const PlayBar: FC<
       }
     }
 
+    window.addEventListener('keyup', handleOnkeyup)
+
     // 每次需要清除事件
     return () => {
-      window.onkeyup = null
+      window.removeEventListener('keyup', handleOnkeyup)
     }
-  })
+  }, [handleClickNextBtn, handleClickPrevBtn, props, switchCurrentMode])
 
   // 歌曲列表当前项滚动居中
   useEffect(() => {
+    // 歌词列表打开的条件下
+    if (!listBoxShow) return
+
+    const wrapper = songListContentRef.current
     const songListItemElement = document.querySelector('.songList-content .songList-item.active')
-    if (songListItemElement) {
+    if (!wrapper || !songListItemElement) return
+
+    const wrapperPosition = wrapper.getBoundingClientRect() || {}
+    const itemPosition = songListItemElement.getBoundingClientRect() || {}
+
+    // 在可视区外部
+    const isOut = itemPosition.bottom <= wrapperPosition.top || itemPosition.top >= wrapperPosition.bottom
+
+    if (isOut) {
       songListItemElement.scrollIntoView({
         behavior: 'smooth',
         block: 'center',
       })
     }
-  }, [currentSongInfo.id])
+  }, [currentSongInfo.id, listBoxShow]) // 当前歌曲id改变时修改
 
   // 获取激活的歌词索引
   const [activeLyricIndex] = useActiveLyricIndex(currentTime, currentSongInfo.dt, lyricArr)
@@ -176,7 +282,13 @@ const PlayBar: FC<
   // 点击playBar外部
   useClickOutsideComponent(playBarRef, () => {
     // 关闭歌词和歌曲列表
-    listBoxShow && setListBoxShow(false)
+    setListBoxShow(false)
+  })
+
+  // 点击voice条外部
+  useClickOutsideComponent(voiceRef, () => {
+    // 隐藏bar
+    setVoiceBarShow(false)
   })
 
   // 鼠标移入播放条
@@ -195,17 +307,8 @@ const PlayBar: FC<
     mouseLeaveTimeId.current.id = setTimeout(() => setPlayBarShow(false), 500)
   }
 
-  // 切换播放模式
-  const switchCurrentMode = () => {
-    setCurrentMode((prevState) => {
-      let index = mode.findIndex((item) => item === prevState)
-      index++
-      return mode[index % 3] as CurrentModeType
-    })
-  }
-
   // 当前播放模式文字提示
-  const currentModeTip = () => {
+  const currentModeTip = useCallback(() => {
     switch (currentMode) {
       case 'loop':
         return '顺序播放'
@@ -219,32 +322,35 @@ const PlayBar: FC<
       default:
         return null
     }
-  }
+  }, [currentMode])
 
   // 清空播放列表
-  const handleClearSongList = () => {
+  const handleClearSongList = useCallback(() => {
     if (!songList.length) return
     props.clear_song_list()
     message.success('列表清空成功')
-  }
+  }, [props, songList.length])
 
   // 删除一首歌曲
-  const delSongListItem = (songId: number, e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-    e.stopPropagation() // 阻止冒泡, 防止歌曲列表项被点击 ***** 坑 , 养成习惯清除冒泡行为
-    if (currentSongInfo.id === songId) {
-      // 删除的是当前播放的歌曲
-      // songList.length为1, 直接删除
-      if (songList.length > 1) {
-        playNextSong()
+  const delSongListItem = useCallback(
+    (songId: number, e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+      e.stopPropagation() // 阻止冒泡, 防止歌曲列表项被点击 ***** 坑 , 养成习惯清除冒泡行为
+      if (currentSongInfo.id === songId) {
+        // 删除的是当前播放的歌曲
+        // songList.length为1, 直接删除
+        if (songList.length > 1) {
+          playNextSong()
+        }
       }
-    }
 
-    // 删除操作提出来
-    props.del_song_list_item(songId)
-  }
+      // 删除操作提出来
+      props.del_song_list_item(songId)
+    },
+    [currentSongInfo.id, playNextSong, props, songList.length]
+  )
 
   // 下载MP3
-  const _handleDownloadMP3 = () => {
+  const _handleDownloadMP3 = useCallback(() => {
     // console.log('download')
     const songId = currentSongInfo.id
     if (songId) {
@@ -268,7 +374,8 @@ const PlayBar: FC<
         })
         .catch(() => {})
     }
-  }
+  }, [currentSongInfo.id])
+
   // 防抖化
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleDownloadMP3 = useCallback(debounce(_handleDownloadMP3, 5000, { leading: true, trailing: false }), [
@@ -276,181 +383,122 @@ const PlayBar: FC<
   ])
 
   // 当前播放时间发生改变的时候, 同步播放进度
-  const handleOnTimeUpdate = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
-    // console.log(event)
-    const currentTime = event.currentTarget.currentTime // 当前播放时间 s
-    // currentSongInfo.dt // ms
-    const percent = +((currentTime * 1000) / currentSongInfo.dt).toFixed(3)
-    if (percent === process) return // 两次时间相同
-    // console.log('播放进度:', (percent * 100).toFixed(1) + '%')
-    setCurrentTime(currentTime)
-    setProcess(percent)
-  }
+  const handleOnTimeUpdate = useCallback(
+    (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+      // console.log(event)
+      const currentTime = event.currentTarget.currentTime // 当前播放时间 s
+      // currentSongInfo.dt // ms
+      const percent = +((currentTime * 1000) / currentSongInfo.dt).toFixed(3)
+      if (percent === process) return // 两次时间相同
+      // console.log('播放进度:', (percent * 100).toFixed(1) + '%')
+      setCurrentTime(currentTime)
+      setProcess(percent)
+    },
+    [currentSongInfo.dt, process]
+  )
 
   // audio播放 -> 设置process bar -> 监听process改变设置audio播放进度  反向设置的时候不准确,这种方式不合理导致声音卡顿, 使用如下方式设置监听bar的拖拽
   // 拖拽进度条
-  const handleProcessSliderDrag = (value: number) => {
-    // console.log(value)
-    // 1 设置当前播放进度
-    setProcess(value)
-    // 2 设置audio的播放时间
-    // currentSongInfo.dt 总时长 ms
-    const time = (value * currentSongInfo.dt) / 1000
-    if (audioRef.current) {
-      audioRef.current.currentTime = time
-      // 如果当前为停止播放状态, 就播放
-      if (!isPlay) {
-        props.change_is_play()
+  const handleProcessSliderDrag = useCallback(
+    (value: number) => {
+      // console.log(value)
+      // 1 设置当前播放进度
+      setProcess(value)
+      // 2 设置audio的播放时间
+      // currentSongInfo.dt 总时长 ms
+      const time = (value * currentSongInfo.dt) / 1000
+      if (audioRef.current) {
+        audioRef.current.currentTime = time
+        // 如果当前为停止播放状态, 就播放
+        if (!isPlay) {
+          props.change_is_play()
+        }
       }
-    }
-  }
-
-  // 随机播放歌曲
-  const randomPlay = () => {
-    if (songList.length === 1) {
-      // 只有一项, 则循环这一项
-      handleRePlay()
-    } else if (songList.length > 1) {
-      // 如果songList.length>1, 排除当前项, 随机取一项
-      const item = sample(songList.filter((i) => i.id !== currentSongInfo.id))
-      // dispatch 修改store
-      props.change_current_song_info(item)
-      // 播放
-      handleRePlay()
-    } else {
-      // list为空
-      message.info('暂无随机播放歌曲')
-    }
-  }
+    },
+    [currentSongInfo.dt, isPlay, props]
+  )
 
   // audio当前歌曲播放结束
-  const handleOnEnded = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
-    console.log('播放结束')
-    // setIsPlay(false)
-    // 当前播放模式 currentMode
-    switch (currentMode) {
-      case 'loop': // 顺序播放, 播放列表中下一首歌曲
-        // 如果当前播放歌曲在列表上 播放下一首
-        playNextSong()
-        break
-      case 'shuffle': // 随机播放, 随机播放列表中的某一首歌曲
-        // songList
-        randomPlay()
+  const handleOnEnded = useCallback(
+    (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+      console.log('播放结束')
+      // setIsPlay(false)
+      // 当前播放模式 currentMode
+      switch (currentMode) {
+        case 'loop': // 顺序播放, 播放列表中下一首歌曲
+          // 如果当前播放歌曲在列表上 播放下一首
+          playNextSong()
+          break
+        case 'shuffle': // 随机播放, 随机播放列表中的某一首歌曲
+          // songList
+          randomPlay()
 
-        // currentSongInfo
-        break
-      case 'one': // 单曲循环, 循环当前歌曲
-        handleRePlay()
-        break
+          // currentSongInfo
+          break
+        case 'one': // 单曲循环, 循环当前歌曲
+          handleRePlay()
+          break
 
-      default:
-        break
-    }
-  }
+        default:
+          break
+      }
+    },
+    [currentMode, handleRePlay, playNextSong, randomPlay]
+  )
 
   // audio 加载期间遇到错误, 播放下一首歌曲
-  const handleOnError = (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
-    message.destroy()
-    message.info('当前歌曲无法播放, 3s 后自动切换下一首')
-    setTimeout(() => {
-      handleClickNextBtn()
-    }, 3000)
-  }
+  const handleOnError = useCallback(
+    (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+      message.destroy()
+      message.info('当前歌曲无法播放, 3s 后自动切换下一首')
+
+      // 手动下一首时需要清除定时器
+      handleOnErrorTimeId.current.id = setTimeout(() => {
+        handleClickNextBtn()
+      }, 3000)
+    },
+
+    [handleClickNextBtn]
+  )
+
+  // 清除自动播放下一首歌定时器
+  useEffect(() => {
+    const id = handleOnErrorTimeId.current.id
+    id && window.clearTimeout(id)
+  }, [currentSongInfo.id])
 
   // audio 缓冲至目前可以播放的状态  再播放, 避免无法播放调用了play方法
-  const handleOncanplay = () => {
-    console.log('canplay')
+  const handleOncanplay = useCallback(() => {
+    // console.log('canplay')
     if (isPlay && audioRef.current) {
       audioRef.current.play()
     }
-  }
-
-  // 重新播放当前歌曲
-  const handleRePlay = () => {
-    setTimeout(() => {
-      if (audioRef.current) {
-        // audioRef.current.load()
-        audioRef.current.currentTime = 0 // 设置当前播放时间为0
-        // audioRef.current.play() // 重新播放
-      }
-    }, 50)
-  }
-
-  // 播放上一首
-  const playPrevSong = () => {
-    if (songList.length > 1) {
-      const currentSongIndex = songList.findIndex((item) => item.id === currentSongInfo.id)
-
-      // 当前歌曲时第一项时, 设置当前播放为最后一项
-      if (currentSongIndex === 0) {
-        props.change_current_song_info(songList[songList.length - 1])
-        // isPlay && handleRePlay()
-      } else {
-        // 当前歌曲不是第一项, 设置当前播放为上一项
-        const nextItem = songList[currentSongIndex - 1]
-        // props.del_song_list_item(songId)
-        props.change_current_song_info(nextItem)
-        // isPlay && handleRePlay()
-      }
-    }
-  }
-
-  // 播放下一首
-  const playNextSong = () => {
-    if (songList.length > 1) {
-      // 列表中有其他歌曲
-      const currentSongIndex = songList.findIndex((item) => item.id === currentSongInfo.id)
-
-      if (currentSongIndex === songList.length - 1) {
-        // 当前歌曲是最后一项, 设置当前播放为第一项
-        props.change_current_song_info(songList[0])
-        isPlay && handleRePlay() // 在播放就播放
-      } else {
-        // 当前歌曲不是最后一项, 设置当前播放歌曲为下一项
-        const nextItem = songList[currentSongIndex + 1]
-        // props.del_song_list_item(songId)
-        props.change_current_song_info(nextItem)
-        isPlay && handleRePlay()
-      }
-    }
-  }
-
-  // 点击上一首按钮
-  const handleClickPrevBtn = () => {
-    // 单曲,循环模式 --> 播放上一首
-    if (currentMode === 'one' || currentMode === 'loop') return playPrevSong()
-    // 随机模式 --> 随机播放
-    if (currentMode === 'shuffle') return randomPlay()
-  }
-
-  // 点击下一首按钮
-  const handleClickNextBtn = () => {
-    // 单曲,循环模式 --> 播放下一首
-    if (currentMode === 'one' || currentMode === 'loop') return playNextSong()
-    // 随机模式 --> 随机播放
-    if (currentMode === 'shuffle') return randomPlay()
-  }
+  }, [isPlay])
 
   // 点击播放列表项, 切换歌曲, 开始播放
-  const handleClickListItem = (item: any) => {
-    if (item.id === currentSongInfo.id) return // 点击同一首 return
-    if (!isPlay) {
-      // 若暂停, 则自动开始播放
-      props.change_is_play()
-    }
-    props.change_current_song_info(item)
-  }
+  const handleClickListItem = useCallback(
+    (item: any) => {
+      if (item.id === currentSongInfo.id) return // 点击同一首 return
+      if (!isPlay) {
+        // 若暂停, 则自动开始播放
+        props.change_is_play()
+      }
+      props.change_current_song_info(item)
+    },
+    [currentSongInfo.id, isPlay, props]
+  )
 
   // 点击歌曲名
-  const handleClickSongName = () => {
+  const handleClickSongName = useCallback(() => {
     currentSongInfo.id && props.history.push(`/discover/song/${currentSongInfo.id}`)
-  }
+  }, [currentSongInfo.id, props.history])
 
   // 点击歌手
   const handleClickAuthorName = (item: any) => {
     item.id && props.history.push(`/discover/artist-detail/${item.id}`)
   }
 
+  // dom
   return (
     <div
       ref={playBarRef}
@@ -536,7 +584,9 @@ const PlayBar: FC<
 
         {/* 声音, 循环模式, 歌曲列表和歌词 */}
         <div className="rightBtns">
-          <div className="btn voice" onClick={() => setVoiceBarShow(!voiceBarShow)}>
+          <div className="voice" ref={voiceRef}>
+            <div className="voice-bar-btn btn" onClick={() => setVoiceBarShow(!voiceBarShow)}></div>
+
             {/* 音量大小bar 定位  */}
             <MyTransition mode="scale" in={voiceBarShow} timeout={300}>
               <div className="voice-bar">
@@ -584,7 +634,7 @@ const PlayBar: FC<
             className={styles.songListAndLyric}
             // //music.163.com/api/img/blur/
             style={{
-              background: `rgba(31, 31, 31, 0.8) url('//music.163.com/api/img/blur/${currentSongInfo?.al?.pic_str}') no-repeat center center/986px `,
+              background: `rgba(31, 31, 31, 0.5) url('//music.163.com/api/img/blur/${currentSongInfo?.al?.pic_str}') no-repeat center center/986px `,
             }}
           >
             {/* 歌曲列表容器 */}
@@ -596,7 +646,7 @@ const PlayBar: FC<
                 </div>
               </div>
               {/* 列表 */}
-              <div className="songList-content custom-scroll-bar">
+              <div className="songList-content custom-scroll-bar" ref={songListContentRef}>
                 {songList.map((item) => {
                   return (
                     /* 列表项 */
@@ -704,6 +754,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => {
       dispatch(change_current_song_info(item))
     }, // 修改当前播放歌曲信息
     change_is_play: () => dispatch(change_is_play()),
+    start_is_play: () => dispatch(start_is_play()),
   }
 }
 

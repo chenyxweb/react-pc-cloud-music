@@ -1,24 +1,28 @@
 // 测试页面
-import { Input } from 'antd'
 import React, { FC, useState } from 'react'
-import useThrottleFn from 'hooks/useThrottleFn'
 
 interface IProps {}
 
 const Test: FC<IProps> = () => {
-  const [input, setInput] = useState('')
-  const [throttleValue, setThrottleValue] = useState('')
+  console.log('test')
 
-  useThrottleFn(input, 2000, () => {
-    console.log('throttle', input)
-    setThrottleValue(input)
-  })
+  const [ts, setTs] = useState<number>()
 
   return (
     <div>
       Test
-      <Input value={input} onChange={(event) => setInput(event.target.value)}></Input>
-      <div>{throttleValue}</div>
+      <div>{ts}</div>
+      <button
+        onClick={() =>
+          setTs((preState) => {
+            console.log(preState)
+            return 111 // 设置相同的数据不会引起reRender
+            // return Date.now()
+          })
+        }
+      >
+        click
+      </button>
     </div>
   )
 }
