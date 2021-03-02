@@ -7,9 +7,10 @@ import { useEffect, useRef, useState } from 'react'
  * @param currentTime 当前播放时间 s
  * @param totalTime 歌曲总时间 ms
  * @param lyricArr 歌词数组
+ * @param id 歌曲id
  * @returns [index] 当前高亮歌词索引
  */
-const useActiveLyricIndex = (currentTime: number, totalTime: number, lyricArr: LyricArrType) => {
+const useActiveLyricIndex = (currentTime: number, totalTime: number, lyricArr: LyricArrType, id: number) => {
   const [index, setIndex] = useState(0) // 当前激活的歌词索引
 
   // 节流 方法一
@@ -41,6 +42,11 @@ const useActiveLyricIndex = (currentTime: number, totalTime: number, lyricArr: L
       }
     })
   }, [currentTime, totalTime, lyricArr, index])
+
+  useEffect(() => {
+    // 歌曲id改变 index===0
+    setIndex(0)
+  }, [id])
 
   // 返回currentActiveIndex
   return [index]

@@ -1,7 +1,7 @@
 // 音乐播放条
 import { CaretRightOutlined, CloseOutlined, DeleteOutlined, DownloadOutlined, RedoOutlined } from '@ant-design/icons'
 import React, { FC, Fragment, memo, useCallback, useEffect, useRef, useState } from 'react'
-import { Empty, message, Slider, Tooltip } from 'antd'
+import { Empty, message, Slider, Tooltip, notification } from 'antd'
 import MyTransition from 'components/MyTransition'
 import { connect } from 'react-redux'
 import { ICombineState } from 'store'
@@ -57,6 +57,7 @@ const PlayBar: FC<
   const [process, setProcess] = useState(0) // 播放进度 0 ~ 1  刻度 0.01
   const [currentTime, setCurrentTime] = useState(0) // 当前播放时间戳
   const [lyricArr, setLyricArr] = useState<LyricArrType>([]) // 歌词数组
+  const [songUrl, setSongUrl] = useState<{ type: 1 | 2; url: string }>() // 歌曲url信息 , type 1 根据歌曲id拼凑的url, 2 调用接口响应的url, 若两者都无法播放, 则进入下一首歌曲
 
   // refs
   const audioRef = useRef<HTMLAudioElement>(null) //  audio标签
@@ -72,6 +73,7 @@ const PlayBar: FC<
   // 播放和暂停
   useEffect(() => {
     if (isPlay) {
+      // if (audioRef.current?.readyState <= 1) return
       audioRef.current
         ?.play()
         .then((res) => {
@@ -79,7 +81,8 @@ const PlayBar: FC<
         })
         .catch((err) => {
           // 调用play方法报错
-          message.error(err.message)
+          // message.error(err.message)
+          console.warn(err.message)
         })
     } else {
       audioRef.current?.pause()
@@ -266,7 +269,7 @@ const PlayBar: FC<
   }, [currentSongInfo.id, listBoxShow]) // 当前歌曲id改变时修改
 
   // 获取激活的歌词索引
-  const [activeLyricIndex] = useActiveLyricIndex(currentTime, currentSongInfo.dt, lyricArr)
+  const [activeLyricIndex] = useActiveLyricIndex(currentTime, currentSongInfo.dt, lyricArr, currentSongInfo.id)
 
   // 歌词列表当前项滚动居中
   useEffect(() => {
@@ -385,6 +388,18 @@ const PlayBar: FC<
   // 当前播放时间发生改变的时候, 同步播放进度
   const handleOnTimeUpdate = useCallback(
     (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+      // 获取缓冲进度 ???
+      // const audio = audioRef.current
+      // if (!audio) return
+      // const timeRanges = audio.buffered // 计算百分比 展示进度
+      // 获取已缓存的时间  timeRanges.end(timeRanges.length - 1)
+      // console.log(timeRanges.end(timeRanges.length - 1), audio.duration)
+
+      // parseInt(timeRanges.end(timeRanges.length - 1) * 100 / audio.duration * 100) / 100)
+
+      // 歌曲总时长
+      // console.log(audioRef.current?.duration, currentSongInfo.dt)
+
       // console.log(event)
       const currentTime = event.currentTarget.currentTime // 当前播放时间 s
       // currentSongInfo.dt // ms
@@ -446,9 +461,22 @@ const PlayBar: FC<
     [currentMode, handleRePlay, playNextSong, randomPlay]
   )
 
-  // audio 加载期间遇到错误, 播放下一首歌曲
+  // audio 加载期间遇到错误, 先获取url进行歌曲播放, 若还是播放不了, 则播放下一首歌曲
   const handleOnError = useCallback(
-    (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+    async (event: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+      if (songUrl?.type === 1) {
+        // type 1 : 尝试请求获取url播放
+        const res = await http.homeApi.getSongUrl(currentSongInfo.id)
+        let url = ''
+        if (res.data.code === 200) {
+          url = res.data?.data[0]?.url || ''
+          // url = '123123'
+        }
+
+        return setSongUrl({ type: 2, url })
+      }
+
+      // type 2 : 已经使用url进行播放了, 进入下一首
       message.destroy()
       message.info('当前歌曲无法播放, 3s 后自动切换下一首')
 
@@ -458,14 +486,28 @@ const PlayBar: FC<
       }, 3000)
     },
 
-    [handleClickNextBtn]
+    [currentSongInfo.id, handleClickNextBtn, songUrl?.type]
   )
 
-  // 清除自动播放下一首歌定时器
+  // 歌曲url改变时, 清除自动播放下一首歌定时器
   useEffect(() => {
+    songUrl?.url && console.log('歌曲url: ', songUrl?.url)
+
     const id = handleOnErrorTimeId.current.id
-    id && window.clearTimeout(id)
+    if (!id) return
+    window.clearTimeout(id)
+  }, [songUrl?.url])
+
+  // 设置歌曲url: `https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`
+  useEffect(() => {
+    currentSongInfo.id &&
+      setSongUrl({ type: 1, url: `https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3` })
   }, [currentSongInfo.id])
+
+  // handleOnProgress
+  const handleOnProgress = (e: any) => {
+    // console.log('progress: ', e)
+  }
 
   // audio 缓冲至目前可以播放的状态  再播放, 避免无法播放调用了play方法
   const handleOncanplay = useCallback(() => {
@@ -623,8 +665,10 @@ const PlayBar: FC<
         // autoPlay
         onError={handleOnError} // 当在元素加载期间发生错误时运行脚本, 此时播放下一首歌
         preload="auto"
+        onProgress={handleOnProgress}
         onCanPlay={handleOncanplay} // 缓冲至目前可以播放的状态
-        src={`https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`}
+        // src={`https://music.163.com/song/media/outer/url?id=${currentSongInfo.id}.mp3`}
+        src={songUrl?.url}
       ></audio>
 
       {/* 播放列表和歌词box */}
@@ -677,7 +721,7 @@ const PlayBar: FC<
 
             {/* 歌词容器 */}
             <div className="lyric">
-              <div className="lyric-title">
+              <div className="lyric-title ellipsis-1">
                 {currentSongInfo.name}
                 <CloseOutlined title="关闭" onClick={() => setListBoxShow(false)} className="icon" />
               </div>

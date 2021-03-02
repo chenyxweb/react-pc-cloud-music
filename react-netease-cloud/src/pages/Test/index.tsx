@@ -1,28 +1,34 @@
 // 测试页面
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
+import { debounce, throttle } from 'lodash-es'
 
 interface IProps {}
 
 const Test: FC<IProps> = () => {
-  console.log('test')
+  const [input, setInput] = useState('')
 
-  const [ts, setTs] = useState<number>()
+  const handleThrottle = useRef(
+    throttle(() => {
+      console.log('throttle', input)
+    }, 1000)
+  )
+
+  const handleDebounce = useRef(
+    debounce((input) => {
+      console.log('debounce', input)
+    }, 300)
+  )
+
+  useEffect(() => {
+    if (!input) return
+    handleDebounce.current(input)
+  }, [input])
 
   return (
     <div>
       Test
-      <div>{ts}</div>
-      <button
-        onClick={() =>
-          setTs((preState) => {
-            console.log(preState)
-            return 111 // 设置相同的数据不会引起reRender
-            // return Date.now()
-          })
-        }
-      >
-        click
-      </button>
+      <input type="text" value={input} onChange={(e) => setInput(e.currentTarget.value)} />
+      <button onClick={handleThrottle.current}>throttle</button>
     </div>
   )
 }
