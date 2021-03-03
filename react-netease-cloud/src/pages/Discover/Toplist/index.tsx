@@ -86,6 +86,7 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
     (item: any) => {
       props.dispatch(add_song_list_item(item))
       props.dispatch(change_current_song_info(item))
+      props.dispatch(start_is_play())
     },
     [props]
   )
@@ -120,7 +121,7 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
   }
 
   // 渲染歌曲列表
-  const renderTipList = useCallback(
+  const renderTopList = useCallback(
     (list: any[]) => {
       return list.map((item: any, index: any) => {
         return (
@@ -221,7 +222,7 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
                 <div className={styles.author}>歌手</div>
               </div>
               {/* list */}
-              {renderTipList(playlist?.tracks || [])}
+              {renderTopList(playlist?.tracks || [])}
             </div>
           </Spin>
         </div>

@@ -24,7 +24,7 @@ export { BASE_URL }
 // 创建实例
 export const axios = Axios.create({
   baseURL: BASE_URL,
-  timeout: 8000,
+  timeout: 12000,
   withCredentials: true, // 跨域请求 , 不加上就无法自动设置cookies
 })
 

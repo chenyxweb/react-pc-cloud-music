@@ -1,7 +1,7 @@
 // 音乐播放条
 import { CaretRightOutlined, CloseOutlined, DeleteOutlined, DownloadOutlined, RedoOutlined } from '@ant-design/icons'
 import React, { FC, Fragment, memo, useCallback, useEffect, useRef, useState } from 'react'
-import { Empty, message, Slider, Tooltip, notification } from 'antd'
+import { Empty, message, Slider, Tooltip } from 'antd'
 import MyTransition from 'components/MyTransition'
 import { connect } from 'react-redux'
 import { ICombineState } from 'store'
@@ -752,7 +752,7 @@ const PlayBar: FC<
       </MyTransition>
 
       {/* 歌词轮播 */}
-      {isPlay && lyricArr[activeLyricIndex]?.content ? (
+      {!listBoxShow && isPlay && lyricArr[activeLyricIndex]?.content ? (
         <div className={[styles['lyric-show-box'], 'ellipsis-1'].join(' ')}>{lyricArr[activeLyricIndex]?.content}</div>
       ) : null}
 

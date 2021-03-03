@@ -166,9 +166,9 @@ const Playlist: FC<IProps & RouteConfigComponentProps> = (props) => {
         {/* 歌单列表 */}
         <Spin spinning={listLoading}>
           <div className={styles.listWrapper}>
-            {playlist.map((item) => {
+            {playlist.map((item, index) => {
               return (
-                <div className={styles.itemWrapper} key={item.id}>
+                <div className={styles.itemWrapper} key={index}>
                   <PlayListItem item={item}></PlayListItem>
                 </div>
               )
