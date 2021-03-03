@@ -1,8 +1,8 @@
 // 入口文件
 import React from 'react'
 import ReactDom from 'react-dom'
-// import { ConfigProvider } from 'antd'
-// import zhCN from 'antd/es/locale/zh_CN'
+import { ConfigProvider } from 'antd'
+import zhCN from 'antd/es/locale/zh_CN'
 import App from './App'
 // import 'moment/locale/zh-cn'
 import './index.scss'
@@ -11,18 +11,12 @@ import { Provider } from 'react-redux'
 
 const store = configStore()
 
-// ReactDom.render(
-//   <ConfigProvider locale={zhCN}>
-//       <App />
-//   </ConfigProvider>,
-//   document.getElementById('root')
-// )
-
 ReactDom.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-
+  <ConfigProvider locale={zhCN}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </ConfigProvider>,
   document.getElementById('root')
 )
 

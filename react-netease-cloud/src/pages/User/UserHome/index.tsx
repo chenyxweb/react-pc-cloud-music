@@ -79,7 +79,7 @@ const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }> & Pick
           {list.map((item) => {
             return (
               <div className={styles.itemWrapper} key={item.id}>
-                <LazyLoad height={140} once overflow>
+                <LazyLoad height={140} overflow>
                   <PlayListItem item={item}></PlayListItem>
                 </LazyLoad>
               </div>

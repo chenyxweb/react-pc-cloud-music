@@ -58,20 +58,15 @@ module.exports = {
     addWebpackBar({ profile: true }), // 添加 webpack bar
 
     // cdn
-    addWebpackExternals(
-      process.env.NODE_ENV === 'production'
-        ? {
-            // 库名 : 变量名
-            react: 'React',
-            axios: 'axios',
-            redux: 'Redux',
-            'react-dom': 'ReactDOM',
-            // 'react-router-dom': 'ReactRouterDOM', // error
-            'react-redux': 'ReactRedux',
-            'react-transition-group': 'ReactTransitionGroup',
-          }
-        : {}
-    )
+    addWebpackExternals({
+      // 库名 : 变量名
+      react: 'React',
+      redux: 'Redux',
+      axios: 'axios',
+      'react-dom': 'ReactDOM',
+      'react-redux': 'ReactRedux',
+      'react-transition-group': 'ReactTransitionGroup',
+    })
   ),
 
   // The paths config to use when compiling your react app for development or production.

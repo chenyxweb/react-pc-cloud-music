@@ -2,7 +2,7 @@
 
 import { CustomerServiceOutlined, PlayCircleOutlined } from '@ant-design/icons'
 import { message } from 'antd'
-import React, { FC, memo } from 'react'
+import React, { CSSProperties, FC, memo } from 'react'
 import { RouteConfigComponentProps } from 'react-router-config'
 import { withRouter } from 'react-router-dom'
 import utils from 'utils/utils'
@@ -15,12 +15,14 @@ import constants from 'utils/constants'
 
 interface IProps {
   item: any
+  style?: CSSProperties
+  className?: string
 }
 
 const PlayListItem: FC<IProps & DispatchProp & RouteConfigComponentProps & Pick<ICombineState, 'playBarState'>> = (
   props
 ) => {
-  const { item } = props
+  const { item, style, className } = props
 
   /**
    * 点击播放按钮
@@ -37,13 +39,13 @@ const PlayListItem: FC<IProps & DispatchProp & RouteConfigComponentProps & Pick<
         // isPlay 为false 就改成true
         const { isPlay } = props.playBarState
         if (!isPlay) props.dispatch(change_is_play())
-        message.success('开始播放 热门推荐歌单')
+        message.success('开始播放当前歌单')
       })
     )
   }
 
   return (
-    <div className={styles.PlayListItem} title={item.name}>
+    <div className={[styles.PlayListItem, className].join(' ')} title={item.name} style={style}>
       <div className="img-wrapper">
         <img
           // ?param=140y140 降低图片分辨率

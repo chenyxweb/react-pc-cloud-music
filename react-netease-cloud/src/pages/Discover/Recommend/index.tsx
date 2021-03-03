@@ -1,6 +1,5 @@
 // 发现音乐 - 推荐
 import React, { FC, memo } from 'react'
-import { RouteComponentProps } from 'react-router-dom'
 import HotRecommend from './HotRecommend'
 import MyCarousel from './MyCarousel'
 import NewDisk from './NewDisk'
@@ -8,17 +7,34 @@ import NewDisk from './NewDisk'
 import styles from './index.module.scss'
 import RecTopList from './RecTopList'
 import RecArtistList from './RecArtistList'
-import { message } from 'antd'
+import { connect, DispatchProp } from 'react-redux'
+import { RouteConfigComponentProps } from 'react-router-config'
+import { stop_is_play } from 'store/playBarState/actions'
+import { ICombineState } from 'store'
 
-interface IProps extends RouteComponentProps {}
+interface IProps {}
 
-const Recommend: FC<IProps> = () => {
+const Recommend: FC<IProps & RouteConfigComponentProps & DispatchProp & Pick<ICombineState, 'userInfo'>> = (props) => {
+  // console.log(props.userInfo)
+
+  // 去登录页
+  const go2Login = () => {
+    // 暂停歌曲播放
+    props.dispatch(stop_is_play())
+
+    // 获取当前页面
+    // console.log(props)
+    // console.log(window.location.href)
+    const href = encodeURIComponent(window.location.href)
+    props.history.push(`/login?from=${href}`)
+  }
+
   // 渲染login
   const renderLogin = () => {
     return (
       <div className="login">
         <p>登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
-        <div className="btn" onClick={() => message.info('暂无登录功能')}>
+        <div className="btn" onClick={go2Login}>
           用户登录
         </div>
       </div>
@@ -45,7 +61,7 @@ const Recommend: FC<IProps> = () => {
           </div>
           <div className={styles.right}>
             {/* login */}
-            {renderLogin()}
+            {props?.userInfo?.isLogin ? null : renderLogin()}
 
             {/* 入驻歌手 */}
             <RecArtistList />
@@ -57,4 +73,11 @@ const Recommend: FC<IProps> = () => {
   )
 }
 
-export default memo(Recommend)
+// map store
+const mapStateToProps = (state: ICombineState) => {
+  return {
+    userInfo: state.userInfo,
+  }
+}
+
+export default connect(mapStateToProps)(memo(Recommend))

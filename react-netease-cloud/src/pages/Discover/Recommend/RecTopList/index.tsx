@@ -146,7 +146,7 @@ const RecTopList: FC<
       <div className={styles.up}>
         {/* logo */}
         <div className="logo">
-          <LazyLoad height={80}>
+          <LazyLoad height={80} overflow>
             <img
               src={list.coverImgUrl + '?param=100y100'}
               alt=""

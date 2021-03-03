@@ -22,9 +22,26 @@
     }
 
     .listWrapper {
+      min-height: 400px;
+      padding: 15px 0;
+      display: flex;
+      flex-wrap: wrap;
+      // justify-content: space-between;
+
+      .itemWrapper {
+        padding-right: 49px;
+        float: left;
+
+        &:nth-child(5n) {
+          padding-right: 0px;
+        }
+      }
     }
 
     .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }

@@ -71,7 +71,7 @@ const NewDisk: FC<IProps> = (props) => {
                           <div className="swiper-item" key={ite.id}>
                             <div className="img">
                               {/* react-lazyload 图片懒加载 */}
-                              <LazyLoad height={100}>
+                              <LazyLoad height={100} overflow>
                                 <img
                                   src={ite.picUrl + '?param=100y100'}
                                   title={ite.name}
