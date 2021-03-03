@@ -1,6 +1,7 @@
 const { override, fixBabelImports, addWebpackExternals } = require('customize-cra')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const WebpackBar = require('webpackbar')
+const path = require('path')
 
 //生产环境去除console.
 const dropConsole = () => (config) => {
@@ -65,11 +66,18 @@ module.exports = {
             axios: 'axios',
             redux: 'Redux',
             'react-dom': 'ReactDOM',
-            'react-router-dom': 'ReactRouterDOM',
+            // 'react-router-dom': 'ReactRouterDOM', // error
             'react-redux': 'ReactRedux',
             'react-transition-group': 'ReactTransitionGroup',
           }
         : {}
     )
   ),
+
+  // The paths config to use when compiling your react app for development or production.
+  paths: function (paths, env) {
+    // ...add your paths config
+    paths.appBuild = path.resolve('../NeteaseCloudMusicApi/public/dist') // 配置打包输出目录
+    return paths
+  },
 }

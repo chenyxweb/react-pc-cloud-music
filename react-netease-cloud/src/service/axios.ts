@@ -11,7 +11,8 @@ switch (process.env.REACT_APP_MODE) {
     break
 
   case 'build':
-    BASE_URL = 'http://123.57.176.198:3000' // 参考
+    // BASE_URL = 'http://123.57.176.198:3000' // 参考
+    BASE_URL = '/'
     break
 
   default:
