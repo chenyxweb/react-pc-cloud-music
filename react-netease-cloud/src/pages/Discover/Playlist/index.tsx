@@ -84,6 +84,17 @@ const Playlist: FC<IProps & RouteConfigComponentProps> = (props) => {
       .catch(() => {})
   }, [cat, order, pageSize, pageNum])
 
+  // 筛选条件改变时滚动到顶部
+  useEffect(() => {
+    const app = document.querySelector('#root > .app')
+    app && app.scrollTo(0, 0)
+  }, [cat, order, pageSize, pageNum])
+
+  // 恢复第一页
+  useEffect(() => {
+    setPageNum(1)
+  }, [cat, order])
+
   // 点击分类tag
   const handleTagClick = useCallback(
     (item: IOption) => {

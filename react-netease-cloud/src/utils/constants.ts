@@ -29,6 +29,29 @@ const subMenu = [
   { name: '新碟上架', path: '/discover/album' },
 ]
 
+// 搜索类型枚举
+const searchTypeEnum = {
+  1: '单曲',
+  10: '专辑',
+  100: '歌手',
+  1000: '歌单',
+  1002: '用户',
+  1004: 'MV',
+  1006: '歌词',
+  1009: '电台',
+  1014: '视频',
+  1018: '综合',
+}
+
+// 新碟查询区域枚举
+const diskAreaEnum = {
+  ALL: '全部',
+  ZH: '华语',
+  EA: '欧美',
+  KR: '韩国',
+  JP: '日本',
+}
+
 // 合并
 const constants = {
   topMenu,
@@ -38,6 +61,8 @@ const constants = {
   USER_INFO: 'user_info',
   topListIds,
   bg_placeholder_img,
+  searchTypeEnum,
+  diskAreaEnum,
 }
 
 export default constants

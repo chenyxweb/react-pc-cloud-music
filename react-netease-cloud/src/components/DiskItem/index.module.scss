@@ -1,0 +1,137 @@
+.DiskItem {
+  :global {
+    .img {
+      margin-bottom: 10px;
+      background: url('~assets/img/sprite_cover.png') no-repeat;
+
+      .img-wrapper {
+        position: relative;
+
+        &:hover {
+          .play-btn-wrapper {
+            .play-btn {
+              display: block;
+            }
+          }
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          box-shadow: 0px 3px 5px 0px rgba($color: #000000, $alpha: 0.5);
+          cursor: pointer;
+        }
+
+        .play-btn-wrapper {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          left: 0;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          height: 25%;
+          padding-right: 10%;
+
+          .play-btn {
+            display: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #ccc;
+            transform-origin: center center;
+            font-size: 14px;
+            background-color: rgba($color: #000000, $alpha: 0.6);
+            border-radius: 50%;
+
+            &:hover {
+              color: #fff;
+              transform: scale(1.2);
+            }
+          }
+        }
+      }
+    }
+
+    .song-name {
+      font-size: 12px;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .author {
+      font-size: 12px;
+      color: #666;
+      cursor: pointer;
+
+      span:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &.small {
+    width: 118px;
+
+    :global {
+      .img {
+        background-position: 0 -570px;
+
+        .img-wrapper {
+          width: 100px;
+          height: 100px;
+
+          .play-btn-wrapper {
+            .play-btn {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.middle {
+    width: 152px;
+
+    :global {
+      .img {
+        background-position: 0 -845px;
+
+        .img-wrapper {
+          width: 130px;
+          height: 130px;
+
+          .play-btn-wrapper {
+            .play-btn {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &.large {
+    width: 208px;
+
+    :global {
+      .img {
+        background-position: 0 -986px;
+
+        .img-wrapper {
+          width: 177px;
+          height: 177px;
+
+          .play-btn-wrapper {
+            .play-btn {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

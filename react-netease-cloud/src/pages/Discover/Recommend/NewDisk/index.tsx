@@ -5,14 +5,14 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import http from 'service/http'
 import { chunk } from 'lodash-es'
-import LazyLoad from 'react-lazyload'
 
 import styles from './index.module.scss'
+import DiskItem from 'components/DiskItem'
 
 interface IProps extends RouteComponentProps {}
 
 const NewDisk: FC<IProps> = (props) => {
-  const [list, setList] = useState<Array<Array<any>>>([[], [], []]) // 专辑列表
+  const [list, setList] = useState<Array<Array<any>>>([[], []]) // 专辑列表
   const carouselRef = useRef<any>()
 
   useEffect(() => {
@@ -23,9 +23,8 @@ const NewDisk: FC<IProps> = (props) => {
           // 每5项push成一项数组
           const list = res.data.albums || []
           // 取出前十项
-
           // console.log('list', chunk(list, 5))
-          setList(chunk(list, 5))
+          setList(chunk(list, 5).slice(0, 2))
         }
       })
       .catch(() => {})
@@ -33,12 +32,6 @@ const NewDisk: FC<IProps> = (props) => {
 
   // 去新碟上架页面
   const ToAlbum = () => props.history.push('/discover/album')
-
-  // 去专辑详情页
-  const toAlbumDetail = (id: number) => props.history.push(`/discover/album-detail/${id}`)
-
-  // 去歌手详情页
-  const toArtistDetail = (id: number) => props.history.push(`/discover/artist-detail/${id}`)
 
   return (
     <div className={styles.NewDisk}>
@@ -59,7 +52,6 @@ const NewDisk: FC<IProps> = (props) => {
         <div className="wrapper">
           <div className="swiper">
             <Carousel className="antd-carousel" autoplay easing="ease-in-out" dots={false} ref={carouselRef}>
-              {/* TODO */}
               {list.map((item, index) => {
                 return (
                   // 页数
@@ -67,34 +59,9 @@ const NewDisk: FC<IProps> = (props) => {
                     <div className="swiper-wrapper">
                       {item.map((ite, ind) => {
                         return (
-                          // 每一页
-                          <div className="swiper-item" key={ite.id}>
-                            <div className="img">
-                              {/* react-lazyload 图片懒加载 */}
-                              <LazyLoad height={100} overflow>
-                                <img
-                                  src={ite.picUrl + '?param=100y100'}
-                                  title={ite.name}
-                                  alt=""
-                                  onClick={() => toAlbumDetail(ite.id)}
-                                />
-                              </LazyLoad>
-                            </div>
-                            {/* 歌名 */}
-                            <p className="song-name ellipsis-1" onClick={() => toAlbumDetail(ite.id)}>
-                              {ite.name}
-                            </p>
-                            {/* 歌手 */}
-                            <p className="author">
-                              <span onClick={() => toArtistDetail(ite.artists[0].id)}>{ite.artists[0]?.name}</span>{' '}
-                              {ite.artists?.length >= 2 ? '/' : ''}{' '}
-                              {ite.artists[1]?.name ? (
-                                <span onClick={() => toArtistDetail(ite.artists[1].id)}>{ite.artists[1].name}</span>
-                              ) : (
-                                ''
-                              )}{' '}
-                              {ite.artists[2]?.name ? '...' : ''}
-                            </p>
+                          // 每一项
+                          <div className="disk-item-wrapper" key={ind}>
+                            <DiskItem size="small" item={ite}></DiskItem>
                           </div>
                         )
                       })}

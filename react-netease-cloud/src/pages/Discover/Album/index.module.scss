@@ -1,0 +1,77 @@
+.Album {
+  padding: 40px;
+
+  :global {
+    .content {
+      padding: 15px 0;
+      display: flex;
+      flex-wrap: wrap;
+
+      .disk-item {
+        padding-right: 48px;
+        padding-bottom: 8px;
+
+        &:nth-child(5n) {
+          padding-right: 0px;
+        }
+      }
+    }
+
+    .all-list-content {
+      min-height: 300px;
+    }
+  }
+
+  .hot {
+  }
+
+  .all {
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    :global {
+      .title {
+        display: flex;
+
+        .tabs {
+          display: flex;
+          align-items: flex-end;
+          line-height: 32px;
+          padding-left: 15px;
+
+          .tabs-item {
+            height: 32px;
+            padding: 0 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+
+            &.active {
+              color: var(--main-color);
+            }
+
+            &::after {
+              display: block;
+              content: '';
+              width: 1px;
+              height: 10px;
+              position: absolute;
+              background-color: #aaa;
+              right: 0;
+              top: 50%;
+              transform: translateY(-50%);
+            }
+
+            &:last-child::after {
+              background-color: transparent;
+            }
+          }
+        }
+      }
+    }
+  }
+}
