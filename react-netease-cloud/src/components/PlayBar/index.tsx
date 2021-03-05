@@ -17,6 +17,7 @@ import http from 'service/http'
 import useActiveLyricIndex from 'hooks/useActiveLyricIndex'
 import useClickOutsideComponent from 'hooks/useClickOutsideComponent'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import Authors from 'components/Authors'
 
 interface IProps {
   clear_song_list: () => void
@@ -535,11 +536,6 @@ const PlayBar: FC<
     currentSongInfo.id && props.history.push(`/discover/song/${currentSongInfo.id}`)
   }, [currentSongInfo.id, props.history])
 
-  // 点击歌手
-  const handleClickAuthorName = (item: any) => {
-    item.id && props.history.push(`/discover/artist-detail/${item.id}`)
-  }
-
   // dom
   return (
     <div
@@ -573,21 +569,7 @@ const PlayBar: FC<
               </div>
               {/* 歌手名 */}
               <div className="songAuthor ellipsis-1">
-                {(currentSongInfo?.ar || []).map((item: any, index: number) => {
-                  return index === 0 ? (
-                    <span className="songAuthor-item" onClick={() => handleClickAuthorName(item)} key={index}>
-                      {item.name}
-                    </span>
-                  ) : (
-                    <Fragment key={index}>
-                      {' '}
-                      /{' '}
-                      <span className="songAuthor-item" onClick={() => handleClickAuthorName(item)}>
-                        {item.name}
-                      </span>
-                    </Fragment>
-                  )
-                })}
+                <Authors list={currentSongInfo?.ar || []}></Authors>
               </div>
             </div>
             {/* 播放进度条 */}

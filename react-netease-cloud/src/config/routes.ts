@@ -12,6 +12,8 @@ const Friend = lazy(() => import('pages/Friend'))
 const Mall = lazy(() => import('pages/Mall'))
 const Musician = lazy(() => import('pages/Musician'))
 const My = lazy(() => import('pages/My'))
+const Search = lazy(() => import('pages/Search'))
+const MV = lazy(() => import('pages/MV'))
 const Test = lazy(() => import('pages/Test'))
 
 const User = lazy(() => import('pages/User'))
@@ -93,6 +95,10 @@ const routes: RouteConfig[] = [
       { path: '/musician', component: Musician, meta: { requiresAuth: false } },
       // 下载客户端
       { path: '/download', component: Download, meta: { requiresAuth: false } },
+      // 搜索页
+      { path: '/search', component: Search, meta: { requiresAuth: false } },
+      // mv
+      { path: '/mv/:id', component: MV, meta: { requiresAuth: false } },
       // 用户信息
       {
         path: '/user',

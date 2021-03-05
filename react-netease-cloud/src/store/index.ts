@@ -14,6 +14,8 @@ import { currentSongInfoReducer } from './currentSongInfo/reducer'
 import constants from 'utils/constants'
 import { playBarStateReducer } from './playBarState/reducer'
 import { userInfoReducer } from './userInfo/reducer'
+import { TypeSearch } from 'utils/types'
+import { searchReducer } from './search/reducer'
 
 export interface IAction {
   type: string
@@ -26,6 +28,7 @@ export interface ICombineState {
   currentSongInfo: any
   playBarState: { isPlay: boolean }
   userInfo: { isLogin: boolean; profile: any; account: any }
+  search: { inputValue: string; searchType: TypeSearch }
 }
 
 // 将创建好的中间件或者第三方的中间件，作为参数传递给 applyMiddleware
@@ -38,6 +41,7 @@ const configStore = () => {
     currentSongInfo: currentSongInfoReducer,
     playBarState: playBarStateReducer,
     userInfo: userInfoReducer,
+    search: searchReducer,
   })
 
   // 拿本地存储

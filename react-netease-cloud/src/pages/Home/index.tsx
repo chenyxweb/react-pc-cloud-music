@@ -83,8 +83,6 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
     props.dispatch(stop_is_play())
 
     // 获取当前页面
-    // console.log(props)
-    // console.log(window.location.href)
     const href = encodeURIComponent(window.location.href)
     props.history.push(`/login?from=${href}`)
   }
@@ -95,6 +93,11 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
     if (album?.id) {
       props.history.push(`/discover/album/${album.id}`)
     }
+  }
+
+  // 去搜索页
+  const go2Search = () => {
+    props.history.push('/search')
   }
 
   // 渲染topBar元素
@@ -133,7 +136,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
           <div className="search">
             <div className="input-wrapper">
               <div className="input-outer">
-                <SearchOutlined className="icon" />
+                <SearchOutlined className="icon" title="去搜索页" onClick={go2Search} />
                 <input
                   onFocus={() => setShowSearchSuggest(true)}
                   onBlur={() => setShowSearchSuggest(false)}
@@ -151,8 +154,9 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
                       <div className="search-suggest-box" style={{ display: 'block' }}>
                         {/* 搜xx相关用户 */}
                         <div className="search-user">
-                          <span>
-                            搜“{debounceInputValue}”相关用户{' ＞'}
+                          <span onClick={go2Search}>
+                            {/* 搜“{debounceInputValue}”相关用户{' ＞'} */}
+                            进入搜索页{' ＞'}
                           </span>
                         </div>
                         {/* 单曲,歌手,专辑 */}
@@ -367,19 +371,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
       {renderTopBar()}
 
       {/* 路由 */}
-
-      <div className={styles.routeWrapper}>
-        {/* <Route path='/' component={Discover} exact></Route>
-        <Route path='/discover' component={Discover}></Route>
-        <Route path='/my' component={My}></Route>
-        <Route path='/friend' component={Friend}></Route>
-        <Route path='/mall' component={Mall}></Route>
-        <Route path='/musician' component={Musician}></Route>
-        <Route path='/download' component={Download}></Route>
-        <Route path='/test' component={Test}></Route> */}
-
-        {renderRoutes(props.route?.routes)}
-      </div>
+      <div className={styles.routeWrapper}>{renderRoutes(props.route?.routes)}</div>
 
       {/* Footer */}
       <MyFooter></MyFooter>

@@ -1,0 +1,35 @@
+.Search {
+  background-color: #fff;
+  border: 1px solid #d3d3d3;
+  padding: 0 40px;
+
+  .searchBox {
+    padding: 40px 160px 20px;
+  }
+
+  .totalText {
+    height: 40px;
+    line-height: 30px;
+    padding-bottom: 10px;
+  }
+
+  .list {
+    .listWrapper {
+      min-height: 400px;
+    }
+  }
+
+  :global {
+    // antd
+    .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {
+      padding-left: 34px;
+      padding-right: 34px;
+      user-select: none;
+    }
+
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
+    .ant-tabs-tab:hover {
+      color: var(--main-color);
+    }
+  }
+}

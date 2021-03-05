@@ -1,0 +1,51 @@
+.MV {
+  min-height: 500px;
+  background-color: #fff;
+  border-left: var(--border);
+  border-right: var(--border);
+
+  .left {
+    padding: 15px;
+
+    :global {
+      .mv {
+        .mv-title {
+          display: flex;
+          margin-bottom: 8px;
+          align-items: center;
+
+          .mv-icon {
+            width: 28px;
+            height: 18px;
+            border: 1px solid var(--mv-color);
+            color: var(--mv-color);
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 8px;
+          }
+
+          .mv-name {
+            font-size: 24px;
+            margin-right: 8px;
+            max-width: 450px;
+          }
+
+          .mv-author {
+            color: #0c73c2;
+            position: relative;
+            top: 6px;
+          }
+        }
+
+        .mv-video-wrapper {
+          .mv-video {
+            width: 640px;
+            height: 360px;
+          }
+        }
+      }
+    }
+  }
+}

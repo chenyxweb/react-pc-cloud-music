@@ -63,7 +63,7 @@ const Album: FC<IProps & RouteConfigComponentProps> = () => {
   }
 
   return (
-    <div className={styles.Album}>
+    <div className={`${styles.Album} w980`}>
       {/* 热门新碟 */}
       <div className={styles.hot}>
         <div className="title common-title">

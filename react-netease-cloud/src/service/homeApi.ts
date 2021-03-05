@@ -14,7 +14,7 @@ const getSearchSuggest = (keywords: string, type?: 'mobile') =>
  * offset 偏移量 用于分页, 默认 0
  */
 const getSearch = (params: { keywords: string; type?: TypeSearch; limit?: number; offset?: number }) =>
-  axios.get(`/cloudsearch?keywords`, { params })
+  axios.get(`/cloudsearch`, { params })
 
 /**
  * banner轮播图

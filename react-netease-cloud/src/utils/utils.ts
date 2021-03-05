@@ -2,6 +2,8 @@
 
 // 格式化--万
 const formatTenThousand = (num: number) => {
+  if (!num) return ''
+
   if (num >= 10000) {
     return (num / 10000).toFixed(0) + '万'
   }

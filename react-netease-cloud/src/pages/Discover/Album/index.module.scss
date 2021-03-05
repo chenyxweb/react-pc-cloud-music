@@ -1,5 +1,8 @@
 .Album {
   padding: 40px;
+  background-color: #fff;
+  border-left: 1px solid #d3d3d3;
+  border-right: 1px solid #d3d3d3;
 
   :global {
     .content {
@@ -8,7 +11,7 @@
       flex-wrap: wrap;
 
       .disk-item {
-        padding-right: 48px;
+        padding-right: 34px;
         padding-bottom: 8px;
 
         &:nth-child(5n) {
