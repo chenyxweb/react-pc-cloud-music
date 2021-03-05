@@ -20,10 +20,12 @@ const Authors: FC<IProps & RouteComponentProps> = (props) => {
   return (
     <>
       {list?.map((item: any, index: number) => {
+        const name = item?.userName || item?.name
+        const id = item?.userId || item?.id
         return (
           <Fragment key={index}>
-            <span className={styles.Authors} onClick={() => go2Author(item?.userId || item?.id)} key={index}>
-              {item?.userName || item?.name}
+            <span title={name} className={styles.Authors} onClick={() => go2Author(id)} key={index}>
+              {name}
             </span>
             <span>{index <= list?.length - 2 ? ' / ' : ''}</span>
           </Fragment>

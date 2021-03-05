@@ -1,2 +1,67 @@
 .SongList {
+  .SongListItem {
+    height: 43px;
+    line-height: 43px;
+    display: flex;
+
+    &.bg {
+      background-color: #f7f7f7;
+    }
+
+    &:hover {
+      background-color: #f2f2f2;
+    }
+
+    :global {
+      .play-btn {
+        padding-left: 8px;
+        width: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .icon {
+          font-size: 18px;
+          color: #999;
+          cursor: pointer;
+          position: relative;
+          top: -1px;
+
+          &:hover {
+            color: #666;
+          }
+        }
+      }
+
+      .name {
+        padding-left: 8px;
+        width: 480px;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .author {
+        padding-left: 8px;
+        width: 150px;
+      }
+
+      .album {
+        padding-left: 8px;
+        width: 150px;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .time {
+        padding-left: 8px;
+        flex: 1;
+      }
+    }
+  }
 }
