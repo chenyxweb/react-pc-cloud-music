@@ -91,7 +91,7 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
   const handleAlbumsItemClick = (album: any) => {
     // console.log('album: ', album)
     if (album?.id) {
-      props.history.push(`/discover/album/${album.id}`)
+      props.history.push(`/discover/album-detail/${album.id}`)
     }
   }
 
