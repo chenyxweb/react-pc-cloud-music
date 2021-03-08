@@ -25,7 +25,7 @@ const App: FC = () => {
       <BackTop
         visibilityHeight={200}
         style={{ bottom: 100 }}
-        target={() => document.querySelector('.app') as HTMLElement}
+        // target={() => document.querySelector('.app') as HTMLElement}
       >
         <div className="back-to-top">UP</div>
       </BackTop>

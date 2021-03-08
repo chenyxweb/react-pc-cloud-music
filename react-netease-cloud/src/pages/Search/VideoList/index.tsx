@@ -3,7 +3,8 @@
 import { VideoCameraOutlined } from '@ant-design/icons'
 import Authors from 'components/Authors'
 import dayjs from 'dayjs'
-import React, { FC, Fragment, memo } from 'react'
+import React, { FC, memo } from 'react'
+import LazyLoad from 'react-lazyload'
 import { RouteConfigComponentProps } from 'react-router-config'
 import { withRouter } from 'react-router-dom'
 import utils from 'utils/utils'
@@ -29,7 +30,9 @@ const VideoList: FC<IProps & RouteConfigComponentProps> = (props) => {
           <div className={styles.VideoListItemWrapper} key={index}>
             <div className={styles.VideoListItem}>
               <div className="img-wrapper" onClick={() => handleClickImg(item.vid)}>
-                <img className="img" src={item?.coverUrl + '?param=159y90'} alt="" />
+                <LazyLoad height={152}>
+                  <img className="img" src={item?.coverUrl + '?param=159y90'} alt="" />
+                </LazyLoad>
                 <div className="count">
                   <VideoCameraOutlined /> {utils.formatTenThousand(item.playTime)}
                 </div>

@@ -12,6 +12,7 @@ import { replace_song_list_async } from 'store/songList/actions'
 import { connect, DispatchProp } from 'react-redux'
 import { ICombineState } from 'store'
 import constants from 'utils/constants'
+import LazyLoad from 'react-lazyload'
 
 interface IProps {
   item: any
@@ -47,16 +48,18 @@ const PlayListItem: FC<IProps & DispatchProp & RouteConfigComponentProps & Pick<
   return (
     <div className={[styles.PlayListItem, className].join(' ')} title={item.name} style={style}>
       <div className="img-wrapper">
-        <img
-          // ?param=140y140 降低图片分辨率
-          src={
-            item.picUrl || item.coverImgUrl
-              ? (item.picUrl || item.coverImgUrl) + '?param=140y140'
-              : constants.bg_placeholder_img
-          }
-          alt=""
-          onClick={() => props.history.push(`/discover/playlist-detail/${item.id}`)}
-        />
+        <LazyLoad height={140}>
+          <img
+            // ?param=140y140 降低图片分辨率
+            src={
+              item.picUrl || item.coverImgUrl
+                ? (item.picUrl || item.coverImgUrl) + '?param=140y140'
+                : constants.bg_placeholder_img
+            }
+            alt=""
+            onClick={() => props.history.push(`/discover/playlist-detail/${item.id}`)}
+          />
+        </LazyLoad>
 
         {/* 定位元素 */}
         <div className="play-bar">

@@ -1,0 +1,83 @@
+.SongInfoItem {
+  height: 43px;
+  line-height: 43px;
+  display: flex;
+
+  &:hover {
+    background-color: #f2f2f2;
+  }
+
+  :global {
+    .play-btn {
+      padding-left: 8px;
+      width: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .icon {
+        padding-left: 8px;
+        font-size: 18px;
+        color: #999;
+        cursor: pointer;
+        position: relative;
+        top: -1px;
+
+        &:hover {
+          color: #666;
+        }
+      }
+    }
+
+    .name {
+      padding-left: 8px;
+      width: 480px;
+      cursor: pointer;
+      position: relative;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      .icon-plus {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        color: #999;
+        display: none;
+      }
+    }
+
+    .author {
+      padding-left: 8px;
+      width: 150px;
+    }
+
+    .album {
+      padding-left: 8px;
+      width: 150px;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .time {
+      padding-left: 8px;
+      flex: 1;
+    }
+  }
+
+  &:hover {
+    :global {
+      .name {
+        .icon-plus {
+          display: block;
+        }
+      }
+    }
+  }
+}

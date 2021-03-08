@@ -4,10 +4,9 @@ import ReactDom from 'react-dom'
 import { ConfigProvider } from 'antd'
 import zhCN from 'antd/es/locale/zh_CN'
 import App from './App'
-// import 'moment/locale/zh-cn'
-import './index.scss'
 import configStore from './store/index'
 import { Provider } from 'react-redux'
+import './index.scss'
 
 const store = configStore()
 

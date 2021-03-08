@@ -1,2 +1,29 @@
 .ArtistList {
+  display: flex;
+  flex-wrap: wrap;
+
+  .ArtistListItemWrapper {
+    margin-right: 60px;
+    margin-bottom: 20px;
+
+    &:nth-child(5n) {
+      margin-right: 0;
+    }
+
+    .ArtistListItem {
+      :global {
+        img {
+          width: 130px;
+          height: 130px;
+        }
+
+        .bot {
+          margin-top: 8px;
+          line-height: 18px;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
 }

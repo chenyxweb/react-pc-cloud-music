@@ -2,23 +2,20 @@
 @import './styles/mixin';
 
 *,
-h3 {
+span,
+h3,
+ul,
+ol,
+p,
+div,
+video,
+audio {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html,
-body,
-#root,
-.app {
-  height: 100vh;
-}
-
-.app {
-  position: relative;
-  overflow-y: auto;
-
+html {
   @include scrollBar(6px);
 }
 
@@ -39,14 +36,9 @@ body {
   --border: 1px solid #d3d3d3;
 }
 
-ul {
+ul,
+ol {
   list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-p {
-  margin: 0;
 }
 
 video {

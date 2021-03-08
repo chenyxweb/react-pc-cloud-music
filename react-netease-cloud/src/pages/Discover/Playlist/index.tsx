@@ -86,8 +86,9 @@ const Playlist: FC<IProps & RouteConfigComponentProps> = (props) => {
 
   // 筛选条件改变时滚动到顶部
   useEffect(() => {
-    const app = document.querySelector('#root > .app')
-    app && app.scrollTo(0, 0)
+    // const app = document.querySelector('#root > .app')
+    // app && app.scrollTo(0, 0)
+    window.scrollTo(0, 0)
   }, [cat, order, pageSize, pageNum])
 
   // 恢复第一页

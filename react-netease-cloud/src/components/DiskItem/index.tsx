@@ -2,6 +2,7 @@
 
 import { PlayCircleOutlined } from '@ant-design/icons'
 import React, { FC, memo } from 'react'
+import LazyLoad from 'react-lazyload'
 import { connect, DispatchProp } from 'react-redux'
 import { RouteConfigComponentProps } from 'react-router-config'
 import { withRouter } from 'react-router-dom'
@@ -15,6 +16,12 @@ interface IProps {
   item: { [key: string]: any }
   size: 'small' | 'middle' | 'large' // 100px | 130px | 177px
   showText?: boolean
+}
+
+const sizeMap = {
+  small: 100,
+  middle: 130,
+  large: 177,
 }
 
 const DiskItem: FC<IProps & DispatchProp & RouteConfigComponentProps> = (props) => {
@@ -50,7 +57,14 @@ const DiskItem: FC<IProps & DispatchProp & RouteConfigComponentProps> = (props) 
     <div className={[styles.DiskItem, styles[size]].join(' ')}>
       <div className="img">
         <div className="img-wrapper">
-          <img src={item.picUrl + '?param=100y100'} title={item.name} alt="" onClick={() => toAlbumDetail(item.id)} />
+          <LazyLoad height={sizeMap[size]}>
+            <img
+              src={item.picUrl + `?param=${sizeMap[size]}y${sizeMap[size]}`}
+              title={item.name}
+              alt=""
+              onClick={() => toAlbumDetail(item.id)}
+            />
+          </LazyLoad>
           {/* 播放按钮 */}
           <div className="play-btn-wrapper">
             <PlayCircleOutlined className="play-btn" onClick={playDisk} />

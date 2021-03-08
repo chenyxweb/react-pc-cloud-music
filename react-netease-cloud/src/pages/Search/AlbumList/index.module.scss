@@ -1,2 +1,13 @@
 .AlbumList {
+  display: flex;
+  flex-wrap: wrap;
+
+  .AlbumListWrapper {
+    padding-right: 33px;
+    padding-bottom: 20px;
+
+    &:nth-child(5n) {
+      padding-right: 0;
+    }
+  }
 }

@@ -58,8 +58,9 @@ const Album: FC<IProps & RouteConfigComponentProps> = () => {
     pageSize && setPageSize(pageSize)
 
     // 滚动到顶部
-    const app = document.querySelector('#root > .app')
-    app && app.scrollTo(0, 0)
+    // const app = document.querySelector('#root > .app')
+    // app && app.scrollTo(0, 0)
+    window.scrollTo(0, 580)
   }
 
   return (

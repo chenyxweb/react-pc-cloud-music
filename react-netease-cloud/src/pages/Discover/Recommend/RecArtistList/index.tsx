@@ -39,7 +39,7 @@ const RecArtistList: FC<IProps> = (props) => {
         {list.map((item) => {
           return (
             <div className="list-item" key={item.id} onClick={() => handleListItemClick(item.id)}>
-              <LazyLoad height={62} overflow>
+              <LazyLoad height={62}>
                 <img src={item.img1v1Url + '?param=62y62'} alt="" />
               </LazyLoad>
               <div className="desc">

@@ -22,7 +22,8 @@ const BeforeEach: FC<IProps & RouteComponentProps> = (props) => {
   // 滚动到顶部
   useEffect(() => {
     // console.log(props)
-    document.querySelector('#root > .app')?.scrollTo(0, 0)
+    // document.querySelector('#root > .app')?.scrollTo(0, 0)
+    window.scrollTo(0, 0)
   }, [pathname])
 
   //

@@ -1,6 +1,11 @@
 // 用户相关信息
 import { axios } from './axios'
 
+/**
+ * 获取用户详情
+ */
+const getUserDetail = (uid: number) => axios.get(`/user/detail?uid=${uid}`)
+
 //
 /**
  * 获取用户信息 , 歌单，收藏，mv, dj 数量
@@ -23,6 +28,6 @@ const getUserSongList = (params: { uid: number; limit?: number; offset?: number 
  */
 const getUserRecord = (params: { uid: number; type?: number }) => axios.get('/user/record', { params })
 
-const userApi = { getUserInfoCount, getUserSongList, getUserRecord }
+const userApi = { getUserDetail, getUserInfoCount, getUserSongList, getUserRecord }
 
 export default userApi

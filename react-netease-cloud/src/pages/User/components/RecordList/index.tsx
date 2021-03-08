@@ -1,6 +1,6 @@
 // 听歌排行列表组件
 
-import { Select, Spin } from 'antd'
+import { message, Select, Spin } from 'antd'
 import RecordListItem from 'components/RecordListItem'
 import React, { FC, memo, useCallback, useEffect, useState } from 'react'
 import { RouteConfigComponentProps } from 'react-router-config'
@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom'
 import http from 'service/http'
 import styles from './index.module.scss'
 
-const recordListInit = Array(10).fill({}) // 占位
+// const recordListInit = Array(10).fill({}) // 占位
 
 interface IProps {
   showAll?: boolean // 是否展示全部列表 , 默认最多展示10条数据
@@ -18,7 +18,7 @@ interface IProps {
 const RecordList: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = (props) => {
   const { showMoreBtn, showAll } = props
 
-  const [recordList, setRecordList] = useState<any[]>(recordListInit) // 播放记录列表
+  const [recordList, setRecordList] = useState<any[]>([]) // 播放记录列表
   const [recordType, setRecordType] = useState<1 | 0>(1) // 1 最近一周, 0 所有时间
   const [fetching, setFetching] = useState(false) // 正在获取播放记录列表
 
@@ -29,19 +29,27 @@ const RecordList: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = (
 
     setFetching(true)
 
-    http.userApi.getUserRecord({ uid, type: recordType }).then((res) => {
-      if (res.data.code === 200) {
-        const { weekData, allData } = res.data || {}
-        const list = recordType === 1 ? weekData : allData
-        if (showAll) {
-          // 是否展示全部列表
-          setRecordList(list || [])
+    http.userApi
+      .getUserRecord({ uid, type: recordType })
+      .then((res) => {
+        if (res.data.code === 200) {
+          const { weekData, allData } = res.data || {}
+          const list = recordType === 1 ? weekData : allData
+          if (showAll) {
+            // 是否展示全部列表
+            setRecordList(list || [])
+          } else {
+            setRecordList(list?.slice(0, 10) || [])
+          }
+          setFetching(false)
         } else {
-          setRecordList(list?.slice(0, 10) || [])
+          message.error('无权限访问')
+          setFetching(false)
         }
+      })
+      .catch(() => {
         setFetching(false)
-      }
-    })
+      })
   }, [props.match.params?.userId, showAll, recordType])
 
   // 查看更多
@@ -52,7 +60,7 @@ const RecordList: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = (
     props.history.push(`/user/record-list-detail/${userId}`)
   }, [props.history, props.match.params?.userId])
 
-  return (
+  return recordList?.length ? (
     <div className={styles.RecordList}>
       <div className={styles.recordListTitle}>
         <span className="text">听歌排行</span>
@@ -83,7 +91,7 @@ const RecordList: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = (
         </div>
       ) : null}
     </div>
-  )
+  ) : null
 }
 
 RecordList.defaultProps = {

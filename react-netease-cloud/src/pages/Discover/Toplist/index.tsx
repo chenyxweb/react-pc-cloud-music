@@ -108,7 +108,7 @@ const Toplist: FC<IProps & RouteComponentProps<{ id: string }> & DispatchProp> =
           key={item.id}
           onClick={() => handleClickItem(item.id)}
         >
-          <LazyLoad height={40} overflow>
+          <LazyLoad height={40}>
             <img className="list-item-img" src={item.coverImgUrl + '?param=40y40'} alt="" title={item.description} />
           </LazyLoad>
           <div className="list-item-desc">

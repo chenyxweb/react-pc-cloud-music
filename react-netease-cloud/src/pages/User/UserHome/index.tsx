@@ -1,28 +1,38 @@
 // user - 主页
 import PlayListItem from 'components/PlayListItem'
 import React, { FC, memo, useCallback, useEffect, useState } from 'react'
-import { connect } from 'react-redux'
 import { RouteConfigComponentProps } from 'react-router-config'
 import http from 'service/http'
-import { ICombineState } from 'store'
 import RecordList from '../components/RecordList'
 import LazyLoad from 'react-lazyload'
 import styles from './index.module.scss'
 
 interface IProps {}
 
-const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }> & Pick<ICombineState, 'userInfo'>> = (
-  props
-) => {
+const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }>> = (props) => {
+  const uid = Number(props.match.params?.userId)
+
   // const [hasMore, setHasMore] = useState(true) // 是否有更多分页数据
   const [createList, setCreateList] = useState<any[]>([]) // 创建的歌单
   const [collectList, setCollectList] = useState<any[]>([]) // 收藏的歌单
+  const [profile, setProfile] = useState<any>() // 用户信息
 
   // console.log(props)
 
+  // 获取用户信息
+  useEffect(() => {
+    if (!uid) return
+    http.userApi.getUserDetail(uid).then((res) => {
+      console.log(res)
+      if (res.data.code === 200) {
+        const { profile } = res.data || {}
+        setProfile(profile || {})
+      }
+    })
+  }, [uid])
+
   // 获取用户歌单
   useEffect(() => {
-    const uid = Number(props.match.params?.userId)
     if (!uid) return
 
     http.userApi
@@ -50,17 +60,17 @@ const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }> & Pick
         }
       })
       .catch(() => {})
-  }, [props.match.params?.userId])
+  }, [uid])
 
   // 渲染profile
   const renderProfile = () => {
     return (
       <div className={styles.userProfile}>
         <div className="avatar">
-          <img src={props.userInfo?.profile?.avatarUrl + '?param=182y182'} alt="" />
+          <img src={profile?.avatarUrl + '?param=182y182'} alt="" />
         </div>
         <div className="detailInfo">
-          <div className="detailInfo-top">{props.userInfo?.profile?.nickname}</div>
+          <div className="detailInfo-top">{profile?.nickname}</div>
 
           <div className="detailInfo-bot"></div>
         </div>
@@ -70,7 +80,7 @@ const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }> & Pick
 
   // 渲染歌单
   const renderPlayList = useCallback((list: any[], title: string) => {
-    return (
+    return list?.length ? (
       <div className={styles.playlist}>
         <div className={styles.playlistTitle}>
           {title}（{list.length}）
@@ -79,7 +89,7 @@ const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }> & Pick
           {list.map((item) => {
             return (
               <div className={styles.itemWrapper} key={item.id}>
-                <LazyLoad height={140} overflow>
+                <LazyLoad height={140}>
                   <PlayListItem item={item}></PlayListItem>
                 </LazyLoad>
               </div>
@@ -87,7 +97,7 @@ const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }> & Pick
           })}
         </div>
       </div>
-    )
+    ) : null
   }, [])
 
   // console.log(props)
@@ -110,11 +120,4 @@ const UserHome: FC<IProps & RouteConfigComponentProps<{ userId: string }> & Pick
 
 UserHome.defaultProps = {}
 
-// map store
-const mapStateToProps = (state: ICombineState) => {
-  return {
-    userInfo: state.userInfo,
-  }
-}
-
-export default memo(connect(mapStateToProps)(UserHome))
+export default memo(UserHome)
