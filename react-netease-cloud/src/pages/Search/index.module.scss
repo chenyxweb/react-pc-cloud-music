@@ -19,6 +19,14 @@
     }
   }
 
+  // 分页
+  .pagination {
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   :global {
     // antd
     .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab {

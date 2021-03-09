@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react'
-import { Empty, Input, Spin, Tabs } from 'antd'
+import { Empty, Input, Pagination, Spin, Tabs } from 'antd'
 import styles from './index.module.scss'
 import constants from 'utils/constants'
 import { TypeSearch } from 'utils/types'
@@ -137,6 +137,11 @@ const Search: FC<IProps & Pick<ICombineState, 'search'> & DispatchProp> = (props
     setPageNum(1)
   }, [inputValue, searchType])
 
+  // 滚动到顶端
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [inputValue, searchType, pageNum, pageSize])
+
   // enter或者点击搜索
   const handleOnSearch = (value: string) => {
     props.dispatch(update_input_value(value))
@@ -147,6 +152,13 @@ const Search: FC<IProps & Pick<ICombineState, 'search'> & DispatchProp> = (props
     if (activeKey === searchType) return
     setList([])
     props.dispatch(update_search_type(activeKey as TypeSearch))
+  }
+
+  // 分页器改变
+  const handlePaginationChange = (page: number, pageSize?: number | undefined) => {
+    console.log(page, pageSize)
+    setPageNum(page)
+    pageSize && setPageSize(pageSize)
   }
 
   // 渲染组件
@@ -214,6 +226,19 @@ const Search: FC<IProps & Pick<ICombineState, 'search'> & DispatchProp> = (props
             {renderListComponent()}
           </div>
         </Spin>
+      </div>
+
+      {/* 分页器 */}
+      <div className={styles.pagination}>
+        <Pagination
+          total={total}
+          pageSize={pageSize}
+          pageSizeOptions={['10', '25', '50']}
+          showSizeChanger
+          showQuickJumper
+          current={pageNum}
+          onChange={handlePaginationChange}
+        ></Pagination>
       </div>
     </div>
   )

@@ -1,0 +1,96 @@
+.PlayListSearchItem {
+  height: 62px;
+  display: flex;
+
+  &:hover {
+    background-color: var(--bgc-hover) !important;
+  }
+
+  :global {
+    .play-icon {
+      width: 46px;
+    }
+
+    .img {
+      width: 70px;
+
+      img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+
+    .name {
+      width: 325px;
+    }
+
+    .trackCount {
+      width: 54px;
+    }
+
+    .creator {
+      width: 180px;
+    }
+
+    .book {
+      width: 110px;
+    }
+
+    .play {
+      width: 110px;
+    }
+
+    .play-icon,
+    .img,
+    .name,
+    .trackCount,
+    .creator,
+    .book,
+    .play {
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+      color: #666;
+
+      > span,
+      > img {
+        cursor: pointer;
+      }
+    }
+
+    .play-icon {
+      justify-content: center;
+      font-size: 18px;
+      color: #666;
+      cursor: pointer;
+    }
+
+    .book,
+    .play {
+      color: #999;
+
+      > span {
+        cursor: text;
+      }
+    }
+
+    .name {
+      color: #333;
+    }
+
+    .trackCount {
+      > span {
+        cursor: text;
+      }
+    }
+
+    .name,
+    .creator {
+      > span {
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
