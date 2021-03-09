@@ -17,7 +17,7 @@ const LyricList: FC<IProps> = (props) => {
       {list?.map((item, index) => {
         return (
           <div className={styles.LyricListItemWrapper} key={index}>
-            <LyricItem songInfo={item} titleStyle={{ backgroundColor: index % 2 ? '#f7f7f7' : '' }}></LyricItem>
+            <LyricItem songInfo={item} titleStyle={{ backgroundColor: '#f7f7f7' }} />
           </div>
         )
       })}

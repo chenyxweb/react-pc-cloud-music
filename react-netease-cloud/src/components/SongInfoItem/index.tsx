@@ -46,6 +46,7 @@ const SongInfoItem: FC<IProps & RouteComponentProps & DispatchProp> = (props) =>
       </div>
       <div className="name ellipsis-1" title={item?.name}>
         <span onClick={() => handleClickName(item?.id)}>{item?.name}</span>
+        {item?.mv ? <div className="to-mv" onClick={() => props.history.push(`/mv/${item.mv}`)}></div> : null}
         <PlusOutlined title="添加" className="icon-plus" onClick={() => handleAdd(item)} />
       </div>
       <div className="author ellipsis-1">

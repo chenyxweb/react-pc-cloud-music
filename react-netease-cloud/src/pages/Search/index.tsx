@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react'
+import React, { FC, memo, useCallback, useEffect, useState } from 'react'
 import { Empty, Input, Spin, Tabs } from 'antd'
 import styles from './index.module.scss'
 import constants from 'utils/constants'
@@ -140,14 +140,12 @@ const Search: FC<IProps & Pick<ICombineState, 'search'> & DispatchProp> = (props
   // enter或者点击搜索
   const handleOnSearch = (value: string) => {
     props.dispatch(update_input_value(value))
-    // setInputValue(value)
   }
 
   // tabs改变
   const handleOnTabChange = (activeKey: string) => {
     if (activeKey === searchType) return
     setList([])
-    // setSearchType(activeKey as TypeSearch)
     props.dispatch(update_search_type(activeKey as TypeSearch))
   }
 
@@ -225,9 +223,7 @@ Search.defaultProps = {}
 
 // map state
 const mapStateToProps = (state: ICombineState) => {
-  return {
-    search: state.search,
-  }
+  return { search: state.search }
 }
 
 export default connect(mapStateToProps)(memo(Search))

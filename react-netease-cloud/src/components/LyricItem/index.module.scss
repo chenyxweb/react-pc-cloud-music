@@ -2,47 +2,30 @@
   .songInfo {
     height: 43px;
     line-height: 43px;
-    display: flex;
-    align-items: center;
+  }
 
-    :global {
-      .icon,
-      .name,
-      .artist,
-      .album-name,
-      .time {
-        padding-left: 15px;
-        color: #666;
-      }
+  .lyricWrapper {
+    padding: 15px 0 15px 50px;
 
-      .icon {
-        font-size: 18px;
-        cursor: pointer;
-      }
+    .lyricsItem {
+      color: #666;
+      line-height: 23px;
+      word-wrap: break-word;
+      word-break: break-all;
 
-      .name {
-        width: 480px;
-        cursor: pointer;
-      }
-
-      .artist {
-        width: 140px;
-      }
-
-      .album-name {
-        width: 160px;
-        cursor: pointer;
-      }
-
-      .time {
-        flex: 1;
-      }
-
-      .name,
-      .album-name {
-        &:hover {
-          text-decoration: underline;
+      :global {
+        b {
+          color: #0c73c2;
         }
+      }
+    }
+
+    .openBtn {
+      padding-top: 12px;
+      user-select: none;
+
+      .span {
+        cursor: pointer;
       }
     }
   }

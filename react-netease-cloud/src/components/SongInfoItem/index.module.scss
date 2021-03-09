@@ -1,4 +1,5 @@
 .SongInfoItem {
+  width: 100%;
   height: 43px;
   line-height: 43px;
   display: flex;
@@ -32,11 +33,24 @@
     .name {
       padding-left: 8px;
       width: 480px;
-      cursor: pointer;
       position: relative;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
 
-      &:hover {
-        text-decoration: underline;
+      > span {
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .to-mv {
+        cursor: pointer;
+        margin-left: 8px;
+        width: 21px;
+        height: 18px;
+        background: url('~assets/img/icon.png') 0 -18px no-repeat;
       }
 
       .icon-plus {
@@ -58,10 +72,12 @@
     .album {
       padding-left: 8px;
       width: 150px;
-      cursor: pointer;
 
-      &:hover {
-        text-decoration: underline;
+      > span {
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
