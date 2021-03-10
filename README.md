@@ -1406,11 +1406,43 @@ npx mrm lint-staged // 会安装husky lint-staged 自动生成配置
 }
 ```
 
+### 22 错误边界（Error Boundaries）
+
+https://zh-hans.reactjs.org/docs/error-boundaries.html#introducing-error-boundaries
+
+注意: 类组件中才能有
+
+```js
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    // 更新 state 使下一次渲染能够显示降级后的 UI
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // 你同样可以将错误日志上报给服务器
+    logErrorToMyService(error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // 你可以自定义降级后的 UI 并渲染
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children; 
+  }
+}
+```
+
 
 
 ## ps
-
-### 删除歌曲冒泡导致点击了歌曲列表项  , 需要清除冒泡 (***), 习惯性要清除冒泡
 
 ### reducer是纯函数
 
