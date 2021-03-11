@@ -61,6 +61,27 @@ const Home: FC<IProps & Pick<ICombineState, 'userInfo'> & DispatchProp & RouteCo
       .catch(() => {})
   }, [debounceInputValue])
 
+  // 监听路由改变
+  // useEffect(() => {
+  //   const unListen = props.history.listen((listener) => {
+  //     console.log(listener)
+  //     console.log('路由变化')
+  //   })
+
+  //   return () => {
+  //     unListen && unListen()
+  //   }
+
+  //   // history是可变的, 会重复引用一个地址, 因此useEffect只会执行一次
+  // }, [props.history])
+
+  // useEffect(() => {
+  //   window.addEventListener('hashchange', (event: HashChangeEvent) => {
+  //     console.log(event.oldURL)
+  //     console.log(event.newURL)
+  //   })
+  // }, [])
+
   // 点击歌曲
   const handleSongsItemClick = (song: any) => {
     // console.log('song: ', song)
